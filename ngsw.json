@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1597575142646,
+  "timestamp": 1597576390027,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main.e98d5b65c55d43267aea.js",
+        "/main.99fe517c9fae0830b2fd.js",
         "/manifest.webmanifest",
         "/polyfills.a4021de53358bb0fec14.js",
         "/runtime.e227d1a0e31cbccbf8ec.js",
@@ -61,7 +61,7 @@
         "/assets/icons/stackoverflow.svg",
         "/assets/icons/twitter.svg",
         "/assets/icons/vscode.svg",
-        "/assets/img/Profile-Pic-Ritwick-Dey2.jpg"
+        "/assets/img/Profile-Pic-Maulik.jpg"
       ],
       "patterns": []
     }
@@ -100,10 +100,10 @@
     "/assets/icons/stackoverflow.svg": "ca91d1ccca03fdd93862e3131a43b0ccca2af19c",
     "/assets/icons/twitter.svg": "6beeff66ec027784b722df7827c984f215963f9f",
     "/assets/icons/vscode.svg": "a00ef06b2bcc0a48c0538c3c38b3295fc1cac546",
-    "/assets/img/Profile-Pic-Ritwick-Dey2.jpg": "4dc083d2fcc917365b779ecb0ac9c94aaf5f3507",
+    "/assets/img/Profile-Pic-Maulik.jpg": "4dc083d2fcc917365b779ecb0ac9c94aaf5f3507",
     "/favicon.ico": "fd61ac4e27163ada907c1090ef8a82e78437289b",
-    "/index.html": "a91948b0d1e760fb91d1224ae0ab871223fa495c",
-    "/main.e98d5b65c55d43267aea.js": "bf86ed787fd6087b7ca49b9865b65d4fb2d8011f",
+    "/index.html": "a16a1924f63f949239afbe197e5fa5a66424eab4",
+    "/main.99fe517c9fae0830b2fd.js": "a6350993e8f7bea62a42d7e54e6f1b93c19d2c60",
     "/manifest.webmanifest": "63e52a63dd4d53e2047c985d3c3c42ea5c2e01c8",
     "/polyfills.a4021de53358bb0fec14.js": "b47435a9ef2a4829f2f9dfd35599bde3614981b1",
     "/runtime.e227d1a0e31cbccbf8ec.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
