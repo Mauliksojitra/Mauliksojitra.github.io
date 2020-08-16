@@ -1,0 +1,130 @@
+{
+  "configVersion": 1,
+  "timestamp": 1597569562078,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/favicon.ico",
+        "/index.html",
+        "/main.d147ce36d2555ad44934.js",
+        "/manifest.webmanifest",
+        "/polyfills.a4021de53358bb0fec14.js",
+        "/runtime.e227d1a0e31cbccbf8ec.js",
+        "/styles.795a9547d2591601be96.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/assert/contactIcon/email.svg",
+        "/assets/assert/contactIcon/facebook.svg",
+        "/assets/assert/contactIcon/github.svg",
+        "/assets/assert/contactIcon/linkedin.png",
+        "/assets/assert/contactIcon/pluralsight-icon.jpg",
+        "/assets/assert/contactIcon/twitter.svg",
+        "/assets/assert/devIcon/angular.svg",
+        "/assets/assert/devIcon/c.svg",
+        "/assets/assert/devIcon/csharp.svg",
+        "/assets/assert/devIcon/css.svg",
+        "/assets/assert/devIcon/dotnet.svg",
+        "/assets/assert/devIcon/html.svg",
+        "/assets/assert/devIcon/javascript.svg",
+        "/assets/assert/devIcon/typescript.svg",
+        "/assets/icons/email.svg",
+        "/assets/icons/facebook.svg",
+        "/assets/icons/github.svg",
+        "/assets/icons/hackerrank.svg",
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/icons/instagram.svg",
+        "/assets/icons/linkedin.svg",
+        "/assets/icons/pluralsight.svg",
+        "/assets/icons/stackoverflow.svg",
+        "/assets/icons/twitter.svg",
+        "/assets/icons/vscode.svg",
+        "/assets/img/Profile-Pic-Ritwick-Dey2.jpg"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/assets/assert/contactIcon/email.svg": "dc0528c1314d5b7bca6a6c5da89f73c6959d24bc",
+    "/assets/assert/contactIcon/facebook.svg": "52cb36f7f0356099e1fce52e2d7a2894574e0ff4",
+    "/assets/assert/contactIcon/github.svg": "b01fe2b3e7767104261abce0655621bd1ab5fe49",
+    "/assets/assert/contactIcon/linkedin.png": "b583c366bc69a3cd759d6b269866f2e246bc1b02",
+    "/assets/assert/contactIcon/pluralsight-icon.jpg": "32cb39daa2219a04b9b4bd5c7498d130c7f3e9df",
+    "/assets/assert/contactIcon/twitter.svg": "4deb947410df6780e5c8695bd09af64f7d75d745",
+    "/assets/assert/devIcon/angular.svg": "4993f663e3c7a9e4fb1a11a9815407492d0695b1",
+    "/assets/assert/devIcon/c.svg": "530d915b241d801f077e9198ef3dbaf8501c472b",
+    "/assets/assert/devIcon/csharp.svg": "e009397e056892dd5ba7d4e7ed8d76d778e25579",
+    "/assets/assert/devIcon/css.svg": "fe75e06cfb6c643175c64eb8bece89af26fe54b4",
+    "/assets/assert/devIcon/dotnet.svg": "8d6ba68213ed8f325ddebd1d08613d2fe18ff0e8",
+    "/assets/assert/devIcon/html.svg": "0dc72030edc9b5def90132aaad76084b9f076ebe",
+    "/assets/assert/devIcon/javascript.svg": "451e63011bf613ef52ecbfe21630494cea85b5a8",
+    "/assets/assert/devIcon/typescript.svg": "784cf9b821b717b313e562f8f7c0509d23635752",
+    "/assets/icons/email.svg": "727c36523605696348741fa9fdab2f260edb0b4d",
+    "/assets/icons/facebook.svg": "c1f108daff0f9e91ff8eb8ad6ab319c0a662fa74",
+    "/assets/icons/github.svg": "c9076e7081f2ae1137310918ba58fb917a522ee4",
+    "/assets/icons/hackerrank.svg": "84a4a2a0d1eb3bf38a16b3fdd7e4ab09968b9b4b",
+    "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "/assets/icons/instagram.svg": "cc4e9939c04388e80d54f0daf6d5d42c253247e1",
+    "/assets/icons/linkedin.svg": "16ae8f3b8fc1da087c3b2c3631495818948ba56e",
+    "/assets/icons/pluralsight.svg": "8c72916f0af08ebdced5d37175f22d0e4c533d61",
+    "/assets/icons/stackoverflow.svg": "ca91d1ccca03fdd93862e3131a43b0ccca2af19c",
+    "/assets/icons/twitter.svg": "6beeff66ec027784b722df7827c984f215963f9f",
+    "/assets/icons/vscode.svg": "a00ef06b2bcc0a48c0538c3c38b3295fc1cac546",
+    "/assets/img/Profile-Pic-Ritwick-Dey2.jpg": "4dc083d2fcc917365b779ecb0ac9c94aaf5f3507",
+    "/favicon.ico": "fd61ac4e27163ada907c1090ef8a82e78437289b",
+    "/index.html": "c10d55db439a0283a2ebac3ee55b9f2a3cbf66ff",
+    "/main.d147ce36d2555ad44934.js": "b69b427a4d0565770a1e03845b6968d93f8164c9",
+    "/manifest.webmanifest": "373ae54f8968ce7db93ab963f3bfac0855c8457f",
+    "/polyfills.a4021de53358bb0fec14.js": "b47435a9ef2a4829f2f9dfd35599bde3614981b1",
+    "/runtime.e227d1a0e31cbccbf8ec.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
+    "/styles.795a9547d2591601be96.css": "9a9cb4a5dc331a5668c6ff56e91305b0b048bc99"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}
