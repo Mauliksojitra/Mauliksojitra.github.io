@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1597569562078,
+  "timestamp": 1597575142646,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main.d147ce36d2555ad44934.js",
+        "/main.e98d5b65c55d43267aea.js",
         "/manifest.webmanifest",
         "/polyfills.a4021de53358bb0fec14.js",
         "/runtime.e227d1a0e31cbccbf8ec.js",
@@ -102,9 +102,9 @@
     "/assets/icons/vscode.svg": "a00ef06b2bcc0a48c0538c3c38b3295fc1cac546",
     "/assets/img/Profile-Pic-Ritwick-Dey2.jpg": "4dc083d2fcc917365b779ecb0ac9c94aaf5f3507",
     "/favicon.ico": "fd61ac4e27163ada907c1090ef8a82e78437289b",
-    "/index.html": "c10d55db439a0283a2ebac3ee55b9f2a3cbf66ff",
-    "/main.d147ce36d2555ad44934.js": "b69b427a4d0565770a1e03845b6968d93f8164c9",
-    "/manifest.webmanifest": "373ae54f8968ce7db93ab963f3bfac0855c8457f",
+    "/index.html": "a91948b0d1e760fb91d1224ae0ab871223fa495c",
+    "/main.e98d5b65c55d43267aea.js": "bf86ed787fd6087b7ca49b9865b65d4fb2d8011f",
+    "/manifest.webmanifest": "63e52a63dd4d53e2047c985d3c3c42ea5c2e01c8",
     "/polyfills.a4021de53358bb0fec14.js": "b47435a9ef2a4829f2f9dfd35599bde3614981b1",
     "/runtime.e227d1a0e31cbccbf8ec.js": "a9aafcf49f49145093fc831efd9b8e2f6c71bb9c",
     "/styles.795a9547d2591601be96.css": "9a9cb4a5dc331a5668c6ff56e91305b0b048bc99"

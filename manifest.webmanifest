@@ -1,8 +1,8 @@
 {
-  "name": "MaulikSojitraDevPortfolio",
-  "short_name": "MaulikSojitraDevPortfolio",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "name": "Maulik Sojitra",
+  "short_name": "Maulik Sojitra | Portfolio of Maulik Sojitra",
+  "theme_color": "#212121",
+  "background_color": "#212121",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
