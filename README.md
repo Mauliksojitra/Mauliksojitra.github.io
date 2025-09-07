@@ -9,6 +9,6 @@ Welcome to my GitHub profile! I'm a passionate developer who believes in helping
 
 ### 📫 Connect with Me
 - 🌐 [Website](https://mauliksojitra.github.io/)
-- 💼 [LinkedIn](https://in.linkedin.com/in/mauliksojitra)
+- 💼 [LinkedIn](https://www.linkedin.com/in/mauliksojitra)
 
 ---
