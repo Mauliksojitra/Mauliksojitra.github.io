@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>C# — Static vs Virtual/Override</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:       #f5f2eb;
+  --surface:  #eeeade;
+  --card:     #ffffff;
+  --border:   #ddd8cc;
+  --ink:      #1a1a18;
+  --muted:    #6b6655;
+  --faint:    #9e9880;
+  --accent:   #c0392b;
+  --accent2:  #1a6b8a;
+  --green:    #1d7a4f;
+  --amber:    #b87333;
+  --purple:   #6b3fa0;
+  --kw:       #7c3aed;
+  --ty:       #1a6b8a;
+  --st:       #1d7a4f;
+  --cm:       #9e9880;
+  --nm:       #b87333;
+  --fn:       #1a6b8a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'DM Sans',sans-serif;
+  line-height:1.75;
+  overflow-x:hidden;
+}
+
+/* ── grain texture ── */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:999;
+}
+
+/* ── header ── */
+.page-header{
+  border-bottom:1px solid var(--border);
+  padding:3rem 0 2.5rem;
+  background:var(--bg);
+  position:sticky;top:0;z-index:10;
+}
+.inner{max-width:820px;margin:0 auto;padding:0 2rem}
+.header-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.18em;color:var(--faint);
+  text-transform:uppercase;margin-bottom:.5rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.header-tag::before{content:'';width:24px;height:1px;background:var(--faint)}
+.page-header h1{
+  font-family:'Fraunces',serif;
+  font-size:clamp(1.8rem,5vw,3rem);
+  font-weight:700;line-height:1.15;letter-spacing:-.02em;
+}
+.page-header h1 em{font-style:italic;color:var(--accent2)}
+.subtitle{
+  color:var(--muted);font-size:.95rem;margin-top:.5rem;
+  font-weight:300;max-width:480px;
+}
+
+/* ── progress bar ── */
+.progress{
+  position:fixed;top:0;left:0;height:2px;
+  background:var(--accent2);width:0%;
+  transition:width .1s;z-index:100;
+}
+
+/* ── toc ── */
+.toc-wrap{
+  display:flex;gap:.5rem;flex-wrap:wrap;
+  margin:1.2rem 0 0;
+}
+.toc-pill{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;padding:.3rem .75rem;
+  border-radius:20px;border:1px solid var(--border);
+  background:var(--card);color:var(--muted);
+  text-decoration:none;transition:all .15s;
+  letter-spacing:.04em;
+}
+.toc-pill:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* ── main content ── */
+main{padding:3.5rem 0 6rem}
+.step{
+  margin-bottom:3.5rem;
+  opacity:0;transform:translateY(22px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.step.vis{opacity:1;transform:translateY(0)}
+
+/* step number + title */
+.step-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.2rem}
+.step-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;color:var(--faint);
+  background:var(--surface);
+  border:1px solid var(--border);
+  padding:.3rem .6rem;border-radius:4px;
+  margin-top:.3rem;flex-shrink:0;
+  letter-spacing:.06em;
+}
+.step h2{
+  font-family:'Fraunces',serif;
+  font-size:1.55rem;font-weight:600;
+  letter-spacing:-.015em;line-height:1.25;
+}
+.step h2 code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.1rem;color:var(--accent2);
+  background:rgba(26,107,138,.08);
+  padding:.05em .3em;border-radius:4px;
+}
+
+/* prose */
+.prose{color:var(--muted);font-size:.97rem;line-height:1.8;margin-bottom:1rem}
+.prose strong{color:var(--ink);font-weight:600}
+.prose code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.82rem;color:var(--accent2);
+  background:rgba(26,107,138,.07);
+  padding:.1em .35em;border-radius:3px;
+}
+
+/* divider */
+hr{border:none;border-top:1px solid var(--border);margin:2.5rem 0}
+
+/* error callout */
+.callout{
+  display:flex;gap:.9rem;
+  border-radius:10px;padding:1rem 1.2rem;
+  margin:1rem 0;
+  border:1px solid;
+}
+.callout.error{
+  background:rgba(192,57,43,.04);
+  border-color:rgba(192,57,43,.2);
+}
+.callout.success{
+  background:rgba(29,122,79,.04);
+  border-color:rgba(29,122,79,.2);
+}
+.callout.info{
+  background:rgba(26,107,138,.04);
+  border-color:rgba(26,107,138,.2);
+}
+.callout-icon{font-size:1.1rem;flex-shrink:0;line-height:1.6}
+.callout-body{font-size:.88rem;color:var(--muted);line-height:1.6}
+.callout-body strong{color:var(--ink)}
+.callout.error .callout-body blockquote{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;color:var(--accent);
+  border-left:2px solid var(--accent);
+  margin:.4rem 0 0;padding-left:.7rem;
+  font-style:italic;
+}
+
+/* ── code block ── */
+.cb{
+  background:#1c1e26;
+  border-radius:12px;
+  overflow:hidden;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;line-height:1.9;
+  margin:1rem 0;
+  border:1px solid #2d3042;
+}
+.cb-head{
+  display:flex;align-items:center;gap:.4rem;
+  padding:.6rem 1.1rem;
+  border-bottom:1px solid #2d3042;
+  background:#161820;
+}
+.dots{display:flex;gap:.35rem}
+.d{width:10px;height:10px;border-radius:50%}
+.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
+.cb-label{
+  margin-left:auto;font-size:.68rem;
+  color:#4a5070;letter-spacing:.04em;
+}
+.cb-body{padding:1.2rem 1.4rem;overflow-x:auto;color:#c9d1d9}
+.cb-body pre{white-space:pre}
+.kw{color:#c792ea}.ty{color:#82aaff}.st{color:#c3e88d}
+.cm{color:#4a5570;font-style:italic}.nm{color:#f78c6c}.fn{color:#89ddff}
+.out{color:#72f587}.err{color:#ff5757}
+
+/* ── output badge ── */
+.output-line{
+  display:flex;align-items:center;gap:.5rem;
+  background:#0f111a;
+  border-top:1px solid #2d3042;
+  padding:.7rem 1.4rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;
+}
+.output-label{
+  font-size:.65rem;letter-spacing:.1em;
+  color:#4a5070;text-transform:uppercase;
+  flex-shrink:0;
+}
+.output-val{color:#72f587}
+.output-val.warn{color:#f78c6c}
+
+/* ── side-by-side ── */
+.sbyside{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.2rem;margin:1.2rem 0;
+}
+.sbs-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+}
+.sbs-head{
+  padding:.7rem 1rem;
+  border-bottom:1px solid var(--border);
+  font-size:.8rem;font-weight:600;
+  display:flex;align-items:center;gap:.5rem;
+}
+.sbs-head .pill{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;padding:.15rem .5rem;
+  border-radius:4px;
+}
+.pill-green{background:rgba(29,122,79,.1);color:var(--green)}
+.pill-amber{background:rgba(184,115,51,.1);color:var(--amber)}
+.pill-red{background:rgba(192,57,43,.1);color:var(--accent)}
+.sbs-body{padding:1rem}
+.sbs-body p{font-size:.84rem;color:var(--muted);line-height:1.65}
+.sbs-body ul{font-size:.83rem;color:var(--muted);padding-left:1.1rem;line-height:1.9}
+.sbs-body li::marker{color:var(--faint)}
+.sbs-body strong{color:var(--ink)}
+
+/* ── comparison table ── */
+.tbl-outer{
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+  margin:1.2rem 0;
+}
+.comp-table{width:100%;border-collapse:collapse;font-size:.83rem}
+.comp-table thead{background:var(--surface)}
+.comp-table th{
+  padding:.85rem 1.1rem;
+  text-align:left;
+  font-weight:600;
+  font-size:.75rem;
+  letter-spacing:.06em;
+  color:var(--faint);
+  border-bottom:1px solid var(--border);
+}
+.comp-table th:first-child{width:160px}
+.comp-table td{
+  padding:.8rem 1.1rem;
+  border-bottom:1px solid var(--border);
+  color:var(--muted);vertical-align:top;
+  line-height:1.6;
+}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table tr:hover td{background:rgba(0,0,0,.015)}
+.comp-table td:first-child{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.76rem;font-weight:500;
+  color:var(--ink);background:var(--surface);
+}
+.comp-table code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;color:var(--accent2);
+  background:rgba(26,107,138,.07);
+  padding:.05em .3em;border-radius:3px;
+}
+.badge-rt{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;padding:.15rem .5rem;
+  border-radius:4px;font-weight:500;
+  background:rgba(29,122,79,.1);color:var(--green);
+  white-space:nowrap;
+}
+.badge-ct{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;padding:.15rem .5rem;
+  border-radius:4px;font-weight:500;
+  background:rgba(184,115,51,.1);color:var(--amber);
+  white-space:nowrap;
+}
+
+/* ── takeaway box ── */
+.takeaway{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1.5rem 1.6rem;
+  margin:1.2rem 0;
+}
+.takeaway h3{
+  font-family:'Fraunces',serif;
+  font-size:1.05rem;font-weight:600;
+  margin-bottom:1rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.takeaway ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.takeaway li{
+  display:flex;align-items:flex-start;gap:.7rem;
+  font-size:.88rem;color:var(--muted);line-height:1.6;
+}
+.takeaway li::before{
+  content:'→';font-family:'JetBrains Mono',monospace;
+  color:var(--accent2);font-size:.8rem;margin-top:.1rem;flex-shrink:0;
+}
+.takeaway li strong{color:var(--ink)}
+
+/* ── key insight banner ── */
+.insight{
+  background:linear-gradient(135deg,rgba(26,107,138,.06) 0%,rgba(108,63,160,.06) 100%);
+  border:1px solid rgba(26,107,138,.2);
+  border-radius:12px;
+  padding:1.4rem 1.6rem;
+  margin:1.4rem 0;
+}
+.insight h3{
+  font-family:'Fraunces',serif;
+  font-size:1rem;font-weight:600;margin-bottom:.7rem;
+  color:var(--accent2);
+}
+.insight p{font-size:.88rem;color:var(--muted);line-height:1.75}
+.insight code{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;color:var(--accent2);
+  background:rgba(26,107,138,.1);
+  padding:.05em .3em;border-radius:3px;
+}
+
+/* ── footer ── */
+footer{
+  border-top:1px solid var(--border);
+  padding:2rem 0;
+  text-align:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;color:var(--faint);
+  letter-spacing:.08em;
+}
+
+/* ── responsive ── */
+@media(max-width:640px){
+  .sbyside{grid-template-columns:1fr}
+  .page-header{padding:1.5rem 0 1.2rem}
+  .page-header h1{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="prog"></div>
+
+<!-- ── HEADER ── -->
+<header class="page-header">
+  <div class="inner">
+    <div class="header-tag">C# Language Deep Dive</div>
+    <h1>Static vs <em>Virtual / Override</em></h1>
+    <p class="subtitle">Why they conflict, how polymorphism works, and when to use <code style="font-family:'JetBrains Mono',monospace;font-size:.88rem;background:rgba(26,107,138,.08);color:var(--accent2);padding:.1em .35em;border-radius:3px">new</code> instead.</p>
+    <div class="toc-wrap">
+      <a class="toc-pill" href="#step1">The Conflict</a>
+      <a class="toc-pill" href="#step2">Polymorphism Fix</a>
+      <a class="toc-pill" href="#step3">Keeping Static</a>
+      <a class="toc-pill" href="#comparison">Side-by-Side</a>
+      <a class="toc-pill" href="#takeaways">Key Takeaways</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="inner">
+
+  <!-- ── STEP 1 ── -->
+  <div class="step" id="step1">
+    <div class="step-header">
+      <span class="step-num">01</span>
+      <h2>The <code>static</code> + <code>virtual/override</code> Conflict</h2>
+    </div>
+
+    <p class="prose">In C#, <strong>static methods cannot be virtual or overridden</strong>. The two keywords represent fundamentally opposite mechanisms:</p>
+
+    <div class="sbyside">
+      <div class="sbs-card">
+        <div class="sbs-head" style="color:var(--accent2)"><span style="font-size:1rem">⚡</span> virtual <span class="pill pill-green">Runtime</span></div>
+        <div class="sbs-body">
+          <p>The method <strong>can be overridden</strong> in derived classes. The decision of <em>which version to call</em> is made at <strong>runtime</strong> based on the actual object type — this is polymorphism.</p>
+        </div>
+      </div>
+      <div class="sbs-card">
+        <div class="sbs-head" style="color:var(--amber)"><span style="font-size:1rem">🔒</span> static <span class="pill pill-amber">Compile-time</span></div>
+        <div class="sbs-body">
+          <p>The method <strong>belongs to the class</strong>, not an instance. It is resolved at <strong>compile time</strong> based on the variable's declared type — no polymorphism possible.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout error">
+      <div class="callout-icon">🚫</div>
+      <div class="callout-body">
+        <strong>Compiler Error</strong> — combining static with virtual or override will not compile:
+        <blockquote>"Static member 'Base.Print()' cannot be marked as override, virtual, or abstract."</blockquote>
+      </div>
+    </div>
+
+    <div class="cb">
+      <div class="cb-head"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-label">BrokenCode.cs — will NOT compile</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Base</span>
+{
+    <span class="err">// ❌ static + virtual is illegal</span>
+    <span class="kw">public static virtual void</span> <span class="fn">Print</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"Base"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="ty">Derived</span> : <span class="ty">Base</span>
+{
+    <span class="err">// ❌ static + override is illegal</span>
+    <span class="kw">public static override void</span> <span class="fn">Print</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"Derived"</span>);
+    }
+}</pre></div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- ── STEP 2 ── -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <span class="step-num">02</span>
+      <h2>The Right Way — <code>virtual</code> / <code>override</code> for Polymorphism</h2>
+    </div>
+
+    <p class="prose">If your goal is <strong>runtime polymorphism</strong> — where the method that runs depends on the actual object type, not the variable type — remove <code>static</code> entirely and use instance methods:</p>
+
+    <div class="cb">
+      <div class="cb-head"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-label">Polymorphism.cs — runtime binding</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Base</span>
+{
+    <span class="kw">public virtual void</span> <span class="fn">Print</span>()         <span class="cm">// can be overridden</span>
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"Base"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="ty">Derived</span> : <span class="ty">Base</span>
+{
+    <span class="kw">public override void</span> <span class="fn">Print</span>()        <span class="cm">// replaces Base.Print()</span>
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"Derived"</span>);
+    }
+}
+
+<span class="cm">// Variable type = Base, actual object type = Derived</span>
+<span class="ty">Base</span> obj = <span class="kw">new</span> <span class="ty">Derived</span>();
+obj.<span class="fn">Print</span>();  <span class="cm">// runtime decides → calls Derived.Print()</span></pre></div>
+      <div class="output-line">
+        <span class="output-label">Output</span>
+        <span class="output-val">Derived</span>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <div class="callout-icon">✅</div>
+      <div class="callout-body">
+        Even though <strong>obj is declared as type Base</strong>, the runtime looks at the <em>actual object</em> (which is a <strong>Derived</strong>) and calls <strong>Derived.Print()</strong>. This is runtime polymorphism — the whole point of virtual/override.
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- ── STEP 3 ── -->
+  <div class="step" id="step3">
+    <div class="step-header">
+      <span class="step-num">03</span>
+      <h2>Keeping <code>static</code> — Method Hiding with <code>new</code></h2>
+    </div>
+
+    <p class="prose">If you must keep <code>static</code>, you <strong>cannot override</strong>. You can instead <em>hide</em> the base method using the <code>new</code> keyword — but this behaves completely differently from polymorphism:</p>
+
+    <div class="cb">
+      <div class="cb-head"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-label">StaticHiding.cs — compile-time binding</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Base</span>
+{
+    <span class="kw">public static void</span> <span class="fn">Print</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"Base Static"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="ty">Derived</span> : <span class="ty">Base</span>
+{
+    <span class="kw">public new static void</span> <span class="fn">Print</span>()     <span class="cm">// hides Base.Print()</span>
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"Derived Static"</span>);
+    }
+}
+
+<span class="ty">Base</span> obj = <span class="kw">new</span> <span class="ty">Derived</span>();
+obj.<span class="fn">Print</span>();                           <span class="cm">// compiled as Base.Print()</span>
+
+Derived.<span class="fn">Print</span>();                        <span class="cm">// explicitly calls Derived</span></pre></div>
+      <div class="output-line">
+        <span class="output-label">obj.Print()</span>
+        <span class="output-val warn">Base Static</span>
+        <span class="output-label" style="margin-left:1rem">Derived.Print()</span>
+        <span class="output-val">Derived Static</span>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>Why does obj.Print() print "Base Static"?</strong><br/>
+        Because <code>obj</code> is declared as type <code>Base</code>. Static methods are resolved at <strong>compile time</strong> using the <em>declared type of the variable</em>, not the actual runtime object. The compiler locks in <code>Base.Print()</code> before the program even runs.
+      </div>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- ── COMPARISON TABLE ── -->
+  <div class="step" id="comparison">
+    <div class="step-header">
+      <span class="step-num">04</span>
+      <h2>Side-by-Side Comparison</h2>
+    </div>
+
+    <div class="tbl-outer">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th><code>virtual / override</code> &nbsp;<span class="badge-rt">Instance</span></th>
+            <th><code>static / new</code> &nbsp;<span class="badge-ct">Class</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Declaration</td>
+            <td><code>public virtual void Print()</code> in base,<br/><code>public override void Print()</code> in derived</td>
+            <td><code>public static void Print()</code> in base,<br/><code>public new static void Print()</code> in derived</td>
+          </tr>
+          <tr>
+            <td>Binding</td>
+            <td><span class="badge-rt">Runtime binding</span> — polymorphism</td>
+            <td><span class="badge-ct">Compile-time binding</span></td>
+          </tr>
+          <tr>
+            <td>Call Resolution</td>
+            <td>Decided by the <strong>actual object type</strong> at runtime — calls <code>Derived</code> version even through a <code>Base</code> variable</td>
+            <td>Decided by the <strong>declared variable type</strong> at compile time — calls <code>Base</code> if variable is <code>Base</code></td>
+          </tr>
+          <tr>
+            <td>Example</td>
+            <td><code>Base obj = new Derived();<br/>obj.Print(); // "Derived"</code></td>
+            <td><code>Base obj = new Derived();<br/>obj.Print(); // "Base Static"</code></td>
+          </tr>
+          <tr>
+            <td>Purpose</td>
+            <td>Enables <strong>polymorphism</strong> — dynamic, substitutable behavior</td>
+            <td><strong>Hides</strong> base method, does not override it</td>
+          </tr>
+          <tr>
+            <td>Flexibility</td>
+            <td>Full runtime substitution — derived classes can customize freely</td>
+            <td>Compile-time only — no runtime polymorphism</td>
+          </tr>
+          <tr>
+            <td>Common Use</td>
+            <td>When derived classes need to <strong>customize base behavior</strong></td>
+            <td>Separate static helpers — no polymorphism needed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- ── TAKEAWAYS ── -->
+  <div class="step" id="takeaways">
+    <div class="step-header">
+      <span class="step-num">05</span>
+      <h2>Key Takeaways</h2>
+    </div>
+
+    <div class="takeaway">
+      <h3>✅ What to Remember</h3>
+      <ul>
+        <li><strong>static + virtual/override is illegal.</strong> The compiler rejects it outright — they are fundamentally incompatible.</li>
+        <li><strong>Use virtual/override for polymorphism.</strong> The runtime decides which method runs based on the actual object type, not the variable type.</li>
+        <li><strong>Use static + new for method hiding.</strong> The compiler decides at compile time based on the declared variable type. No runtime dispatch.</li>
+        <li><strong>new hides, it does not override.</strong> The base method still exists and is still called when using a base-typed variable.</li>
+      </ul>
+    </div>
+
+    <div class="insight">
+      <h3>Key Insight</h3>
+      <p>
+        The core question is: <em>who decides which method runs — the compiler or the runtime?</em><br/><br/>
+        <code>virtual/override</code> → the <strong>runtime</strong> decides (actual object type wins).<br/>
+        <code>static/new</code> → the <strong>compiler</strong> decides (declared variable type wins).<br/><br/>
+        When you want subclasses to substitute their own behavior seamlessly, always choose <code>virtual/override</code>. Reserve <code>static</code> for utility methods that never need polymorphic dispatch.
+      </p>
+    </div>
+  </div>
+
+</div><!-- /inner -->
+</main>
+
+<footer>
+  <div class="inner">
+    // C# Language Reference &nbsp;·&nbsp; static vs virtual/override &nbsp;·&nbsp; namespace CSharp.Guide
+  </div>
+</footer>
+
+<script>
+// Progress bar
+window.addEventListener('scroll',()=>{
+  const h = document.documentElement;
+  const pct = (h.scrollTop/(h.scrollHeight-h.clientHeight))*100;
+  document.getElementById('prog').style.width = pct+'%';
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}
+  });
+},{threshold:0.08});
+document.querySelectorAll('.step').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

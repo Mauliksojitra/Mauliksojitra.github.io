@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Generator - Systematic AI Prompt Builder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f7fa;
+            --bg-tertiary: #e8ecf1;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a5568;
+            --border-color: #d1d5db;
+            --accent-primary: #3b82f6;
+            --accent-hover: #2563eb;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --text-primary: #e8ecf1;
+            --text-secondary: #a0aec0;
+            --border-color: #2d3748;
+            --accent-primary: #60a5fa;
+            --accent-hover: #3b82f6;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--bg-primary);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: var(--accent-primary);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .theme-toggle {
+            background-color: var(--bg-tertiary);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background-color: var(--bg-primary);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .panel h2 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--accent-primary);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        select, input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .dynamic-options {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        button {
+            background-color: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .output-section {
+            background-color: var(--bg-secondary);
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            min-height: 300px;
+            max-height: 600px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.8;
+        }
+
+        .copy-btn {
+            background-color: #10b981;
+            margin-top: 15px;
+        }
+
+        .copy-btn:hover {
+            background-color: #059669;
+        }
+
+        .copy-btn.copied {
+            background-color: #6366f1;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--accent-primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 968px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            .panel {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.3rem;
+            }
+
+            .theme-toggle {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .info-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        input[type="range"] {
+            flex: 1;
+        }
+
+        .slider-value {
+            min-width: 50px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AI Prompt Generator</h1>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <span id="theme-icon">🌙</span>
+                <span id="theme-text">Dark Mode</span>
+            </button>
+        </header>
+
+        <div class="main-grid">
+            <!-- Input Panel -->
+            <div class="panel">
+                <h2>Prompt Configuration</h2>
+
+                <div class="form-group">
+                    <label for="promptType">Prompt Type</label>
+                    <select id="promptType" onchange="updateDynamicOptions()">
+                        <option value="">-- Select Type --</option>
+                        <option value="creative">Creative Writing</option>
+                        <option value="code">Code Generation</option>
+                        <option value="analysis">Data Analysis</option>
+                        <option value="summarization">Summarization</option>
+                        <option value="translation">Translation</option>
+                        <option value="conversation">Conversational AI</option>
+                        <option value="instruction">Step-by-Step Instructions</option>
+                        <option value="brainstorm">Brainstorming</option>
+                        <option value="educational">Educational Content</option>
+                        <option value="business">Business Writing</option>
+                    </select>
+                </div>
+
+                <!-- Dynamic Options Container -->
+                <div id="dynamicOptions"></div>
+
+                <div class="form-group">
+                    <label for="tone">Tone & Style</label>
+                    <select id="tone">
+                        <option value="professional">Professional</option>
+                        <option value="casual">Casual</option>
+                        <option value="friendly">Friendly</option>
+                        <option value="formal">Formal</option>
+                        <option value="technical">Technical</option>
+                        <option value="creative">Creative</option>
+                        <option value="persuasive">Persuasive</option>
+                        <option value="empathetic">Empathetic</option>
+                        <option value="humorous">Humorous</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="outputLength">Output Length</label>
+                    <select id="outputLength">
+                        <option value="brief">Brief (1-2 paragraphs)</option>
+                        <option value="moderate">Moderate (3-5 paragraphs)</option>
+                        <option value="detailed">Detailed (6-10 paragraphs)</option>
+                        <option value="comprehensive">Comprehensive (10+ paragraphs)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="audience">Target Audience</label>
+                    <input type="text" id="audience" placeholder="e.g., Beginners, Professionals, Students">
+                </div>
+
+                <div class="form-group">
+                    <label>Additional Options</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="includeExamples">
+                            <label for="includeExamples">Include Examples</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="stepByStep">
+                            <label for="stepByStep">Step-by-Step</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="bulletPoints">
+                            <label for="bulletPoints">Use Bullet Points</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="citations">
+                            <label for="citations">Include Citations</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="context">Context / Background</label>
+                    <textarea id="context" placeholder="Provide any relevant context or background information..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="mainPrompt">Main Prompt <span class="badge">Required</span></label>
+                    <textarea id="mainPrompt" placeholder="Enter your main prompt or question here..." style="min-height: 150px;"></textarea>
+                </div>
+
+                <button onclick="generatePrompt()">🚀 Generate Prompt</button>
+            </div>
+
+            <!-- Output Panel -->
+            <div class="panel">
+                <h2>Generated Prompt</h2>
+                <div class="output-section" id="output">
+                    <span style="color: var(--text-secondary);">Your generated prompt will appear here...</span>
+                </div>
+                <button class="copy-btn" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+                <button onclick="clearAll()" style="background-color: #ef4444; margin-top: 10px;">🗑️ Clear All</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Management
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            updateThemeButton(newTheme);
+        }
+
+        function updateThemeButton(theme) {
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            
+            if (theme === 'dark') {
+                icon.textContent = '☀️';
+                text.textContent = 'Light Mode';
+            } else {
+                icon.textContent = '🌙';
+                text.textContent = 'Dark Mode';
+            }
+        }
+
+        // Load saved theme
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeButton(savedTheme);
+        });
+
+        // Dynamic Options Based on Prompt Type
+        function updateDynamicOptions() {
+            const type = document.getElementById('promptType').value;
+            const container = document.getElementById('dynamicOptions');
+            
+            container.innerHTML = '';
+            
+            if (!type) return;
+
+            const optionsHTML = {
+                creative: `
+                    <div class="dynamic-options">
+                        <div class="form-group">
+                            <label for="genre">Genre</label>
+                            <select id="genre">
+                                <option value="fiction">Fiction</option>
+                                <option value="poetry">Poetry</option>
+                                <option value="script">Script/Screenplay</option>
+                                <option value="story">Short Story</option>
+                                <option value="novel">Novel</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="perspective">Narrative Perspective</label>
+                            <select id="perspective">
+                                <option value="first">First Person</option>
+                                <option value="second">Second Person</option>
+                                <option value="third">Third Person</option>
+                            </select>
+                        </div>
+                    </div>
+                `,
+                code: `
+                    <div class="dynamic-options">
+                        <div class="form-group">
+                            <label for="language">Programming Language</label>
+                            <select id="language">
+                                <option value="python">Python</option>
+                                <option value="javascript">JavaScript</option>
+                                <option value="java">Java</option>
+                                <option value="cpp">C++</option>
+                                <option value="csharp">C#</option>
+                                <option value="go">Go</option>
+                                <option value="rust">Rust</option>
+                                <option value="php">PHP</option>
+                                <option value="ruby">Ruby</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="codeStyle">Code Style</label>
+                            <select id="codeStyle">
+                                <option value="clean">Clean & Readable</option>
+                                <option value="optimized">Performance Optimized</option>
+                                <option value="commented">Well Commented</option>
+                                <option value="modular">Modular</option>
+                            </select>
+                        </div>
+                        <div class="checkbox-item" style="margin-top: 10px;">
+                            <input type="checkbox" id="includeTests">
+                            <label for="includeTests">Include Unit Tests</label>
+                        </div>
+                    </div>
+                `,
+                analysis: `
+                    <div class="dynamic-options">
+                        <div class="form-group">
+                            <label for="analysisType">Analysis Type</label>
+                            <select id="analysisType">
+                                <option value="statistical">Statistical Analysis</option>
+                                <option value="comparative">Comparative Analysis</option>
+                                <option value="trend">Trend Analysis</option>
+                                <option value="sentiment">Sentiment Analysis</option>
+                                <option value="root-cause">Root Cause Analysis</option>
+                            </select>
+                        </div>
+                        <div class="checkbox-item" style="margin-top: 10px;">
+                            <input type="checkbox" id="visualizations">
+                            <label for="visualizations">Suggest Visualizations</label>
+                        </div>
+                    </div>
+                `,
+                summarization: `
+                    <div class="dynamic-options">
+                        <div class="form-group">
+                            <label for="summaryStyle">Summary Style</label>
+                            <select id="summaryStyle">
+                                <option value="abstract">Abstract/Executive</option>
+                                <option value="key-points">Key Points</option>
+                                <option value="detailed">Detailed Summary</option>
+                                <option value="tldr">TL;DR</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="summaryLength">Summary Length (words)</label>
+                            <div class="slider-container">
+                                <input type="range" id="summaryLength" min="50" max="500" value="200" step="50" oninput="updateSliderValue(this)">
+                                <span class="slider-value" id="summaryLengthValue">200</span>
+                            </div>
+                        </div>
+                    </div>
+                `,
+                translation: `
+                    <div class="dynamic-options">
+                        <div class="form-group">
+                            <label for="sourceLang">Source Language</label>
+                            <input type="text" id="sourceLang" placeholder="e.g., English">
+                        </div>
+                        <div class="form-group">
+                            <label for="targetLang">Target Language</label>
+                            <input type="text" id="targetLang" placeholder="e.g., Spanish">
+                        </div>
+                        <div class="checkbox-item" style="margin-top: 10px;">
+                            <input type="checkbox" id="culturalContext">
+                            <label for="culturalContext">Preserve Cultural Context</label>
+                        </div>
+                    </div>
+                `,
+                conversation: `
+                    <div class="dynamic-options">
+                        <div class="form-group">
+                            <label for="persona">AI Persona</label>
+                            <input type="text" id="persona" placeholder="e.g., Expert Teacher, Friendly Assistant">
+                        </div>
+                        <div class="form-group">
+                            <label for="conversationGoal">Conversation Goal</label>
+                            <input type="text" id="conversationGoal" placeholder="e.g., Help solve problems, Answer questions">
+                        </div>
+                    </div>
+                `,
+                instruction: `
+                    <div class="dynamic-options">
+                        <div class="form-group">
+                            <label for="difficulty">Difficulty Level</label>
+                            <select id="difficulty">
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                                <option value="expert">Expert</option>
+                            </select>
+                        </div>
+                        <div class="checkbox-item" style="margin-top: 10px;">
+                            <input type="checkbox" id="prerequisites">
+                            <label for="prerequisites">Include Prerequisites</label>
+                        </div>
+                    </div>
+                `,
+                brainstorm: `
+                    <div class="dynamic-options">
+                        <div class="form-group">
+                            <label for="numIdeas">Number of Ideas</label>
+                            <div class="slider-container">
+                                <input type="range" id="numIdeas" min="3" max="20" value="10" step="1" oninput="updateSliderValue(this)">
+                                <span class="slider-value" id="numIdeasValue">10</span>
+                            </div>
+                        </div>
+                        <div class="checkbox-item" style="margin-top: 10px;">
+                            <input type="checkbox" id="innovativeOnly">
+                            <label for="innovativeOnly">Focus on Innovative Ideas</label>
+                        </div>
+                    </div>
+                `,
+                educational: `
+                    <div class="dynamic-options">
+                        <div class="form-group">
+                            <label for="educationLevel">Education Level</label>
+                            <select id="educationLevel">
+                                <option value="elementary">Elementary</option>
+                                <option value="middle">Middle School</option>
+                                <option value="high">High School</option>
+                                <option value="undergraduate">Undergraduate</option>
+                                <option value="graduate">Graduate</option>
+                            </select>
+                        </div>
+                        <div class="checkbox-item" style="margin-top: 10px;">
+                            <input type="checkbox" id="analogies">
+                            <label for="analogies">Use Analogies/Metaphors</label>
+                        </div>
+                    </div>
+                `,
+                business: `
+                    <div class="dynamic-options">
+                        <div class="form-group">
+                            <label for="businessType">Document Type</label>
+                            <select id="businessType">
+                                <option value="email">Email</option>
+                                <option value="report">Report</option>
+                                <option value="proposal">Proposal</option>
+                                <option value="memo">Memo</option>
+                                <option value="presentation">Presentation</option>
+                            </select>
+                        </div>
+                        <div class="checkbox-item" style="margin-top: 10px;">
+                            <input type="checkbox" id="actionItems">
+                            <label for="actionItems">Include Action Items</label>
+                        </div>
+                    </div>
+                `
+            };
+
+            container.innerHTML = optionsHTML[type] || '';
+        }
+
+        function updateSliderValue(slider) {
+            const valueSpan = document.getElementById(slider.id + 'Value');
+            if (valueSpan) {
+                valueSpan.textContent = slider.value;
+            }
+        }
+
+        // Generate Prompt
+        function generatePrompt() {
+            const promptType = document.getElementById('promptType').value;
+            const tone = document.getElementById('tone').value;
+            const outputLength = document.getElementById('outputLength').value;
+            const audience = document.getElementById('audience').value;
+            const context = document.getElementById('context').value;
+            const mainPrompt = document.getElementById('mainPrompt').value;
+
+            if (!mainPrompt.trim()) {
+                alert('Please enter a main prompt!');
+                return;
+            }
+
+            let generatedPrompt = '';
+
+            // Role/Persona
+            if (promptType) {
+                const roleMap = {
+                    creative: 'creative writer',
+                    code: 'expert programmer',
+                    analysis: 'data analyst',
+                    summarization: 'content summarizer',
+                    translation: 'professional translator',
+                    conversation: 'conversational AI assistant',
+                    instruction: 'instructional expert',
+                    brainstorm: 'creative brainstorming partner',
+                    educational: 'educational content creator',
+                    business: 'business writing professional'
+                };
+                generatedPrompt += `Act as a ${roleMap[promptType]}.\n\n`;
+            }
+
+            // Context
+            if (context.trim()) {
+                generatedPrompt += `Context:\n${context.trim()}\n\n`;
+            }
+
+            // Main Task
+            generatedPrompt += `Task:\n${mainPrompt.trim()}\n\n`;
+
+            // Dynamic Options
+            generatedPrompt += addDynamicPromptElements(promptType);
+
+            // Tone & Style
+            generatedPrompt += `Tone: ${tone.charAt(0).toUpperCase() + tone.slice(1)}\n`;
+
+            // Audience
+            if (audience.trim()) {
+                generatedPrompt += `Target Audience: ${audience.trim()}\n`;
+            }
+
+            // Output Length
+            const lengthMap = {
+                brief: 'Keep it brief (1-2 paragraphs)',
+                moderate: 'Provide a moderate response (3-5 paragraphs)',
+                detailed: 'Give a detailed response (6-10 paragraphs)',
+                comprehensive: 'Provide a comprehensive response (10+ paragraphs)'
+            };
+            generatedPrompt += `Length: ${lengthMap[outputLength]}\n\n`;
+
+            // Additional Options
+            const additionalRequirements = [];
+            if (document.getElementById('includeExamples').checked) {
+                additionalRequirements.push('Include relevant examples');
+            }
+            if (document.getElementById('stepByStep').checked) {
+                additionalRequirements.push('Provide step-by-step instructions');
+            }
+            if (document.getElementById('bulletPoints').checked) {
+                additionalRequirements.push('Use bullet points for clarity');
+            }
+            if (document.getElementById('citations').checked) {
+                additionalRequirements.push('Include citations or references');
+            }
+
+            if (additionalRequirements.length > 0) {
+                generatedPrompt += `Requirements:\n${additionalRequirements.map(req => `- ${req}`).join('\n')}`;
+            }
+
+            // Display Output
+            document.getElementById('output').textContent = generatedPrompt;
+        }
+
+        function addDynamicPromptElements(promptType) {
+            let elements = '';
+
+            switch(promptType) {
+                case 'creative':
+                    const genre = document.getElementById('genre')?.value;
+                    const perspective = document.getElementById('perspective')?.value;
+                    if (genre) elements += `Genre: ${genre}\n`;
+                    if (perspective) elements += `Narrative Perspective: ${perspective}\n`;
+                    break;
+
+                case 'code':
+                    const language = document.getElementById('language')?.value;
+                    const codeStyle = document.getElementById('codeStyle')?.value;
+                    const includeTests = document.getElementById('includeTests')?.checked;
+                    if (language) elements += `Programming Language: ${language}\n`;
+                    if (codeStyle) elements += `Code Style: ${codeStyle}\n`;
+                    if (includeTests) elements += `Include unit tests\n`;
+                    break;
+
+                case 'analysis':
+                    const analysisType = document.getElementById('analysisType')?.value;
+                    const visualizations = document.getElementById('visualizations')?.checked;
+                    if (analysisType) elements += `Analysis Type: ${analysisType}\n`;
+                    if (visualizations) elements += `Suggest appropriate visualizations\n`;
+                    break;
+
+                case 'summarization':
+                    const summaryStyle = document.getElementById('summaryStyle')?.value;
+                    const summaryLength = document.getElementById('summaryLength')?.value;
+                    if (summaryStyle) elements += `Summary Style: ${summaryStyle}\n`;
+                    if (summaryLength) elements += `Summary Length: ${summaryLength} words\n`;
+                    break;
+
+                case 'translation':
+                    const sourceLang = document.getElementById('sourceLang')?.value;
+                    const targetLang = document.getElementById('targetLang')?.value;
+                    const culturalContext = document.getElementById('culturalContext')?.checked;
+                    if (sourceLang) elements += `Source Language: ${sourceLang}\n`;
+                    if (targetLang) elements += `Target Language: ${targetLang}\n`;
+                    if (culturalContext) elements += `Preserve cultural context and idioms\n`;
+                    break;
+
+                case 'conversation':
+                    const persona = document.getElementById('persona')?.value;
+                    const conversationGoal = document.getElementById('conversationGoal')?.value;
+                    if (persona) elements += `Persona: ${persona}\n`;
+                    if (conversationGoal) elements += `Goal: ${conversationGoal}\n`;
+                    break;
+
+                case 'instruction':
+                    const difficulty = document.getElementById('difficulty')?.value;
+                    const prerequisites = document.getElementById('prerequisites')?.checked;
+                    if (difficulty) elements += `Difficulty Level: ${difficulty}\n`;
+                    if (prerequisites) elements += `Include prerequisites and requirements\n`;
+                    break;
+
+                case 'brainstorm':
+                    const numIdeas = document.getElementById('numIdeas')?.value;
+                    const innovativeOnly = document.getElementById('innovativeOnly')?.checked;
+                    if (numIdeas) elements += `Number of Ideas: ${numIdeas}\n`;
+                    if (innovativeOnly) elements += `Focus on innovative and creative ideas\n`;
+                    break;
+
+                case 'educational':
+                    const educationLevel = document.getElementById('educationLevel')?.value;
+                    const analogies = document.getElementById('analogies')?.checked;
+                    if (educationLevel) elements += `Education Level: ${educationLevel}\n`;
+                    if (analogies) elements += `Use analogies and metaphors for clarity\n`;
+                    break;
+
+                case 'business':
+                    const businessType = document.getElementById('businessType')?.value;
+                    const actionItems = document.getElementById('actionItems')?.checked;
+                    if (businessType) elements += `Document Type: ${businessType}\n`;
+                    if (actionItems) elements += `Include clear action items\n`;
+                    break;
+            }
+
+            return elements ? elements + '\n' : '';
+        }
+
+        // Copy to Clipboard
+        function copyToClipboard() {
+            const output = document.getElementById('output').textContent;
+            
+            if (output.includes('Your generated prompt will appear here')) {
+                alert('Please generate a prompt first!');
+                return;
+            }
+
+            navigator.clipboard.writeText(output).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        }
+
+        // Clear All
+        function clearAll() {
+            if (confirm('Are you sure you want to clear all fields?')) {
+                document.getElementById('promptType').value = '';
+                document.getElementById('tone').value = 'professional';
+                document.getElementById('outputLength').value = 'brief';
+                document.getElementById('audience').value = '';
+                document.getElementById('context').value = '';
+                document.getElementById('mainPrompt').value = '';
+                document.getElementById('dynamicOptions').innerHTML = '';
+                document.getElementById('output').innerHTML = '<span style="color: var(--text-secondary);">Your generated prompt will appear here...</span>';
+                
+                // Uncheck all checkboxes
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            }
+        }
+    </script>
+</body>
+</html>

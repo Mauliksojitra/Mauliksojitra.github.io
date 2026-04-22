@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C# OOP Mastery Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0f0f23;
+            --secondary-bg: #1a1a2e;
+            --accent-bg: #16213e;
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b8;
+            --text-muted: #6c6c84;
+            --accent-purple: #a78bfa;
+            --accent-blue: #60a5fa;
+            --accent-green: #34d399;
+            --accent-orange: #fb923c;
+            --accent-pink: #f472b6;
+            --code-bg: #0a0a15;
+            --border-color: #2d2d44;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(167, 139, 250, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(96, 165, 250, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(52, 211, 153, 0.1) 0%, transparent 50%);
+            animation: bgShift 20s ease-in-out infinite;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.1) translateY(-20px); }
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--secondary-bg) 0%, var(--accent-bg) 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            to { left: 100%; }
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--secondary-bg);
+            padding: 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--accent-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-color: transparent;
+            box-shadow: 0 4px 16px rgba(167, 139, 250, 0.4);
+        }
+
+        /* Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .content-section {
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--accent-purple);
+            border-left: 4px solid var(--accent-purple);
+            padding-left: 1rem;
+        }
+
+        h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--accent-blue);
+        }
+
+        h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 1.5rem 0 1rem;
+            color: var(--accent-green);
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        ul, ol {
+            margin: 1rem 0 1.5rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 0.8rem;
+            line-height: 1.7;
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            position: relative;
+            box-shadow: 0 4px 16px var(--shadow-color);
+        }
+
+        pre::before {
+            content: 'C#';
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        code {
+            color: var(--accent-green);
+        }
+
+        .keyword { color: var(--accent-purple); }
+        .string { color: var(--accent-orange); }
+        .comment { color: var(--text-muted); font-style: italic; }
+        .class-name { color: var(--accent-blue); }
+        .method { color: var(--accent-green); }
+
+        /* Info boxes */
+        .info-box {
+            background: linear-gradient(135deg, var(--secondary-bg), var(--accent-bg));
+            border-left: 4px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .info-box h4 {
+            margin-top: 0;
+            color: var(--accent-blue);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), rgba(96, 165, 250, 0.1));
+            border: 1px solid var(--accent-purple);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        th {
+            background: var(--accent-bg);
+            color: var(--accent-purple);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        tr:hover {
+            background: var(--accent-bg);
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            background: var(--accent-bg);
+            color: var(--accent-purple);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin: 0.2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue), var(--accent-green));
+            z-index: 1000;
+            transition: width 0.1s;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+
+            pre {
+                font-size: 0.8rem;
+                padding: 1rem;
+            }
+        }
+
+        /* Code syntax highlighting helper */
+        .syntax-highlight {
+            display: block;
+        }
+
+        .line-number {
+            color: var(--text-muted);
+            margin-right: 1rem;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <header>
+        <h1>C# OOP Mastery</h1>
+        <p class="subtitle">A Comprehensive Guide to Object-Oriented Programming Concepts</p>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <button class="nav-btn active" onclick="showSection('oop-overview')">OOP Overview</button>
+            <button class="nav-btn" onclick="showSection('encapsulation')">Encapsulation</button>
+            <button class="nav-btn" onclick="showSection('inheritance')">Inheritance</button>
+            <button class="nav-btn" onclick="showSection('polymorphism')">Polymorphism</button>
+            <button class="nav-btn" onclick="showSection('abstraction')">Abstraction</button>
+            <button class="nav-btn" onclick="showSection('access-modifiers')">Access Modifiers</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- OOP Overview Section -->
+        <section id="oop-overview" class="content-section active">
+            <h2>Object-Oriented Programming in C#</h2>
+            
+            <p>C# is a modern, object-oriented programming language that organizes programs around <strong>objects</strong> and <strong>data</strong> rather than actions and logic. OOP makes large software systems more modular, reusable, and maintainable by modeling real-world entities as objects.</p>
+
+            <div class="highlight-box">
+                <h3>What is OOP?</h3>
+                <p><strong>Object-oriented programming (OOP)</strong> is a paradigm based on the concept of "objects," which can contain data (fields/properties) and code (methods/functions). OOP structures software design around data and the associated behavior.</p>
+            </div>
+
+            <h3>The Four Pillars of OOP</h3>
+            
+            <div class="info-box">
+                <h4>1. Encapsulation</h4>
+                <p><em>Encapsulation</em> means bundling the data (properties) and the operations (methods) that work on the data into a single unit called a class. It protects data by restricting external access and exposing only what is necessary.</p>
+                <p><strong>Usage:</strong> Use <code>private</code>, <code>public</code>, <code>protected</code>, and other access modifiers to control access.</p>
+                <pre><code><span class="keyword">public class</span> <span class="class-name">Person</span>
+{
+    <span class="keyword">private string</span> name; <span class="comment">// encapsulated field</span>
+
+    <span class="keyword">public string</span> Name <span class="comment">// property for controlled access</span>
+    {
+        <span class="keyword">get</span> { <span class="keyword">return</span> name; }
+        <span class="keyword">set</span> { name = value; }
+    }
+}</code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>2. Inheritance</h4>
+                <p><em>Inheritance</em> allows one class (child/derived) to inherit fields and methods from another class (base/parent), promoting code reuse and extensibility.</p>
+                <p><strong>Usage:</strong> Use the <code>:</code> symbol for inheritance.</p>
+                <pre><code><span class="keyword">public class</span> <span class="class-name">Animal</span>
+{
+    <span class="keyword">public void</span> <span class="method">Eat</span>() { <span class="comment">/*...*/</span> }
+}
+
+<span class="keyword">public class</span> <span class="class-name">Dog</span> : <span class="class-name">Animal</span>
+{
+    <span class="keyword">public void</span> <span class="method">Bark</span>() { <span class="comment">/*...*/</span> }
+}
+<span class="comment">// Dog has both Eat() and Bark()</span></code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>3. Abstraction</h4>
+                <p><em>Abstraction</em> simplifies complex reality by modeling classes appropriate to the problem and working at the most relevant level for a particular aspect. It hides unnecessary details from end-users.</p>
+                <p><strong>Usage:</strong> Use abstract classes or interfaces for abstraction.</p>
+                <pre><code><span class="keyword">public abstract class</span> <span class="class-name">Shape</span>
+{
+    <span class="keyword">public abstract double</span> <span class="method">Area</span>();
+}</code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>4. Polymorphism</h4>
+                <p><em>Polymorphism</em> allows one interface to be used for a general class of actions. The specific action is determined by the exact nature of the situation.</p>
+                <p><strong>Usage:</strong> Implement with method overloading/overriding and interfaces.</p>
+                <pre><code><span class="keyword">public class</span> <span class="class-name">Animal</span>
+{
+    <span class="keyword">public virtual void</span> <span class="method">Speak</span>() { Console.WriteLine(<span class="string">"Some sound"</span>); }
+}
+
+<span class="keyword">public class</span> <span class="class-name">Dog</span> : <span class="class-name">Animal</span>
+{
+    <span class="keyword">public override void</span> <span class="method">Speak</span>() { Console.WriteLine(<span class="string">"Bark"</span>); }
+}</code></pre>
+            </div>
+
+            <h3>Real-World Example</h3>
+            <pre><code><span class="comment">// Base class</span>
+<span class="keyword">public class</span> <span class="class-name">Account</span>
+{
+    <span class="keyword">private double</span> balance;
+    <span class="keyword">public</span> <span class="method">Account</span>(<span class="keyword">double</span> initialBalance) { balance = initialBalance; }
+    <span class="keyword">public double</span> Balance { <span class="keyword">get</span> { <span class="keyword">return</span> balance; } }
+    <span class="keyword">public void</span> <span class="method">Deposit</span>(<span class="keyword">double</span> amount) { <span class="keyword">if</span> (amount > 0) balance += amount; }
+    <span class="keyword">public void</span> <span class="method">Withdraw</span>(<span class="keyword">double</span> amount) { <span class="keyword">if</span> (amount > 0 && amount <= balance) balance -= amount; }
+}
+
+<span class="comment">// Derived class with polymorphism and extension</span>
+<span class="keyword">public class</span> <span class="class-name">SavingsAccount</span> : <span class="class-name">Account</span>
+{
+    <span class="keyword">private double</span> interestRate;
+    <span class="keyword">public</span> <span class="method">SavingsAccount</span>(<span class="keyword">double</span> initialBalance, <span class="keyword">double</span> rate) : <span class="keyword">base</span>(initialBalance) { interestRate = rate; }
+    <span class="keyword">public void</span> <span class="method">AddInterest</span>() { Deposit(Balance * interestRate); }
+}</code></pre>
+
+            <div class="highlight-box">
+                <h4>Advantages of Using OOP in C#</h4>
+                <ul>
+                    <li><strong>Code Reusability:</strong> Inheritance encourages reuse and reduces duplication.</li>
+                    <li><strong>Modularity:</strong> Easier maintenance and debugging due to separation into classes.</li>
+                    <li><strong>Scalability:</strong> Easy to extend software by creating new subclasses.</li>
+                    <li><strong>Security and Flexibility:</strong> Encapsulation and abstraction hide complexity and internal details.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Encapsulation Section -->
+        <section id="encapsulation" class="content-section">
+            <h2>Encapsulation</h2>
+            <p>Encapsulation is one of the fundamental principles of OOP. It refers to bundling data (fields/properties) and the methods that operate on that data within a single unit (class), while controlling access to that data.</p>
+
+            <div class="info-box">
+                <h4>Key Benefits</h4>
+                <ul>
+                    <li>Protects object integrity by preventing external code from directly modifying internal state</li>
+                    <li>Provides controlled access through public methods and properties</li>
+                    <li>Allows internal implementation changes without affecting external code</li>
+                    <li>Enhances security and data hiding</li>
+                </ul>
+            </div>
+
+            <h3>Implementation with Properties</h3>
+            <pre><code><span class="keyword">public class</span> <span class="class-name">BankAccount</span>
+{
+    <span class="comment">// Private field - encapsulated data</span>
+    <span class="keyword">private decimal</span> _balance;
+
+    <span class="comment">// Public property - controlled access</span>
+    <span class="keyword">public decimal</span> Balance
+    {
+        <span class="keyword">get</span> { <span class="keyword">return</span> _balance; }
+        <span class="keyword">private set</span> { _balance = value; }
+    }
+
+    <span class="comment">// Public methods to modify state</span>
+    <span class="keyword">public void</span> <span class="method">Deposit</span>(<span class="keyword">decimal</span> amount)
+    {
+        <span class="keyword">if</span> (amount > 0)
+            _balance += amount;
+    }
+
+    <span class="keyword">public bool</span> <span class="method">Withdraw</span>(<span class="keyword">decimal</span> amount)
+    {
+        <span class="keyword">if</span> (amount > 0 && amount <= _balance)
+        {
+            _balance -= amount;
+            <span class="keyword">return true</span>;
+        }
+        <span class="keyword">return false</span>;
+    }
+}</code></pre>
+
+            <h3>Access Modifiers for Encapsulation</h3>
+            <p>C# provides several access modifiers to control visibility:</p>
+            <ul>
+                <li><code>private</code> - Only accessible within the same class</li>
+                <li><code>public</code> - Accessible from anywhere</li>
+                <li><code>protected</code> - Accessible within the class and derived classes</li>
+                <li><code>internal</code> - Accessible within the same assembly</li>
+            </ul>
+
+            <div class="highlight-box">
+                <h4>Best Practice</h4>
+                <p>Always start with the most restrictive access level (usually <code>private</code>) and only increase visibility when necessary. This principle is known as "information hiding" and is central to good encapsulation.</p>
+            </div>
+        </section>
+
+        <!-- Inheritance Section -->
+        <section id="inheritance" class="content-section">
+            <h2>Inheritance in C#</h2>
+            <p>Inheritance allows a class (derived/child) to acquire members (fields, methods, properties) from another class (base/parent). C# supports several inheritance types, though some are limited to interfaces due to language design.</p>
+
+            <h3>Types of Inheritance</h3>
+
+            <div class="info-box">
+                <h4>1. Single Inheritance</h4>
+                <p>A derived class inherits from exactly one base class. This is the most fundamental form supported in C#.</p>
+                <pre><code><span class="keyword">class</span> <span class="class-name">Animal</span> {
+    <span class="keyword">public void</span> <span class="method">Eat</span>() { Console.WriteLine(<span class="string">"The animal eats."</span>); }
+}
+
+<span class="keyword">class</span> <span class="class-name">Dog</span> : <span class="class-name">Animal</span> {
+    <span class="keyword">public void</span> <span class="method">Bark</span>() { Console.WriteLine(<span class="string">"The dog barks."</span>); }
+}
+<span class="comment">// Usage: </span>
+Dog d = <span class="keyword">new</span> Dog();
+d.Eat();  <span class="comment">// Output: The animal eats.</span>
+d.Bark(); <span class="comment">// Output: The dog barks.</span></code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>2. Multilevel Inheritance</h4>
+                <p>A chain of inheritance: a derived class inherits from a base class, and a further class inherits from that derived class.</p>
+                <pre><code><span class="keyword">class</span> <span class="class-name">Grandparent</span> {
+    <span class="keyword">public void</span> <span class="method">Show</span>() { Console.WriteLine(<span class="string">"Grandparent class."</span>); }
+}
+
+<span class="keyword">class</span> <span class="class-name">Parent</span> : <span class="class-name">Grandparent</span> {
+    <span class="keyword">public void</span> <span class="method">Display</span>() { Console.WriteLine(<span class="string">"Parent class."</span>); }
+}
+
+<span class="keyword">class</span> <span class="class-name">Child</span> : <span class="class-name">Parent</span> {
+    <span class="keyword">public void</span> <span class="method">Print</span>() { Console.WriteLine(<span class="string">"Child class."</span>); }
+}
+<span class="comment">// Usage:</span>
+Child c = <span class="keyword">new</span> Child();
+c.Show();    <span class="comment">// Grandparent class.</span>
+c.Display(); <span class="comment">// Parent class.</span>
+c.Print();   <span class="comment">// Child class.</span></code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>3. Hierarchical Inheritance</h4>
+                <p>Multiple classes inherit from a single base class. This is useful for common base functionality.</p>
+                <pre><code><span class="keyword">class</span> <span class="class-name">Shape</span> {
+    <span class="keyword">public void</span> <span class="method">Draw</span>() { Console.WriteLine(<span class="string">"Drawing shape."</span>); }
+}
+
+<span class="keyword">class</span> <span class="class-name">Circle</span> : <span class="class-name">Shape</span> {
+    <span class="keyword">public void</span> <span class="method">CircleDraw</span>() { Console.WriteLine(<span class="string">"Drawing circle."</span>); }
+}
+
+<span class="keyword">class</span> <span class="class-name">Rectangle</span> : <span class="class-name">Shape</span> {
+    <span class="keyword">public void</span> <span class="method">RectangleDraw</span>() { Console.WriteLine(<span class="string">"Drawing rectangle."</span>); }
+}</code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>4. Multiple Inheritance (Using Interfaces Only)</h4>
+                <p>A class can inherit from multiple interfaces (but not multiple classes). Enables composition of multiple contracts.</p>
+                <pre><code><span class="keyword">interface</span> <span class="class-name">IA</span> {
+    <span class="keyword">void</span> <span class="method">A</span>();
+}
+<span class="keyword">interface</span> <span class="class-name">IB</span> {
+    <span class="keyword">void</span> <span class="method">B</span>();
+}
+
+<span class="keyword">class</span> <span class="class-name">C</span> : <span class="class-name">IA</span>, <span class="class-name">IB</span> {
+    <span class="keyword">public void</span> <span class="method">A</span>() { Console.WriteLine(<span class="string">"A"</span>); }
+    <span class="keyword">public void</span> <span class="method">B</span>() { Console.WriteLine(<span class="string">"B"</span>); }
+}</code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>5. Hybrid Inheritance (Achievable via Interfaces)</h4>
+                <p>A combination of two or more types of inheritance, such as hierarchical and multiple, generally realized via interfaces in C#.</p>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Important Note</h4>
+                <p><strong>C# does NOT support multiple inheritance of classes</strong> directly to prevent ambiguity but fully supports it with interfaces. Hybrid inheritance is possible only via a combination of classes and interfaces.</p>
+            </div>
+        </section>
+
+        <!-- Polymorphism Section -->
+        <section id="polymorphism" class="content-section">
+            <h2>Polymorphism in C#</h2>
+            <p>Polymorphism is a fundamental concept in object-oriented programming (OOP) that allows objects to be treated as instances of their parent class rather than their actual class. In simple terms, polymorphism means <strong>"many forms"</strong>—the same method or operation behaves differently on different classes or data types.</p>
+
+            <p>C# supports two primary types of polymorphism:</p>
+            <ul>
+                <li><strong>Compile-time polymorphism (static polymorphism):</strong> Achieved by method overloading or operator overloading.</li>
+                <li><strong>Run-time polymorphism (dynamic polymorphism):</strong> Achieved by method overriding using inheritance and the <code>virtual</code>/<code>override</code> keywords.</li>
+            </ul>
+
+            <h3>1. Compile-Time Polymorphism (Method Overloading)</h3>
+            <p>Method overloading allows multiple methods in the same class to have the same name, provided they have different parameter lists. The correct method is picked at compile-time based on the arguments passed.</p>
+
+            <pre><code><span class="keyword">using</span> System;
+
+<span class="keyword">class</span> <span class="class-name">Printer</span>
+{
+    <span class="keyword">public void</span> <span class="method">Print</span>(<span class="keyword">int</span> number)
+    {
+        Console.WriteLine(<span class="string">"Printing int: "</span> + number);
+    }
+
+    <span class="keyword">public void</span> <span class="method">Print</span>(<span class="keyword">string</span> text)
+    {
+        Console.WriteLine(<span class="string">"Printing string: "</span> + text);
+    }
+}
+
+<span class="keyword">class</span> <span class="class-name">Program</span>
+{
+    <span class="keyword">static void</span> <span class="method">Main</span>()
+    {
+        Printer p = <span class="keyword">new</span> Printer();
+        p.Print(10);            <span class="comment">// Output: Printing int: 10</span>
+        p.Print(<span class="string">"Hello C#"</span>);    <span class="comment">// Output: Printing string: Hello C#</span>
+    }
+}</code></pre>
+
+            <p>Here, two <code>Print</code> methods are defined—one accepts an <code>int</code>, the other a <code>string</code>. The method selected depends on the argument's type at compile time.</p>
+
+            <h3>2. Run-Time Polymorphism (Method Overriding)</h3>
+            <p>Run-time polymorphism uses inheritance: a base class declares a <code>virtual</code> method, and derived classes override it with the <code>override</code> keyword. Which method gets called is determined at runtime based on the object's actual type.</p>
+
+            <pre><code><span class="keyword">using</span> System;
+
+<span class="keyword">class</span> <span class="class-name">Animal</span>
+{
+    <span class="keyword">public virtual void</span> <span class="method">Speak</span>()
+    {
+        Console.WriteLine(<span class="string">"The animal makes a sound."</span>);
+    }
+}
+
+<span class="keyword">class</span> <span class="class-name">Dog</span> : <span class="class-name">Animal</span>
+{
+    <span class="keyword">public override void</span> <span class="method">Speak</span>()
+    {
+        Console.WriteLine(<span class="string">"Dog barks: Woof!"</span>);
+    }
+}
+
+<span class="keyword">class</span> <span class="class-name">Cat</span> : <span class="class-name">Animal</span>
+{
+    <span class="keyword">public override void</span> <span class="method">Speak</span>()
+    {
+        Console.WriteLine(<span class="string">"Cat meows: Meow!"</span>);
+    }
+}
+
+<span class="keyword">class</span> <span class="class-name">Program</span>
+{
+    <span class="keyword">static void</span> <span class="method">Main</span>()
+    {
+        Animal myDog = <span class="keyword">new</span> Dog();
+        Animal myCat = <span class="keyword">new</span> Cat();
+
+        myDog.Speak();     <span class="comment">// Output: Dog barks: Woof!</span>
+        myCat.Speak();     <span class="comment">// Output: Cat meows: Meow!</span>
+    }
+}</code></pre>
+
+            <p>The <code>Speak()</code> method is defined in the base class and overridden in each derived class. The method that is executed is determined at runtime using the actual object type (either <code>Dog</code> or <code>Cat</code>).</p>
+
+            <h3>3. Polymorphism with Interfaces</h3>
+            <p>C# also supports polymorphism using interfaces, where different classes implement the same interface but with varying behavior.</p>
+
+            <pre><code><span class="keyword">public interface</span> <span class="class-name">IAnimal</span>
+{
+    <span class="keyword">void</span> <span class="method">MakeSound</span>();
+}
+
+<span class="keyword">public class</span> <span class="class-name">Dog</span> : <span class="class-name">IAnimal</span>
+{
+    <span class="keyword">public void</span> <span class="method">MakeSound</span>()
+    {
+        Console.WriteLine(<span class="string">"Dog barks: Woof!"</span>);
+    }
+}
+
+<span class="keyword">public class</span> <span class="class-name">Cat</span> : <span class="class-name">IAnimal</span>
+{
+    <span class="keyword">public void</span> <span class="method">MakeSound</span>()
+    {
+        Console.WriteLine(<span class="string">"Cat meows: Meow!"</span>);
+    }
+}
+
+<span class="keyword">class</span> <span class="class-name">Program</span>
+{
+    <span class="keyword">static void</span> <span class="method">Main</span>()
+    {
+        IAnimal animal;
+
+        animal = <span class="keyword">new</span> Dog();
+        animal.MakeSound(); <span class="comment">// Output: Dog barks: Woof!</span>
+
+        animal = <span class="keyword">new</span> Cat();
+        animal.MakeSound(); <span class="comment">// Output: Cat meows: Meow!</span>
+    }
+}</code></pre>
+
+            <p>Both <code>Dog</code> and <code>Cat</code> implement the <code>IAnimal</code> interface. At runtime, the <code>MakeSound()</code> method executes the appropriate version based on the object's actual type.</p>
+
+            <div class="highlight-box">
+                <h4>Why Use Polymorphism?</h4>
+                <ul>
+                    <li><strong>Code Reusability:</strong> Write code using the base type; works across all derived types.</li>
+                    <li><strong>Extensibility:</strong> Easily add new classes with minimal changes to existing code.</li>
+                    <li><strong>Maintainability:</strong> Common interface for diverse implementations simplifies management.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Abstraction Section -->
+        <section id="abstraction" class="content-section">
+            <h2>Abstraction in C#</h2>
+            <p><strong>Abstraction</strong> in C# is an OOP principle that allows you to hide complex implementation details and show only the essential features of an object or system. It helps manage complexity by exposing a cleaner, more user-friendly interface, letting users interact with objects without needing to understand their inner workings.</p>
+
+            <div class="info-box">
+                <h4>Why Use Abstraction?</h4>
+                <ul>
+                    <li><strong>Simplifies complex systems</strong> by exposing only what is necessary.</li>
+                    <li><strong>Improves flexibility and security</strong> by shielding internal details.</li>
+                    <li><strong>Allows different implementations</strong> underlying the same abstraction.</li>
+                </ul>
+            </div>
+
+            <h3>How to Achieve Abstraction in C#</h3>
+            <p>C# supports abstraction mainly in two ways:</p>
+            <ul>
+                <li><strong>Abstract Classes and Methods</strong></li>
+                <li><strong>Interfaces</strong> (for complete abstraction)</li>
+            </ul>
+
+            <h3>1. Abstraction with Abstract Classes</h3>
+            <p>Abstract classes allow you to declare methods without implementing them. Derived (sub-)classes must provide the concrete implementation.</p>
+
+            <pre><code><span class="comment">// Abstract class</span>
+<span class="keyword">abstract class</span> <span class="class-name">Animal</span>
+{
+    <span class="comment">// Abstract method (no implementation)</span>
+    <span class="keyword">public abstract void</span> <span class="method">MakeSound</span>();
+
+    <span class="comment">// Regular method (with body)</span>
+    <span class="keyword">public void</span> <span class="method">Sleep</span>()
+    {
+        Console.WriteLine(<span class="string">"Zzz"</span>);
+    }
+}
+
+<span class="comment">// Derived class (inherits from Animal)</span>
+<span class="keyword">class</span> <span class="class-name">Dog</span> : <span class="class-name">Animal</span>
+{
+    <span class="keyword">public override void</span> <span class="method">MakeSound</span>()
+    {
+        Console.WriteLine(<span class="string">"Dog says: Woof!"</span>);
+    }
+}
+
+<span class="comment">// Usage</span>
+<span class="keyword">class</span> <span class="class-name">Program</span>
+{
+    <span class="keyword">static void</span> <span class="method">Main</span>()
+    {
+        Dog myDog = <span class="keyword">new</span> Dog();
+        myDog.MakeSound(); <span class="comment">// Output: Dog says: Woof!</span>
+        myDog.Sleep();     <span class="comment">// Output: Zzz</span>
+    }
+}</code></pre>
+
+            <p><strong>Description:</strong></p>
+            <ul>
+                <li>The <code>Animal</code> abstract class defines a method <code>MakeSound()</code> with no implementation (the abstraction).</li>
+                <li>The <code>Dog</code> class provides the concrete details by overriding <code>MakeSound()</code>.</li>
+                <li>User only needs to call <code>MakeSound()</code> or <code>Sleep()</code>; they don't need to know how the sound is produced.</li>
+            </ul>
+
+            <h3>2. Abstraction with Interfaces</h3>
+            <p>Interfaces define contracts that must be fulfilled by implementing classes—commonly used for complete abstraction.</p>
+
+            <pre><code><span class="keyword">public interface</span> <span class="class-name">IMediaPlayer</span>
+{
+    <span class="keyword">void</span> <span class="method">Play</span>();
+    <span class="keyword">void</span> <span class="method">Pause</span>();
+    <span class="keyword">void</span> <span class="method">Stop</span>();
+}
+
+<span class="keyword">public class</span> <span class="class-name">AudioPlayer</span> : <span class="class-name">IMediaPlayer</span>
+{
+    <span class="keyword">public void</span> <span class="method">Play</span>()  { Console.WriteLine(<span class="string">"Playing audio"</span>); }
+    <span class="keyword">public void</span> <span class="method">Pause</span>() { Console.WriteLine(<span class="string">"Audio paused"</span>); }
+    <span class="keyword">public void</span> <span class="method">Stop</span>()  { Console.WriteLine(<span class="string">"Audio stopped"</span>); }
+}</code></pre>
+
+            <p><strong>Description:</strong></p>
+            <ul>
+                <li>The interface <code>IMediaPlayer</code> exposes only playing functionality, not how audio is decoded or managed internally.</li>
+                <li>The implementation in <code>AudioPlayer</code> is hidden from the user.</li>
+            </ul>
+
+            <div class="highlight-box">
+                <h4>Real-World Analogy</h4>
+                <p>When you drive a car, you use the steering wheel, brakes, and accelerator (the abstraction). You don't need to know the mechanics of how the engine works or how the brakes apply—the complexity is hidden.</p>
+            </div>
+
+            <h3>Key Points</h3>
+            <ul>
+                <li>Use abstract classes and interfaces for abstraction.</li>
+                <li><strong>Abstract class:</strong> Use when you want to provide some shared code and some forced implementation.</li>
+                <li><strong>Interface:</strong> Use for total abstraction or when multiple, unrelated classes should agree to the same contract.</li>
+                <li>Abstraction helps in building secure, flexible, and maintainable applications.</li>
+            </ul>
+        </section>
+
+        <!-- Access Modifiers Section -->
+        <section id="access-modifiers" class="content-section">
+            <h2>Access Modifiers in C#</h2>
+            <p>Access modifiers in C# are keywords that define the visibility and accessibility of types (classes, structs, interfaces) and their members (fields, methods, properties, etc.). Appropriate use of access modifiers enforces encapsulation and regulates which parts of your code can interact with others.</p>
+
+            <h3>List of Access Modifiers</h3>
+
+            <div class="info-box">
+                <h4>1. <code>public</code></h4>
+                <p><strong>Description:</strong> No restrictions — accessible from any other code in the same assembly or another assembly that references it.</p>
+                <pre><code><span class="keyword">public class</span> <span class="class-name">Car</span> {
+    <span class="keyword">public string</span> model = <span class="string">"Tesla"</span>;
+}</code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>2. <code>private</code></h4>
+                <p><strong>Description:</strong> Accessible only within the containing class or struct. This is the most restrictive access.</p>
+                <pre><code><span class="keyword">class</span> <span class="class-name">Car</span> {
+    <span class="keyword">private string</span> model = <span class="string">"Tesla"</span>;
+}</code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>3. <code>protected</code></h4>
+                <p><strong>Description:</strong> Accessible within the containing class and any class derived from it (i.e., subclasses), even if they are in different assemblies.</p>
+                <pre><code><span class="keyword">class</span> <span class="class-name">Vehicle</span> {
+    <span class="keyword">protected int</span> maxSpeed = 200;
+}</code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>4. <code>internal</code></h4>
+                <p><strong>Description:</strong> Accessible only within the same assembly (project). Not visible outside the assembly, even by derived classes.</p>
+                <pre><code><span class="keyword">internal class</span> <span class="class-name">Helper</span> {
+    <span class="keyword">internal void</span> <span class="method">Process</span>() { }
+}</code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>5. <code>protected internal</code></h4>
+                <p><strong>Description:</strong> Accessible within the same assembly, OR from derived classes in other assemblies. This is a combination of <code>protected</code> and <code>internal</code>.</p>
+                <pre><code><span class="keyword">protected internal void</span> <span class="method">Calculate</span>() { }</code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>6. <code>private protected</code></h4>
+                <p><strong>Description:</strong> Accessible only within the containing class or types derived from the containing class, but only within the same assembly.</p>
+                <pre><code><span class="keyword">private protected int</span> Age { <span class="keyword">get</span>; <span class="keyword">set</span>; }</code></pre>
+            </div>
+
+            <div class="info-box">
+                <h4>7. <code>file</code> (C# 11 and above)</h4>
+                <p><strong>Description:</strong> The declared type is only visible in the current source file. Generally used for source generators and partial classes.</p>
+                <pre><code><span class="keyword">file class</span> <span class="class-name">DiagnosticHelper</span> { }</code></pre>
+            </div>
+
+            <h3>Summary Table</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Modifier</th>
+                        <th>Accessible from...</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>public</code></td>
+                        <td>Any code anywhere (no restriction)</td>
+                    </tr>
+                    <tr>
+                        <td><code>private</code></td>
+                        <td>Containing class or struct only</td>
+                    </tr>
+                    <tr>
+                        <td><code>protected</code></td>
+                        <td>Containing class and its derived types</td>
+                    </tr>
+                    <tr>
+                        <td><code>internal</code></td>
+                        <td>Any code within the same assembly</td>
+                    </tr>
+                    <tr>
+                        <td><code>protected internal</code></td>
+                        <td>Same assembly <em>or</em> derived types in any assembly</td>
+                    </tr>
+                    <tr>
+                        <td><code>private protected</code></td>
+                        <td>Same assembly <em>and</em> derived types of the class</td>
+                    </tr>
+                    <tr>
+                        <td><code>file</code></td>
+                        <td>The same source file only</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <h4>Best Practices</h4>
+                <ul>
+                    <li>Always use the most restrictive access level that still allows your code to function correctly</li>
+                    <li>Default to <code>private</code> for class members unless there's a specific reason to expose them</li>
+                    <li>Use <code>public</code> only for the API you want to expose to external consumers</li>
+                    <li>Prefer <code>protected</code> over <code>public</code> when inheritance is involved</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 C# OOP Mastery Guide | Built with passion for learning</p>
+        <div style="margin-top: 1rem;">
+            <span class="tag">Encapsulation</span>
+            <span class="tag">Inheritance</span>
+            <span class="tag">Polymorphism</span>
+            <span class="tag">Abstraction</span>
+        </div>
+    </footer>
+
+    <script>
+        // Section navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Scroll indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollIndicator').style.width = scrolled + '%';
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements
+        document.querySelectorAll('.info-box, pre, .highlight-box').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const sections = ['oop-overview', 'encapsulation', 'inheritance', 'polymorphism', 'abstraction', 'access-modifiers'];
+            const currentSection = document.querySelector('.content-section.active').id;
+            const currentIndex = sections.indexOf(currentSection);
+
+            if (e.key === 'ArrowRight' && currentIndex < sections.length - 1) {
+                const nextBtn = document.querySelectorAll('.nav-btn')[currentIndex + 1];
+                nextBtn.click();
+            } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                const prevBtn = document.querySelectorAll('.nav-btn')[currentIndex - 1];
+                prevBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>

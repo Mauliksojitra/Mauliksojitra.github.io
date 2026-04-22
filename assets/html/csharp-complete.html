@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>C# Complete Class Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:       #07090f;
+  --surface:  #0d1117;
+  --card:     #111827;
+  --border:   #1e2d40;
+  --border2:  #253347;
+  --cyan:     #00e5ff;
+  --green:    #69ff47;
+  --orange:   #ff9326;
+  --purple:   #bf95f9;
+  --pink:     #ff6b9d;
+  --blue:     #4da6ff;
+  --yellow:   #ffe566;
+  --red:      #ff5757;
+  --text:     #d4e0f0;
+  --muted:    #5a7490;
+  --muted2:   #3a5470;
+  --kw:       #bf95f9;
+  --ty:       #4da6ff;
+  --st:       #69ff47;
+  --cm:       #3a5470;
+  --nm:       #ff9326;
+  --fn:       #8ecfff;
+  --prop:     #ffe566;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;line-height:1.7;overflow-x:hidden}
+
+/* ── scrollbar ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--surface)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ── layout ── */
+.layout{display:flex;min-height:100vh}
+
+/* ── sidebar ── */
+.sidebar{width:240px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;padding:1.5rem 0}
+.sidebar-logo{padding:.5rem 1.4rem 1.4rem;border-bottom:1px solid var(--border);margin-bottom:1rem}
+.sidebar-logo span{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--cyan);letter-spacing:.12em}
+.sidebar-logo h2{font-size:1.05rem;font-weight:700;letter-spacing:-.01em;line-height:1.3}
+.nav-group{margin-bottom:1.2rem;padding:0 1rem}
+.nav-label{font-size:.65rem;letter-spacing:.15em;color:var(--muted2);text-transform:uppercase;font-family:'JetBrains Mono',monospace;padding:.3rem .4rem;margin-bottom:.3rem}
+.nav-link{display:flex;align-items:center;gap:.5rem;padding:.35rem .8rem;border-radius:6px;font-size:.82rem;color:var(--muted);text-decoration:none;transition:all .15s;cursor:pointer}
+.nav-link:hover{background:rgba(0,229,255,.05);color:var(--text)}
+.nav-link.active{background:rgba(0,229,255,.08);color:var(--cyan)}
+.nav-link .dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+/* ── main ── */
+.main{flex:1;min-width:0;padding:2.5rem 3rem 5rem}
+
+/* ── hero ── */
+.hero{border:1px solid var(--border);border-radius:16px;background:var(--card);padding:3rem;margin-bottom:3rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(0,229,255,.06) 0%,transparent 70%)}
+.hero::after{content:'';position:absolute;bottom:-40px;left:30%;width:200px;height:200px;background:radial-gradient(circle,rgba(105,255,71,.04) 0%,transparent 70%)}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--cyan);letter-spacing:.15em;margin-bottom:.8rem}
+.hero h1{font-size:clamp(2rem,4vw,3.2rem);font-weight:900;letter-spacing:-.03em;line-height:1.1}
+.hero h1 em{font-style:normal;color:var(--cyan)}
+.hero p{color:var(--muted);margin-top:1rem;max-width:520px;font-size:.97rem}
+.hero-chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+.chip{font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:.3rem .8rem;border-radius:5px;border:1px solid var(--border2);color:var(--muted);background:rgba(255,255,255,.02);transition:all .2s}
+.chip:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* ── section ── */
+.section{margin-bottom:3.5rem}
+.section-head{display:flex;align-items:baseline;gap:.8rem;margin-bottom:1.5rem}
+.section-num{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--cyan);opacity:.6}
+.section h2{font-size:1.55rem;font-weight:800;letter-spacing:-.02em}
+.section h2 span{color:var(--cyan)}
+
+/* ── code block ── */
+.cb{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:1.9}
+.cb-head{display:flex;align-items:center;gap:.4rem;padding:.65rem 1.1rem;border-bottom:1px solid var(--border);background:rgba(255,255,255,.015)}
+.cb-dots{display:flex;gap:.35rem}
+.d{width:11px;height:11px;border-radius:50%}
+.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
+.cb-file{margin-left:auto;font-size:.68rem;color:var(--muted)}
+.cb-body{padding:1.2rem 1.4rem;overflow-x:auto}
+.cb-body pre{white-space:pre}
+.kw{color:var(--kw)}.ty{color:var(--ty)}.st{color:var(--st)}.cm{color:var(--cm);font-style:italic}.nm{color:var(--nm)}.fn{color:var(--fn)}.prop{color:var(--prop)}.acc{color:#89ddff}
+
+/* ── class cards grid ── */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem}
+.cc{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:transform .2s,border-color .2s}
+.cc:hover{transform:translateY(-3px)}
+.cc-top{padding:1.1rem 1.3rem .8rem;display:flex;gap:.9rem;align-items:flex-start}
+.cc-icon{font-size:1.5rem;line-height:1;flex-shrink:0}
+.cc-title h3{font-size:1rem;font-weight:700;margin-bottom:.2rem}
+.cc-title p{font-size:.8rem;color:var(--muted);line-height:1.5}
+.cc-tags{display:flex;gap:.35rem;padding:0 1.3rem .8rem;flex-wrap:wrap}
+.tag{font-family:'JetBrains Mono',monospace;font-size:.65rem;padding:.18rem .55rem;border-radius:4px;border:1px solid}
+.tg{color:var(--green);border-color:rgba(105,255,71,.2);background:rgba(105,255,71,.04)}
+.tr{color:var(--red);border-color:rgba(255,87,87,.2);background:rgba(255,87,87,.04)}
+.cc:nth-child(1){border-top:2px solid var(--cyan)} .cc:nth-child(1):hover{border-color:var(--cyan)}
+.cc:nth-child(2){border-top:2px solid var(--green)} .cc:nth-child(2):hover{border-color:var(--green)}
+.cc:nth-child(3){border-top:2px solid var(--red)} .cc:nth-child(3):hover{border-color:var(--red)}
+.cc:nth-child(4){border-top:2px solid var(--orange)} .cc:nth-child(4):hover{border-color:var(--orange)}
+.cc:nth-child(5){border-top:2px solid var(--purple)} .cc:nth-child(5):hover{border-color:var(--purple)}
+.cc:nth-child(6){border-top:2px solid var(--yellow)} .cc:nth-child(6):hover{border-color:var(--yellow)}
+.cc:nth-child(7){border-top:2px solid var(--blue)} .cc:nth-child(7):hover{border-color:var(--blue)}
+.cc:nth-child(8){border-top:2px solid var(--pink)} .cc:nth-child(8):hover{border-color:var(--pink)}
+.cc-code{border-top:1px solid var(--border)}
+
+/* ── keyword section ── */
+.kw-tabs{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.kwt{font-family:'JetBrains Mono',monospace;font-size:.75rem;padding:.4rem 1rem;border-radius:6px;border:1px solid var(--border2);background:var(--card);color:var(--muted);cursor:pointer;transition:all .15s}
+.kwt:hover{color:var(--text)}
+.kwt.on{background:rgba(0,229,255,.1);border-color:var(--cyan);color:var(--cyan)}
+.kp{display:none}.kp.on{display:block}
+.kw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.6rem;margin-bottom:1rem}
+.kwb{display:flex;align-items:center;gap:.5rem;padding:.5rem .9rem;border-radius:7px;border:1px solid var(--border);background:var(--card);cursor:pointer;transition:all .15s;font-family:'JetBrains Mono',monospace;font-size:.78rem}
+.kwb:hover{border-color:var(--border2);background:rgba(255,255,255,.03)}
+.kwb .pip{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.info-panel{background:rgba(0,229,255,.04);border:1px solid rgba(0,229,255,.15);border-radius:8px;padding:.9rem 1.1rem;font-size:.85rem;color:var(--text);line-height:1.7;margin-bottom:1rem;min-height:56px;transition:all .2s}
+.info-panel code{color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:.8rem}
+
+/* ── constructor tabs ── */
+.ctor-tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.ctab{font-family:'JetBrains Mono',monospace;font-size:.74rem;padding:.4rem .9rem;border-radius:6px;border:1px solid var(--border2);background:var(--card);color:var(--muted);cursor:pointer;transition:all .15s}
+.ctab:hover{color:var(--text)}
+.ctab.on{border-color:var(--orange);color:var(--orange);background:rgba(255,147,38,.06)}
+.cpanel{display:none}.cpanel.on{display:block}
+.ctor-desc{background:rgba(255,147,38,.05);border:1px solid rgba(255,147,38,.15);border-radius:8px;padding:.9rem 1.1rem;font-size:.85rem;color:var(--text);margin-bottom:1rem}
+.ctor-desc strong{color:var(--orange)}
+
+/* ── combinations table ── */
+.combo-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.combo-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.combo-head{padding:.7rem 1.1rem;border-bottom:1px solid var(--border);font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:.5rem}
+.combo-head .ci{font-size:.75rem;font-family:'JetBrains Mono',monospace;padding:.15rem .5rem;border-radius:4px;background:rgba(255,255,255,.05);color:var(--muted)}
+
+/* ── ref table ── */
+.rtable{width:100%;border-collapse:collapse;font-size:.84rem}
+.rtable thead{background:var(--surface)}
+.rtable th{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan);padding:.85rem 1.1rem;text-align:left;border-bottom:1px solid var(--border)}
+.rtable td{padding:.75rem 1.1rem;border-bottom:1px solid var(--border);color:var(--muted)}
+.rtable td:first-child{font-family:'JetBrains Mono',monospace;color:var(--orange);font-size:.8rem}
+.rtable tr:last-child td{border-bottom:none}
+.rtable tr:hover td{background:rgba(255,255,255,.015);color:var(--text)}
+.ybadge,.nbadge{font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.18rem .55rem;border-radius:4px}
+.ybadge{color:var(--green);background:rgba(105,255,71,.07)}
+.nbadge{color:var(--red);background:rgba(255,87,87,.07)}
+.tbl-wrap{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+
+/* ── reveal ── */
+.rev{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+.rev.vis{opacity:1;transform:translateY(0)}
+
+/* ── responsive ── */
+@media(max-width:900px){
+  .sidebar{display:none}
+  .main{padding:1.5rem 1.2rem 4rem}
+  .combo-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ── SIDEBAR ── -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <span>// C# REFERENCE</span>
+    <h2>Classes &<br/>Constructors</h2>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Overview</div>
+    <a class="nav-link active" href="#what-is"><span class="dot"></span>What is a Class</a>
+    <a class="nav-link" href="#class-types"><span class="dot"></span>Class Types</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Keywords</div>
+    <a class="nav-link" href="#access-mods"><span class="dot"></span>Access Modifiers</a>
+    <a class="nav-link" href="#class-mods"><span class="dot"></span>Class Modifiers</a>
+    <a class="nav-link" href="#member-mods"><span class="dot"></span>Member Modifiers</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Constructors</div>
+    <a class="nav-link" href="#ctor-types"><span class="dot"></span>Constructor Types</a>
+    <a class="nav-link" href="#ctor-combos"><span class="dot"></span>Combinations</a>
+    <a class="nav-link" href="#full-example"><span class="dot"></span>Full Example</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-label">Reference</div>
+    <a class="nav-link" href="#quick-ref"><span class="dot"></span>Quick Reference</a>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero rev">
+    <div class="hero-tag">// C# COMPLETE CLASS REFERENCE</div>
+    <h1>Classes, Keywords<br/>&amp; <em>Constructors</em></h1>
+    <p>Every class type, keyword modifier, and constructor pattern in C# — with syntax-highlighted examples and explanations.</p>
+    <div class="hero-chips">
+      <span class="chip">8 Class Types</span>
+      <span class="chip">6 Access Levels</span>
+      <span class="chip">10 Member Keywords</span>
+      <span class="chip">8 Constructor Types</span>
+      <span class="chip">Constructor Combos</span>
+    </div>
+  </div>
+
+  <!-- ── WHAT IS A CLASS ── -->
+  <section class="section rev" id="what-is">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <h2>What is a <span>Class?</span></h2>
+    </div>
+    <p style="color:var(--muted);margin-bottom:1.2rem;max-width:620px">A <strong style="color:var(--text)">class</strong> is a blueprint for creating objects — it defines data (fields/properties) and behavior (methods) bundled together. It is the foundation of Object-Oriented Programming in C#.</p>
+    <div class="cb">
+      <div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">Car.cs</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Car</span>
+{
+    <span class="cm">// Fields (data)</span>
+    <span class="kw">public</span> <span class="ty">string</span> Brand;
+    <span class="kw">public</span> <span class="ty">int</span>    Speed;
+
+    <span class="cm">// Constructor</span>
+    <span class="kw">public</span> <span class="ty">Car</span>(<span class="ty">string</span> brand, <span class="ty">int</span> speed)
+    {
+        Brand = brand;
+        Speed = speed;
+    }
+
+    <span class="cm">// Method (behavior)</span>
+    <span class="kw">public void</span> <span class="fn">Drive</span>()
+        => Console.<span class="fn">WriteLine</span>(<span class="st">$"{Brand} is driving at {Speed} km/h"</span>);
+}
+
+<span class="cm">// Creating an object (instance)</span>
+<span class="ty">Car</span> myCar = <span class="kw">new</span> <span class="ty">Car</span>(<span class="st">"Toyota"</span>, <span class="nm">120</span>);
+myCar.<span class="fn">Drive</span>(); <span class="cm">// Toyota is driving at 120 km/h</span></pre></div>
+    </div>
+  </section>
+
+  <!-- ── CLASS TYPES ── -->
+  <section class="section rev" id="class-types">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <h2>8 Types of <span>Classes</span></h2>
+    </div>
+    <div class="cards">
+
+      <div class="cc">
+        <div class="cc-top"><div class="cc-icon">🔷</div><div class="cc-title"><h3>Regular Class</h3><p>Standard class. Can be instantiated and inherited freely.</p></div></div>
+        <div class="cc-tags"><span class="tag tg">✓ Instantiate</span><span class="tag tg">✓ Inherit</span></div>
+        <div class="cc-code cb"><div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Animal</span>
+{
+    <span class="kw">public</span> <span class="ty">string</span> Name;
+    <span class="kw">public void</span> <span class="fn">Speak</span>()
+        => Console.<span class="fn">WriteLine</span>(<span class="st">$"{Name} speaks"</span>);
+}
+<span class="ty">Animal</span> a = <span class="kw">new</span> <span class="ty">Animal</span>(); <span class="cm">// ✅ OK</span></pre></div></div>
+      </div>
+
+      <div class="cc">
+        <div class="cc-top"><div class="cc-icon">🔶</div><div class="cc-title"><h3>Abstract Class</h3><p>Cannot instantiate directly. Forces subclasses to implement abstract members.</p></div></div>
+        <div class="cc-tags"><span class="tag tr">✗ Instantiate</span><span class="tag tg">✓ Inherit</span></div>
+        <div class="cc-code cb"><div class="cb-body"><pre><span class="kw">abstract class</span> <span class="ty">Shape</span>
+{
+    <span class="kw">public abstract double</span> <span class="fn">Area</span>();
+}
+<span class="kw">class</span> <span class="ty">Circle</span> : <span class="ty">Shape</span>
+{
+    <span class="kw">public double</span> Radius;
+    <span class="kw">public override double</span> <span class="fn">Area</span>()
+        => Math.PI * Radius * Radius;
+}</pre></div></div>
+      </div>
+
+      <div class="cc">
+        <div class="cc-top"><div class="cc-icon">🔒</div><div class="cc-title"><h3>Sealed Class</h3><p>Cannot be inherited. Used to prevent extension for security or performance.</p></div></div>
+        <div class="cc-tags"><span class="tag tg">✓ Instantiate</span><span class="tag tr">✗ Inherit</span></div>
+        <div class="cc-code cb"><div class="cb-body"><pre><span class="kw">sealed class</span> <span class="ty">BankAccount</span>
+{
+    <span class="kw">public double</span> Balance { <span class="kw">get</span>; <span class="kw">set</span>; }
+}
+<span class="cm">// class Savings : BankAccount { } ❌</span></pre></div></div>
+      </div>
+
+      <div class="cc">
+        <div class="cc-top"><div class="cc-icon">📦</div><div class="cc-title"><h3>Static Class</h3><p>Only static members. No instantiation or inheritance. Used for utilities.</p></div></div>
+        <div class="cc-tags"><span class="tag tr">✗ Instantiate</span><span class="tag tr">✗ Inherit</span></div>
+        <div class="cc-code cb"><div class="cb-body"><pre><span class="kw">static class</span> <span class="ty">MathHelper</span>
+{
+    <span class="kw">public static int</span> <span class="fn">Square</span>(<span class="kw">int</span> x) => x * x;
+    <span class="kw">public static int</span> <span class="fn">Cube</span>(<span class="kw">int</span> x) => x * x * x;
+}
+MathHelper.<span class="fn">Square</span>(<span class="nm">4</span>); <span class="cm">// → 16</span></pre></div></div>
+      </div>
+
+      <div class="cc">
+        <div class="cc-top"><div class="cc-icon">🧩</div><div class="cc-title"><h3>Partial Class</h3><p>Splits a class across multiple files. All parts merge at compile time.</p></div></div>
+        <div class="cc-tags"><span class="tag tg">✓ Instantiate</span><span class="tag tg">✓ Inherit</span></div>
+        <div class="cc-code cb"><div class="cb-body"><pre><span class="cm">// File1.cs</span>
+<span class="kw">partial class</span> <span class="ty">Employee</span>
+{ <span class="kw">public string</span> Name; }
+
+<span class="cm">// File2.cs</span>
+<span class="kw">partial class</span> <span class="ty">Employee</span>
+{
+    <span class="kw">public void</span> <span class="fn">Display</span>()
+        => Console.<span class="fn">WriteLine</span>(Name);
+}</pre></div></div>
+      </div>
+
+      <div class="cc">
+        <div class="cc-top"><div class="cc-icon">🪆</div><div class="cc-title"><h3>Nested Class</h3><p>Defined inside another class. Groups tightly-related logic together.</p></div></div>
+        <div class="cc-tags"><span class="tag tg">✓ Instantiate</span><span class="tag tg">✓ Inherit</span></div>
+        <div class="cc-code cb"><div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Outer</span>
+{
+    <span class="kw">private int</span> x = <span class="nm">10</span>;
+    <span class="kw">class</span> <span class="ty">Inner</span>
+    {
+        <span class="kw">public void</span> <span class="fn">Show</span>()
+            => Console.<span class="fn">WriteLine</span>(<span class="st">"Inner class"</span>);
+    }
+}</pre></div></div>
+      </div>
+
+      <div class="cc">
+        <div class="cc-top"><div class="cc-icon">🏗️</div><div class="cc-title"><h3>Generic Class</h3><p>Works with any data type using type parameters &lt;T&gt;. Type-safe and reusable.</p></div></div>
+        <div class="cc-tags"><span class="tag tg">✓ Instantiate</span><span class="tag tg">✓ Inherit</span></div>
+        <div class="cc-code cb"><div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Box</span>&lt;<span class="ty">T</span>&gt;
+{
+    <span class="kw">public</span> <span class="ty">T</span> Value;
+    <span class="kw">public void</span> <span class="fn">Show</span>()
+        => Console.<span class="fn">WriteLine</span>(Value);
+}
+<span class="ty">Box</span>&lt;<span class="ty">int</span>&gt; b = <span class="kw">new</span>() { Value = <span class="nm">42</span> };</pre></div></div>
+      </div>
+
+      <div class="cc">
+        <div class="cc-top"><div class="cc-icon">📋</div><div class="cc-title"><h3>Interface</h3><p>Defines a contract. All members must be implemented by the class.</p></div></div>
+        <div class="cc-tags"><span class="tag tr">✗ Instantiate</span><span class="tag tg">✓ Implement</span></div>
+        <div class="cc-code cb"><div class="cb-body"><pre><span class="kw">interface</span> <span class="ty">IFlyable</span>
+{
+    <span class="kw">void</span> <span class="fn">Fly</span>();
+}
+<span class="kw">class</span> <span class="ty">Bird</span> : <span class="ty">IFlyable</span>
+{
+    <span class="kw">public void</span> <span class="fn">Fly</span>()
+        => Console.<span class="fn">WriteLine</span>(<span class="st">"Flying!"</span>);
+}</pre></div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── ACCESS MODIFIERS ── -->
+  <section class="section rev" id="access-mods">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <h2>Access <span>Modifiers</span></h2>
+    </div>
+    <div class="kw-grid">
+      <div class="kwb" onclick="setInfo('ai','<strong style=color:var(--kw)>public</strong> — Accessible from <em>anywhere</em>. No restrictions. Most open access level.')"><div class="pip" style="background:var(--purple)"></div><span class="kw">public</span></div>
+      <div class="kwb" onclick="setInfo('ai','<strong style=color:var(--kw)>private</strong> — Accessible only within the <em>same class</em>. Most restrictive. Default for members.')"><div class="pip" style="background:var(--red)"></div><span class="kw">private</span></div>
+      <div class="kwb" onclick="setInfo('ai','<strong style=color:var(--kw)>protected</strong> — Accessible in the same class <em>and any derived (child) classes</em>.')"><div class="pip" style="background:var(--orange)"></div><span class="kw">protected</span></div>
+      <div class="kwb" onclick="setInfo('ai','<strong style=color:var(--kw)>internal</strong> — Accessible within the <em>same assembly (.dll / .exe)</em> only. Not visible outside.')"><div class="pip" style="background:var(--blue)"></div><span class="kw">internal</span></div>
+      <div class="kwb" onclick="setInfo('ai','<strong style=color:var(--kw)>protected internal</strong> — Accessible from same assembly <em>OR</em> any derived class. Union of both.')"><div class="pip" style="background:var(--green)"></div><span class="kw">protected internal</span></div>
+      <div class="kwb" onclick="setInfo('ai','<strong style=color:var(--kw)>private protected</strong> — Accessible from derived classes <em>only within the same assembly</em>. Intersection.')"><div class="pip" style="background:var(--yellow)"></div><span class="kw">private protected</span></div>
+    </div>
+    <div class="info-panel" id="ai"><strong style="color:var(--kw)">public</strong> — Accessible from <em>anywhere</em>. No restrictions. Most open access level.</div>
+    <div class="cb">
+      <div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">AccessModifiers.cs</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">BankAccount</span>
+{
+    <span class="kw">public</span>             <span class="ty">string</span>  AccountNumber;  <span class="cm">// Anyone can read/write</span>
+    <span class="kw">private</span>            <span class="ty">double</span>  _balance;       <span class="cm">// Only this class</span>
+    <span class="kw">protected</span>          <span class="ty">string</span>  OwnerName;      <span class="cm">// This class + subclasses</span>
+    <span class="kw">internal</span>           <span class="ty">bool</span>    IsActive;       <span class="cm">// Same assembly only</span>
+    <span class="kw">protected internal</span> <span class="ty">int</span>     BranchCode;     <span class="cm">// Derived OR same assembly</span>
+    <span class="kw">private protected</span>  <span class="ty">double</span>  InterestRate;   <span class="cm">// Derived AND same assembly</span>
+
+    <span class="kw">public void</span> <span class="fn">Deposit</span>(<span class="ty">double</span> amount)
+    {
+        _balance += amount; <span class="cm">// private field used safely inside class</span>
+    }
+
+    <span class="kw">public double</span> <span class="fn">GetBalance</span>() => _balance; <span class="cm">// expose via public method</span>
+}</pre></div>
+    </div>
+  </section>
+
+  <!-- ── CLASS MODIFIERS ── -->
+  <section class="section rev" id="class-mods">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <h2>Class <span>Modifiers</span></h2>
+    </div>
+    <div class="kw-grid">
+      <div class="kwb" onclick="setInfo('ci','<strong style=color:var(--kw)>abstract</strong> — Cannot be instantiated. Must be subclassed. May contain abstract members with no body.')"><div class="pip" style="background:var(--purple)"></div><span class="kw">abstract</span></div>
+      <div class="kwb" onclick="setInfo('ci','<strong style=color:var(--kw)>sealed</strong> — Cannot be inherited. No class can derive from it. Used for security or JIT optimization.')"><div class="pip" style="background:var(--red)"></div><span class="kw">sealed</span></div>
+      <div class="kwb" onclick="setInfo('ci','<strong style=color:var(--kw)>static</strong> — Cannot be instantiated or inherited. Contains only static members. For utility classes.')"><div class="pip" style="background:var(--blue)"></div><span class="kw">static</span></div>
+      <div class="kwb" onclick="setInfo('ci','<strong style=color:var(--kw)>partial</strong> — Splits the class across multiple files. All parts merge into one class at compile time.')"><div class="pip" style="background:var(--orange)"></div><span class="kw">partial</span></div>
+    </div>
+    <div class="info-panel" id="ci"><strong style="color:var(--kw)">abstract</strong> — Cannot be instantiated. Must be subclassed. May contain abstract members with no body.</div>
+    <div class="cb">
+      <div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">ClassModifiers.cs</span></div>
+      <div class="cb-body"><pre><span class="cm">// abstract — template class, cannot create object directly</span>
+<span class="kw">public abstract class</span> <span class="ty">Vehicle</span>
+{
+    <span class="kw">public abstract void</span> <span class="fn">Start</span>();
+    <span class="kw">public void</span> <span class="fn">Stop</span>() => Console.<span class="fn">WriteLine</span>(<span class="st">"Stopped"</span>);
+}
+
+<span class="cm">// sealed — prevents all inheritance</span>
+<span class="kw">public sealed class</span> <span class="ty">Car</span> : <span class="ty">Vehicle</span>
+{
+    <span class="kw">public override void</span> <span class="fn">Start</span>() => Console.<span class="fn">WriteLine</span>(<span class="st">"Car started"</span>);
+}
+
+<span class="cm">// static — utility class, no instance possible</span>
+<span class="kw">public static class</span> <span class="ty">StringUtils</span>
+{
+    <span class="kw">public static string</span> <span class="fn">Reverse</span>(<span class="ty">string</span> s)
+        => <span class="kw">new</span> <span class="ty">string</span>(s.<span class="fn">ToCharArray</span>().Reverse().<span class="fn">ToArray</span>());
+}
+
+<span class="cm">// partial — class split across files (common in generated code)</span>
+<span class="kw">public partial class</span> <span class="ty">Order</span> { <span class="kw">public int</span> Id; }       <span class="cm">// File 1</span>
+<span class="kw">public partial class</span> <span class="ty">Order</span> { <span class="kw">public void</span> <span class="fn">Ship</span>() {} }  <span class="cm">// File 2</span></pre></div>
+    </div>
+  </section>
+
+  <!-- ── MEMBER MODIFIERS ── -->
+  <section class="section rev" id="member-mods">
+    <div class="section-head">
+      <span class="section-num">05</span>
+      <h2>Member <span>Modifiers</span></h2>
+    </div>
+    <div class="kw-grid">
+      <div class="kwb" onclick="setInfo('mi','<strong style=color:var(--kw)>static</strong> — Belongs to the class itself, not an instance. Access via <code>ClassName.Member</code>.')"><div class="pip" style="background:var(--blue)"></div><span class="kw">static</span></div>
+      <div class="kwb" onclick="setInfo('mi','<strong style=color:var(--kw)>virtual</strong> — Has a default body but <em>can be overridden</em> in derived classes using <code>override</code>.')"><div class="pip" style="background:var(--green)"></div><span class="kw">virtual</span></div>
+      <div class="kwb" onclick="setInfo('mi','<strong style=color:var(--kw)>override</strong> — Replaces a <code>virtual</code> or <code>abstract</code> member from the base class with a new implementation.')"><div class="pip" style="background:var(--yellow)"></div><span class="kw">override</span></div>
+      <div class="kwb" onclick="setInfo('mi','<strong style=color:var(--kw)>abstract</strong> — No body at all. Must be overridden in every non-abstract derived class.')"><div class="pip" style="background:var(--purple)"></div><span class="kw">abstract</span></div>
+      <div class="kwb" onclick="setInfo('mi','<strong style=color:var(--kw)>readonly</strong> — Can only be set in the declaration or constructor. Immutable after object creation.')"><div class="pip" style="background:var(--orange)"></div><span class="kw">readonly</span></div>
+      <div class="kwb" onclick="setInfo('mi','<strong style=color:var(--kw)>const</strong> — Compile-time constant. Must be assigned immediately. Implicitly static. Never changes.')"><div class="pip" style="background:var(--red)"></div><span class="kw">const</span></div>
+      <div class="kwb" onclick="setInfo('mi','<strong style=color:var(--kw)>new</strong> — Hides a member from the base class. Different from override — base version still exists.')"><div class="pip" style="background:var(--cyan)"></div><span class="kw">new</span></div>
+      <div class="kwb" onclick="setInfo('mi','<strong style=color:var(--kw)>sealed override</strong> — Overrides a method AND prevents further overriding in any subclass below.')"><div class="pip" style="background:var(--pink)"></div><span class="kw">sealed override</span></div>
+      <div class="kwb" onclick="setInfo('mi','<strong style=color:var(--kw)>extern</strong> — Declares a method implemented externally (e.g. via P/Invoke from unmanaged DLL).')"><div class="pip" style="background:var(--muted)"></div><span class="kw">extern</span></div>
+      <div class="kwb" onclick="setInfo('mi','<strong style=color:var(--kw)>volatile</strong> — Field may be modified by multiple threads. Prevents compiler caching optimizations.')"><div class="pip" style="background:var(--muted)"></div><span class="kw">volatile</span></div>
+    </div>
+    <div class="info-panel" id="mi"><strong style="color:var(--kw)">static</strong> — Belongs to the class itself, not an instance. Access via <code>ClassName.Member</code>.</div>
+    <div class="cb">
+      <div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">MemberModifiers.cs</span></div>
+      <div class="cb-body"><pre><span class="kw">abstract class</span> <span class="ty">Shape</span>
+{
+    <span class="kw">public  const</span>    <span class="ty">string</span> Category = <span class="st">"Geometry"</span>;    <span class="cm">// compile-time constant</span>
+    <span class="kw">public  static</span>   <span class="ty">int</span>    Count    = <span class="nm">0</span>;             <span class="cm">// shared across all instances</span>
+    <span class="kw">public  readonly</span> <span class="ty">Guid</span>   Id;                       <span class="cm">// set once in constructor</span>
+
+    <span class="kw">public abstract double</span> <span class="fn">Area</span>();          <span class="cm">// no body — MUST be overridden</span>
+    <span class="kw">public virtual  string</span> <span class="fn">Describe</span>()      <span class="cm">// has body — CAN be overridden</span>
+        => <span class="st">"I am a shape"</span>;
+}
+
+<span class="kw">class</span> <span class="ty">Circle</span> : <span class="ty">Shape</span>
+{
+    <span class="kw">public double</span> Radius;
+    <span class="kw">public override double</span> <span class="fn">Area</span>()
+        => Math.PI * Radius * Radius;       <span class="cm">// override abstract</span>
+    <span class="kw">public override string</span> <span class="fn">Describe</span>()
+        => <span class="st">"I am a circle"</span>;                <span class="cm">// override virtual</span>
+}
+
+<span class="kw">class</span> <span class="ty">SpecialCircle</span> : <span class="ty">Circle</span>
+{
+    <span class="kw">public new double</span> Radius;              <span class="cm">// hides parent's Radius</span>
+    <span class="kw">public sealed override string</span> <span class="fn">Describe</span>()
+        => <span class="st">"I am special"</span>;                <span class="cm">// blocks further override</span>
+}</pre></div>
+    </div>
+  </section>
+
+  <!-- ── CONSTRUCTOR TYPES ── -->
+  <section class="section rev" id="ctor-types">
+    <div class="section-head">
+      <span class="section-num">06</span>
+      <h2>Constructor <span>Types</span></h2>
+    </div>
+    <div class="ctor-tabs">
+      <button class="ctab on" onclick="showC('c1',this)">Default</button>
+      <button class="ctab" onclick="showC('c2',this)">Parameterized</button>
+      <button class="ctab" onclick="showC('c3',this)">Copy</button>
+      <button class="ctab" onclick="showC('c4',this)">Static</button>
+      <button class="ctab" onclick="showC('c5',this)">Private</button>
+      <button class="ctab" onclick="showC('c6',this)">Chained (this)</button>
+      <button class="ctab" onclick="showC('c7',this)">Base (base)</button>
+      <button class="ctab" onclick="showC('c8',this)">Expression-bodied</button>
+    </div>
+
+    <!-- Default -->
+    <div class="cpanel on" id="c1">
+      <div class="ctor-desc"><strong>Default Constructor</strong> — Takes no parameters. If you define no constructor at all, C# automatically provides this. Sets all fields to their default values (0, null, false).</div>
+      <div class="cb"><div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">Default.cs</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Person</span>
+{
+    <span class="kw">public string</span> Name;
+    <span class="kw">public int</span>    Age;
+
+    <span class="cm">// Default constructor — no parameters</span>
+    <span class="kw">public</span> <span class="ty">Person</span>()
+    {
+        Name = <span class="st">"Unknown"</span>;
+        Age  = <span class="nm">0</span>;
+    }
+}
+
+<span class="cm">// Usage</span>
+<span class="ty">Person</span> p = <span class="kw">new</span> <span class="ty">Person</span>(); <span class="cm">// Name = "Unknown", Age = 0</span>
+Console.<span class="fn">WriteLine</span>(p.Name); <span class="cm">// Unknown</span></pre></div></div>
+    </div>
+
+    <!-- Parameterized -->
+    <div class="cpanel" id="c2">
+      <div class="ctor-desc"><strong>Parameterized Constructor</strong> — Accepts one or more arguments. Allows setting field values at the time of object creation. Most commonly used constructor type.</div>
+      <div class="cb"><div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">Parameterized.cs</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Person</span>
+{
+    <span class="kw">public string</span> Name;
+    <span class="kw">public int</span>    Age;
+    <span class="kw">public string</span> City;
+
+    <span class="cm">// 2-param constructor</span>
+    <span class="kw">public</span> <span class="ty">Person</span>(<span class="ty">string</span> name, <span class="ty">int</span> age)
+    {
+        Name = name;
+        Age  = age;
+    }
+
+    <span class="cm">// 3-param constructor (overloaded)</span>
+    <span class="kw">public</span> <span class="ty">Person</span>(<span class="ty">string</span> name, <span class="ty">int</span> age, <span class="ty">string</span> city)
+    {
+        Name = name;
+        Age  = age;
+        City = city;
+    }
+}
+
+<span class="ty">Person</span> p1 = <span class="kw">new</span> <span class="ty">Person</span>(<span class="st">"Alice"</span>, <span class="nm">30</span>);
+<span class="ty">Person</span> p2 = <span class="kw">new</span> <span class="ty">Person</span>(<span class="st">"Bob"</span>, <span class="nm">25</span>, <span class="st">"London"</span>);</pre></div></div>
+    </div>
+
+    <!-- Copy -->
+    <div class="cpanel" id="c3">
+      <div class="ctor-desc"><strong>Copy Constructor</strong> — Takes an instance of the same class and copies all its field values into the new object. C# doesn't generate this automatically — you write it manually.</div>
+      <div class="cb"><div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">Copy.cs</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Person</span>
+{
+    <span class="kw">public string</span> Name;
+    <span class="kw">public int</span>    Age;
+
+    <span class="kw">public</span> <span class="ty">Person</span>(<span class="ty">string</span> name, <span class="ty">int</span> age)
+    {
+        Name = name;
+        Age  = age;
+    }
+
+    <span class="cm">// Copy constructor — takes same type as param</span>
+    <span class="kw">public</span> <span class="ty">Person</span>(<span class="ty">Person</span> source)
+    {
+        Name = source.Name;
+        Age  = source.Age;
+    }
+}
+
+<span class="ty">Person</span> original = <span class="kw">new</span> <span class="ty">Person</span>(<span class="st">"Alice"</span>, <span class="nm">30</span>);
+<span class="ty">Person</span> copy     = <span class="kw">new</span> <span class="ty">Person</span>(original); <span class="cm">// deep copy</span>
+
+copy.Name = <span class="st">"Bob"</span>; <span class="cm">// original.Name still "Alice"</span></pre></div></div>
+    </div>
+
+    <!-- Static -->
+    <div class="cpanel" id="c4">
+      <div class="ctor-desc"><strong>Static Constructor</strong> — Runs once before any instance is created or any static member is accessed. Cannot have access modifiers or parameters. Used to initialize static fields.</div>
+      <div class="cb"><div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">Static.cs</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Database</span>
+{
+    <span class="kw">public static string</span>  ConnectionString;
+    <span class="kw">public static int</span>     MaxConnections;
+    <span class="kw">public string</span>         TableName;
+
+    <span class="cm">// Static constructor — no modifier, no params</span>
+    <span class="kw">static</span> <span class="ty">Database</span>()
+    {
+        ConnectionString = <span class="st">"Server=localhost;DB=mydb"</span>;
+        MaxConnections   = <span class="nm">100</span>;
+        Console.<span class="fn">WriteLine</span>(<span class="st">"Static constructor called once!"</span>);
+    }
+
+    <span class="cm">// Regular instance constructor</span>
+    <span class="kw">public</span> <span class="ty">Database</span>(<span class="ty">string</span> tableName)
+    {
+        TableName = tableName;
+    }
+}
+
+<span class="cm">// Static ctor fires before first object creation</span>
+<span class="ty">Database</span> db1 = <span class="kw">new</span> <span class="ty">Database</span>(<span class="st">"Users"</span>);
+<span class="ty">Database</span> db2 = <span class="kw">new</span> <span class="ty">Database</span>(<span class="st">"Orders"</span>); <span class="cm">// static ctor NOT called again</span></pre></div></div>
+    </div>
+
+    <!-- Private -->
+    <div class="cpanel" id="c5">
+      <div class="ctor-desc"><strong>Private Constructor</strong> — Prevents external code from creating instances. Used in Singleton patterns or utility classes where you want full control over object creation.</div>
+      <div class="cb"><div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">Private.cs</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Singleton</span>
+{
+    <span class="kw">private static</span> <span class="ty">Singleton</span> _instance;
+
+    <span class="cm">// Private constructor — outside code cannot call new</span>
+    <span class="kw">private</span> <span class="ty">Singleton</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(<span class="st">"Singleton created!"</span>);
+    }
+
+    <span class="cm">// Controlled access through static factory method</span>
+    <span class="kw">public static</span> <span class="ty">Singleton</span> <span class="fn">GetInstance</span>()
+    {
+        <span class="kw">if</span> (_instance == <span class="kw">null</span>)
+            _instance = <span class="kw">new</span> <span class="ty">Singleton</span>();
+        <span class="kw">return</span> _instance;
+    }
+
+    <span class="kw">public void</span> <span class="fn">DoWork</span>() => Console.<span class="fn">WriteLine</span>(<span class="st">"Working..."</span>);
+}
+
+<span class="cm">// new Singleton() ❌ — won't compile</span>
+<span class="ty">Singleton</span> s = <span class="ty">Singleton</span>.<span class="fn">GetInstance</span>(); <span class="cm">// ✅</span>
+s.<span class="fn">DoWork</span>();</pre></div></div>
+    </div>
+
+    <!-- Chained -->
+    <div class="cpanel" id="c6">
+      <div class="ctor-desc"><strong>Constructor Chaining (this)</strong> — One constructor calls another in the same class using <code>: this(...)</code>. Avoids code duplication and ensures shared initialization logic runs every time.</div>
+      <div class="cb"><div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">Chained.cs</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Product</span>
+{
+    <span class="kw">public string</span> Name;
+    <span class="kw">public double</span> Price;
+    <span class="kw">public int</span>    Stock;
+
+    <span class="cm">// Master constructor — all params</span>
+    <span class="kw">public</span> <span class="ty">Product</span>(<span class="ty">string</span> name, <span class="ty">double</span> price, <span class="ty">int</span> stock)
+    {
+        Name  = name;
+        Price = price;
+        Stock = stock;
+    }
+
+    <span class="cm">// Chains to master, provides default stock = 0</span>
+    <span class="kw">public</span> <span class="ty">Product</span>(<span class="ty">string</span> name, <span class="ty">double</span> price)
+        : <span class="kw">this</span>(name, price, <span class="nm">0</span>) { }
+
+    <span class="cm">// Chains to master, provides all defaults</span>
+    <span class="kw">public</span> <span class="ty">Product</span>()
+        : <span class="kw">this</span>(<span class="st">"Unknown"</span>, <span class="nm">0.0</span>, <span class="nm">0</span>) { }
+}
+
+<span class="ty">Product</span> p1 = <span class="kw">new</span> <span class="ty">Product</span>();                    <span class="cm">// all defaults</span>
+<span class="ty">Product</span> p2 = <span class="kw">new</span> <span class="ty">Product</span>(<span class="st">"Book"</span>, <span class="nm">9.99</span>);         <span class="cm">// stock = 0</span>
+<span class="ty">Product</span> p3 = <span class="kw">new</span> <span class="ty">Product</span>(<span class="st">"Pen"</span>, <span class="nm">1.50</span>, <span class="nm">100</span>);</pre></div></div>
+    </div>
+
+    <!-- Base -->
+    <div class="cpanel" id="c7">
+      <div class="ctor-desc"><strong>Base Constructor (base)</strong> — Calls the parent class constructor using <code>: base(...)</code>. Ensures the base class is properly initialized before the derived class constructor runs.</div>
+      <div class="cb"><div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">Base.cs</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Animal</span>
+{
+    <span class="kw">public string</span> Name;
+    <span class="kw">public int</span>    Age;
+
+    <span class="kw">public</span> <span class="ty">Animal</span>(<span class="ty">string</span> name, <span class="ty">int</span> age)
+    {
+        Name = name;
+        Age  = age;
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"Animal created: {Name}"</span>);
+    }
+}
+
+<span class="kw">class</span> <span class="ty">Dog</span> : <span class="ty">Animal</span>
+{
+    <span class="kw">public string</span> Breed;
+
+    <span class="cm">// Calls Animal(name, age) before Dog body runs</span>
+    <span class="kw">public</span> <span class="ty">Dog</span>(<span class="ty">string</span> name, <span class="ty">int</span> age, <span class="ty">string</span> breed)
+        : <span class="kw">base</span>(name, age)
+    {
+        Breed = breed;
+        Console.<span class="fn">WriteLine</span>(<span class="st">$"Dog breed: {Breed}"</span>);
+    }
+}
+
+<span class="cm">// Output order:</span>
+<span class="ty">Dog</span> d = <span class="kw">new</span> <span class="ty">Dog</span>(<span class="st">"Rex"</span>, <span class="nm">3</span>, <span class="st">"Husky"</span>);
+<span class="cm">// 1. Animal created: Rex</span>
+<span class="cm">// 2. Dog breed: Husky</span></pre></div></div>
+    </div>
+
+    <!-- Expression-bodied -->
+    <div class="cpanel" id="c8">
+      <div class="ctor-desc"><strong>Expression-bodied Constructor</strong> — A concise constructor using the <code>=></code> arrow syntax. Only works for single-expression constructors. Makes simple assignments very readable.</div>
+      <div class="cb"><div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">ExpressionBodyd.cs</span></div>
+      <div class="cb-body"><pre><span class="kw">class</span> <span class="ty">Point</span>
+{
+    <span class="kw">public double</span> X;
+    <span class="kw">public double</span> Y;
+
+    <span class="cm">// Expression-bodied — only one statement</span>
+    <span class="kw">public</span> <span class="ty">Point</span>(<span class="ty">double</span> x, <span class="ty">double</span> y) => (X, Y) = (x, y);
+}
+
+<span class="kw">class</span> <span class="ty">Circle</span>
+{
+    <span class="kw">public</span> <span class="ty">Point</span>  Center;
+    <span class="kw">public double</span> Radius;
+
+    <span class="cm">// Tuple deconstruction assignment</span>
+    <span class="kw">public</span> <span class="ty">Circle</span>(<span class="ty">Point</span> center, <span class="ty">double</span> radius)
+        => (Center, Radius) = (center, radius);
+}
+
+<span class="ty">Point</span>  p = <span class="kw">new</span> <span class="ty">Point</span>(<span class="nm">3.0</span>, <span class="nm">4.0</span>);
+<span class="ty">Circle</span> c = <span class="kw">new</span> <span class="ty">Circle</span>(p, <span class="nm">5.0</span>);</pre></div></div>
+    </div>
+  </section>
+
+  <!-- ── CONSTRUCTOR COMBINATIONS ── -->
+  <section class="section rev" id="ctor-combos">
+    <div class="section-head">
+      <span class="section-num">07</span>
+      <h2>Constructor <span>Combinations</span></h2>
+    </div>
+    <p style="color:var(--muted);margin-bottom:1.4rem;max-width:600px">Multiple constructor patterns can be combined in the same class to cover different creation scenarios. Here are the most useful real-world combinations.</p>
+
+    <div class="combo-grid">
+
+      <div class="combo-card">
+        <div class="combo-head">Default + Parameterized <span class="ci">Overloading</span></div>
+        <div class="cb"><div class="cb-body"><pre style="font-size:.76rem;line-height:1.8"><span class="kw">class</span> <span class="ty">Config</span>
+{
+    <span class="kw">public string</span> Host;
+    <span class="kw">public int</span>    Port;
+
+    <span class="cm">// Default</span>
+    <span class="kw">public</span> <span class="ty">Config</span>()
+    {
+        Host = <span class="st">"localhost"</span>;
+        Port = <span class="nm">8080</span>;
+    }
+
+    <span class="cm">// Parameterized</span>
+    <span class="kw">public</span> <span class="ty">Config</span>(<span class="ty">string</span> host, <span class="ty">int</span> port)
+    {
+        Host = host;
+        Port = port;
+    }
+}
+
+<span class="ty">Config</span> c1 = <span class="kw">new</span> <span class="ty">Config</span>();
+<span class="ty">Config</span> c2 = <span class="kw">new</span> <span class="ty">Config</span>(<span class="st">"prod.server"</span>, <span class="nm">443</span>);</pre></div></div>
+      </div>
+
+      <div class="combo-card">
+        <div class="combo-head">Parameterized + Chained <span class="ci">DRY Pattern</span></div>
+        <div class="cb"><div class="cb-body"><pre style="font-size:.76rem;line-height:1.8"><span class="kw">class</span> <span class="ty">Logger</span>
+{
+    <span class="kw">public string</span> Name;
+    <span class="kw">public bool</span>   Verbose;
+    <span class="kw">public string</span> FilePath;
+
+    <span class="cm">// Master — all params</span>
+    <span class="kw">public</span> <span class="ty">Logger</span>(<span class="ty">string</span> name, <span class="ty">bool</span> verbose, <span class="ty">string</span> path)
+    { Name=name; Verbose=verbose; FilePath=path; }
+
+    <span class="cm">// Chains to master</span>
+    <span class="kw">public</span> <span class="ty">Logger</span>(<span class="ty">string</span> name, <span class="ty">bool</span> verbose)
+        : <span class="kw">this</span>(name, verbose, <span class="st">"app.log"</span>) { }
+
+    <span class="cm">// Chains to master</span>
+    <span class="kw">public</span> <span class="ty">Logger</span>(<span class="ty">string</span> name)
+        : <span class="kw">this</span>(name, <span class="kw">false</span>) { }
+}</pre></div></div>
+      </div>
+
+      <div class="combo-card">
+        <div class="combo-head">Static + Instance <span class="ci">Init + Instance</span></div>
+        <div class="cb"><div class="cb-body"><pre style="font-size:.76rem;line-height:1.8"><span class="kw">class</span> <span class="ty">AppSettings</span>
+{
+    <span class="kw">public static string</span> Env;
+    <span class="kw">public string</span>        Section;
+
+    <span class="cm">// Static — runs once before first use</span>
+    <span class="kw">static</span> <span class="ty">AppSettings</span>()
+    {
+        Env = Environment.<span class="fn">GetEnvironmentVariable</span>(
+                <span class="st">"APP_ENV"</span>) ?? <span class="st">"development"</span>;
+    }
+
+    <span class="cm">// Instance — runs per object</span>
+    <span class="kw">public</span> <span class="ty">AppSettings</span>(<span class="ty">string</span> section)
+    {
+        Section = section;
+    }
+}</pre></div></div>
+      </div>
+
+      <div class="combo-card">
+        <div class="combo-head">Base + Chained <span class="ci">Inheritance Chain</span></div>
+        <div class="cb"><div class="cb-body"><pre style="font-size:.76rem;line-height:1.8"><span class="kw">class</span> <span class="ty">Entity</span>
+{
+    <span class="kw">public int</span> Id;
+    <span class="kw">public</span> <span class="ty">Entity</span>(<span class="ty">int</span> id) { Id = id; }
+}
+
+<span class="kw">class</span> <span class="ty">User</span> : <span class="ty">Entity</span>
+{
+    <span class="kw">public string</span> Name;
+    <span class="kw">public string</span> Email;
+
+    <span class="cm">// Master: calls base + sets all</span>
+    <span class="kw">public</span> <span class="ty">User</span>(<span class="ty">int</span> id, <span class="ty">string</span> name, <span class="ty">string</span> email)
+        : <span class="kw">base</span>(id) { Name=name; Email=email; }
+
+    <span class="cm">// Chains to master with default email</span>
+    <span class="kw">public</span> <span class="ty">User</span>(<span class="ty">int</span> id, <span class="ty">string</span> name)
+        : <span class="kw">this</span>(id, name, <span class="st">""</span>) { }
+}</pre></div></div>
+      </div>
+
+      <div class="combo-card">
+        <div class="combo-head">Private + Static Factory <span class="ci">Singleton</span></div>
+        <div class="cb"><div class="cb-body"><pre style="font-size:.76rem;line-height:1.8"><span class="kw">class</span> <span class="ty">CacheManager</span>
+{
+    <span class="kw">private static</span> <span class="ty">CacheManager</span> _inst;
+    <span class="kw">private readonly</span> <span class="ty">Dictionary</span>&lt;<span class="ty">string</span>,<span class="ty">object</span>&gt; _store;
+
+    <span class="cm">// Private — prevents external new</span>
+    <span class="kw">private</span> <span class="ty">CacheManager</span>()
+    {
+        _store = <span class="kw">new</span> <span class="ty">Dictionary</span>&lt;<span class="ty">string</span>,<span class="ty">object</span>&gt;();
+    }
+
+    <span class="cm">// Static factory — single entry point</span>
+    <span class="kw">public static</span> <span class="ty">CacheManager</span> <span class="fn">Instance</span>()
+        => _inst ??= <span class="kw">new</span> <span class="ty">CacheManager</span>();
+}</pre></div></div>
+      </div>
+
+      <div class="combo-card">
+        <div class="combo-head">Copy + Parameterized <span class="ci">Clone Pattern</span></div>
+        <div class="cb"><div class="cb-body"><pre style="font-size:.76rem;line-height:1.8"><span class="kw">class</span> <span class="ty">Document</span>
+{
+    <span class="kw">public string</span>       Title;
+    <span class="kw">public List</span>&lt;<span class="ty">string</span>&gt; Tags;
+
+    <span class="cm">// Parameterized</span>
+    <span class="kw">public</span> <span class="ty">Document</span>(<span class="ty">string</span> title)
+    {
+        Title = title;
+        Tags  = <span class="kw">new</span> <span class="ty">List</span>&lt;<span class="ty">string</span>&gt;();
+    }
+
+    <span class="cm">// Copy — deep clones the list!</span>
+    <span class="kw">public</span> <span class="ty">Document</span>(<span class="ty">Document</span> src)
+    {
+        Title = src.Title;
+        Tags  = <span class="kw">new</span> <span class="ty">List</span>&lt;<span class="ty">string</span>&gt;(src.Tags);
+    }
+}</pre></div></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── FULL EXAMPLE ── -->
+  <section class="section rev" id="full-example">
+    <div class="section-head">
+      <span class="section-num">08</span>
+      <h2>Full <span>Example</span></h2>
+    </div>
+    <p style="color:var(--muted);margin-bottom:1.2rem">Every keyword and constructor type combined into one cohesive real-world class hierarchy.</p>
+    <div class="cb">
+      <div class="cb-head"><div class="cb-dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><span class="cb-file">FullExample.cs</span></div>
+      <div class="cb-body"><pre><span class="cm">// ── BASE ABSTRACT CLASS ───────────────────────────────────────</span>
+<span class="kw">public abstract partial class</span> <span class="ty">Animal</span>
+{
+    <span class="kw">public  const</span>    <span class="ty">string</span> Kingdom  = <span class="st">"Animalia"</span>;    <span class="cm">// const</span>
+    <span class="kw">public  static</span>   <span class="ty">int</span>    Count    = <span class="nm">0</span>;             <span class="cm">// static — shared</span>
+    <span class="kw">public  readonly</span> <span class="ty">Guid</span>   Id;                       <span class="cm">// readonly</span>
+    <span class="kw">public</span>           <span class="ty">string</span> Name     { <span class="kw">get</span>; <span class="kw">set</span>; }   <span class="cm">// auto property</span>
+    <span class="kw">private</span>          <span class="ty">int</span>    _age;                     <span class="cm">// private field</span>
+    <span class="kw">protected</span>        <span class="ty">string</span> Species;                  <span class="cm">// protected field</span>
+
+    <span class="cm">// Static constructor — runs once on first use</span>
+    <span class="kw">static</span> <span class="ty">Animal</span>()
+        => Console.<span class="fn">WriteLine</span>(<span class="st">"[Static] Animal class loaded"</span>);
+
+    <span class="cm">// Master parameterized constructor</span>
+    <span class="kw">public</span> <span class="ty">Animal</span>(<span class="ty">string</span> name, <span class="ty">string</span> species, <span class="ty">int</span> age)
+    {
+        Id      = Guid.<span class="fn">NewGuid</span>();
+        Name    = name;
+        Species = species;
+        _age    = age;
+        Count++;
+    }
+
+    <span class="cm">// Chained constructor — default age 1</span>
+    <span class="kw">public</span> <span class="ty">Animal</span>(<span class="ty">string</span> name, <span class="ty">string</span> species)
+        : <span class="kw">this</span>(name, species, <span class="nm">1</span>) { }
+
+    <span class="cm">// Copy constructor</span>
+    <span class="kw">public</span> <span class="ty">Animal</span>(<span class="ty">Animal</span> source)
+        : <span class="kw">this</span>(source.Name, source.Species, source._age) { }
+
+    <span class="cm">// Abstract — must override</span>
+    <span class="kw">public abstract void</span>  <span class="fn">Speak</span>();
+    <span class="cm">// Virtual — can override</span>
+    <span class="kw">public virtual  void</span>  <span class="fn">Move</span>()
+        => Console.<span class="fn">WriteLine</span>(<span class="st">$"{Name} moves"</span>);
+    <span class="cm">// Static utility</span>
+    <span class="kw">public static   void</span>  <span class="fn">ShowCount</span>()
+        => Console.<span class="fn">WriteLine</span>(<span class="st">$"Total animals: {Count}"</span>);
+}
+
+<span class="cm">// ── PARTIAL CLASS (split file) ────────────────────────────────</span>
+<span class="kw">public abstract partial class</span> <span class="ty">Animal</span>
+{
+    <span class="kw">public string</span> <span class="fn">GetSummary</span>()
+        => <span class="st">$"{Name} ({Species})"</span>;
+}
+
+<span class="cm">// ── SEALED DERIVED CLASS ──────────────────────────────────────</span>
+<span class="kw">public sealed class</span> <span class="ty">Dog</span> : <span class="ty">Animal</span>
+{
+    <span class="kw">internal</span> <span class="ty">string</span>  Breed { <span class="kw">get</span>; }  <span class="cm">// internal</span>
+    <span class="kw">private  bool</span>    _trained;
+
+    <span class="cm">// Calls base master ctor + own logic</span>
+    <span class="kw">public</span> <span class="ty">Dog</span>(<span class="ty">string</span> name, <span class="ty">string</span> breed, <span class="ty">int</span> age, <span class="ty">bool</span> trained)
+        : <span class="kw">base</span>(name, <span class="st">"Canis lupus familiaris"</span>, age)
+    {
+        Breed    = breed;
+        _trained = trained;
+    }
+
+    <span class="cm">// Chains to master dog ctor</span>
+    <span class="kw">public</span> <span class="ty">Dog</span>(<span class="ty">string</span> name, <span class="ty">string</span> breed)
+        : <span class="kw">this</span>(name, breed, <span class="nm">1</span>, <span class="kw">false</span>) { }
+
+    <span class="kw">public override void</span> <span class="fn">Speak</span>()
+        => Console.<span class="fn">WriteLine</span>(<span class="st">$"{Name}: Woof!"</span>);        <span class="cm">// override abstract</span>
+    <span class="kw">public override void</span> <span class="fn">Move</span>()
+        => Console.<span class="fn">WriteLine</span>(<span class="st">$"{Name} runs with tail wagging"</span>); <span class="cm">// override virtual</span>
+}
+
+<span class="cm">// ── GENERIC CLASS ─────────────────────────────────────────────</span>
+<span class="kw">public class</span> <span class="ty">AnimalShelter</span>&lt;<span class="ty">T</span>&gt; <span class="kw">where</span> <span class="ty">T</span> : <span class="ty">Animal</span>
+{
+    <span class="kw">private readonly</span> <span class="ty">List</span>&lt;<span class="ty">T</span>&gt; _animals = <span class="kw">new</span>();
+
+    <span class="kw">public</span> <span class="ty">AnimalShelter</span>() { }  <span class="cm">// default</span>
+
+    <span class="kw">public void</span>  <span class="fn">Add</span>(<span class="ty">T</span> animal)   => _animals.<span class="fn">Add</span>(animal);
+    <span class="kw">public int</span>   <span class="fn">Count</span>()        => _animals.Count;
+}
+
+<span class="cm">// ── USAGE ────────────────────────────────────────────────────</span>
+<span class="ty">Dog</span> rex   = <span class="kw">new</span> <span class="ty">Dog</span>(<span class="st">"Rex"</span>, <span class="st">"Husky"</span>, <span class="nm">3</span>, <span class="kw">true</span>);
+<span class="ty">Dog</span> buddy = <span class="kw">new</span> <span class="ty">Dog</span>(<span class="st">"Buddy"</span>, <span class="st">"Labrador"</span>);
+<span class="ty">Dog</span> clone = <span class="kw">new</span> <span class="ty">Dog</span>(<span class="st">"Rex2"</span>, rex.Breed);
+
+rex.<span class="fn">Speak</span>();           <span class="cm">// Rex: Woof!</span>
+<span class="ty">Animal</span>.<span class="fn">ShowCount</span>();    <span class="cm">// Total animals: 3</span>
+
+<span class="ty">AnimalShelter</span>&lt;<span class="ty">Dog</span>&gt; shelter = <span class="kw">new</span>();
+shelter.<span class="fn">Add</span>(rex);
+shelter.<span class="fn">Add</span>(buddy);</pre></div>
+    </div>
+  </section>
+
+  <!-- ── QUICK REFERENCE TABLE ── -->
+  <section class="section rev" id="quick-ref">
+    <div class="section-head">
+      <span class="section-num">09</span>
+      <h2>Quick <span>Reference</span></h2>
+    </div>
+    <div class="tbl-wrap" style="margin-bottom:1.5rem">
+      <table class="rtable">
+        <thead><tr><th>Class Type</th><th>Instantiate</th><th>Inherit</th><th>Key Use</th></tr></thead>
+        <tbody>
+          <tr><td>Regular</td><td><span class="ybadge">✓ Yes</span></td><td><span class="ybadge">✓ Yes</span></td><td>General purpose objects</td></tr>
+          <tr><td>Abstract</td><td><span class="nbadge">✗ No</span></td><td><span class="ybadge">✓ Yes</span></td><td>Base / template class</td></tr>
+          <tr><td>Sealed</td><td><span class="ybadge">✓ Yes</span></td><td><span class="nbadge">✗ No</span></td><td>Prevent inheritance</td></tr>
+          <tr><td>Static</td><td><span class="nbadge">✗ No</span></td><td><span class="nbadge">✗ No</span></td><td>Utility / helper methods</td></tr>
+          <tr><td>Partial</td><td><span class="ybadge">✓ Yes</span></td><td><span class="ybadge">✓ Yes</span></td><td>Split across files</td></tr>
+          <tr><td>Nested</td><td><span class="ybadge">✓ Yes</span></td><td><span class="ybadge">✓ Yes</span></td><td>Group related logic</td></tr>
+          <tr><td>Generic</td><td><span class="ybadge">✓ Yes</span></td><td><span class="ybadge">✓ Yes</span></td><td>Type-safe reuse</td></tr>
+          <tr><td>Interface</td><td><span class="nbadge">✗ No</span></td><td><span class="ybadge">✓ Implement</span></td><td>Define contracts</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl-wrap">
+      <table class="rtable">
+        <thead><tr><th>Constructor</th><th>Params</th><th>When to Use</th></tr></thead>
+        <tbody>
+          <tr><td>Default</td><td><span class="nbadge">None</span></td><td>Sensible default state, optional creation</td></tr>
+          <tr><td>Parameterized</td><td><span class="ybadge">One or more</span></td><td>Require data at creation time</td></tr>
+          <tr><td>Copy</td><td><span class="ybadge">Same type</span></td><td>Clone / duplicate an existing object</td></tr>
+          <tr><td>Static</td><td><span class="nbadge">None</span></td><td>One-time class-level initialization</td></tr>
+          <tr><td>Private</td><td><span class="ybadge">Any / None</span></td><td>Singleton pattern, factory methods</td></tr>
+          <tr><td>Chained (this)</td><td><span class="ybadge">Any</span></td><td>Avoid duplication, multiple overloads</td></tr>
+          <tr><td>Base (base)</td><td><span class="ybadge">Any</span></td><td>Inheritance — init parent class</td></tr>
+          <tr><td>Expression-bodied</td><td><span class="ybadge">Any</span></td><td>Simple single-expression constructors</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script>
+function setInfo(id, html) {
+  document.getElementById(id).innerHTML = html;
+}
+function showC(id, btn) {
+  document.querySelectorAll('.cpanel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.ctab').forEach(t => t.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+
+// Nav active state on scroll
+const secs = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.nav-link');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+secs.forEach(s => obs.observe(s));
+
+// Scroll reveal
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('vis'); revObs.unobserve(e.target); }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('.rev').forEach(el => revObs.observe(el));
+</script>
+</body>
+</html>

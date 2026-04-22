@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>C# Classes — Complete Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:        #0b0e17;
+      --surface:   #111520;
+      --card:      #161b2e;
+      --border:    #1f2a45;
+      --accent1:   #00d4ff;   /* cyan */
+      --accent2:   #7fff6e;   /* green */
+      --accent3:   #ff9f43;   /* orange */
+      --accent4:   #c792ea;   /* purple */
+      --accent5:   #ff6b81;   /* red-pink */
+      --text:      #e0e8ff;
+      --muted:     #6b7fa3;
+      --keyword:   #c792ea;
+      --type:      #00d4ff;
+      --string:    #7fff6e;
+      --comment:   #4a5a7a;
+      --number:    #ff9f43;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Noise overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, #0d2a4a 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 60%, #0a1f3a 0%, transparent 60%),
+        radial-gradient(ellipse 30% 30% at 20% 80%, #0d1e38 0%, transparent 60%);
+      z-index: -1;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(0,212,255,.07);
+      border: 1px solid rgba(0,212,255,.25);
+      color: var(--accent1);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .75rem;
+      padding: .35rem .9rem;
+      border-radius: 99px;
+      letter-spacing: .12em;
+      margin-bottom: 1.5rem;
+      animation: fadeDown .6s ease both;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1.05;
+      animation: fadeDown .7s .1s ease both;
+    }
+
+    .hero h1 span { color: var(--accent1); }
+
+    .hero p {
+      max-width: 560px;
+      color: var(--muted);
+      font-size: 1.1rem;
+      margin: 1.5rem auto 2.5rem;
+      animation: fadeDown .7s .2s ease both;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+      justify-content: center;
+      animation: fadeDown .7s .3s ease both;
+    }
+
+    .pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .78rem;
+      padding: .4rem 1rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      transition: all .2s;
+      cursor: default;
+    }
+
+    .pill:hover { border-color: var(--accent1); color: var(--accent1); transform: translateY(-2px); }
+
+    /* ── What is a class ── */
+    .section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: .2em;
+      color: var(--accent1);
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+
+    .section h2 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .intro-text p { color: var(--muted); margin-bottom: 1rem; font-size: 1.02rem; }
+
+    .intro-text strong { color: var(--text); }
+
+    /* ── Code block ── */
+    .code-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .82rem;
+      line-height: 1.8;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .7rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,.02);
+    }
+
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #febc2e; }
+    .dot-g { background: #28c840; }
+
+    .code-file {
+      margin-left: auto;
+      color: var(--muted);
+      font-size: .72rem;
+    }
+
+    .code-body {
+      padding: 1.4rem 1.6rem;
+      overflow-x: auto;
+    }
+
+    .code-body pre { white-space: pre; }
+
+    .kw  { color: var(--keyword); }
+    .ty  { color: var(--type); }
+    .st  { color: var(--string); }
+    .cm  { color: var(--comment); font-style: italic; }
+    .nm  { color: var(--number); }
+    .fn  { color: #82aaff; }
+    .pl  { color: var(--text); }
+
+    /* ── Class cards ── */
+    .classes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .class-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+      position: relative;
+    }
+
+    .class-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 16px 16px 0 0;
+    }
+
+    .class-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,.4);
+    }
+
+    .card-c1::before { background: var(--accent1); }
+    .card-c2::before { background: var(--accent2); }
+    .card-c3::before { background: var(--accent5); }
+    .card-c4::before { background: var(--accent3); }
+    .card-c5::before { background: var(--accent4); }
+    .card-c6::before { background: #ffd700; }
+    .card-c7::before { background: linear-gradient(90deg, var(--accent1), var(--accent4)); }
+    .card-c8::before { background: linear-gradient(90deg, var(--accent2), var(--accent1)); }
+
+    .card-c1:hover { border-color: var(--accent1); }
+    .card-c2:hover { border-color: var(--accent2); }
+    .card-c3:hover { border-color: var(--accent5); }
+    .card-c4:hover { border-color: var(--accent3); }
+    .card-c5:hover { border-color: var(--accent4); }
+    .card-c6:hover { border-color: #ffd700; }
+    .card-c7:hover { border-color: var(--accent1); }
+    .card-c8:hover { border-color: var(--accent2); }
+
+    .card-head {
+      padding: 1.4rem 1.6rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .card-title h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: .2rem;
+    }
+
+    .card-title p {
+      color: var(--muted);
+      font-size: .87rem;
+    }
+
+    .card-tags {
+      display: flex;
+      gap: .4rem;
+      flex-wrap: wrap;
+      padding: 0 1.6rem .8rem;
+    }
+
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .68rem;
+      padding: .2rem .6rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .tag-yes { color: var(--accent2); border-color: rgba(127,255,110,.25); background: rgba(127,255,110,.05); }
+    .tag-no  { color: var(--accent5); border-color: rgba(255,107,129,.25); background: rgba(255,107,129,.05); }
+
+    .card-code { border-top: 1px solid var(--border); }
+
+    .card-code .code-body { padding: 1rem 1.4rem; font-size: .77rem; }
+
+    /* ── Concepts table ── */
+    .concepts-section { padding: 3rem 2rem 5rem; max-width: 1100px; margin: 0 auto; }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      margin-top: 1.5rem;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead { background: var(--surface); }
+
+    th {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent1);
+      padding: 1rem 1.4rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: .9rem 1.4rem;
+      font-size: .92rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    tr:hover td { background: rgba(255,255,255,.02); color: var(--text); }
+
+    td:first-child {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent3);
+      font-size: .85rem;
+    }
+
+    .yes-badge, .no-badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem;
+      padding: .2rem .6rem;
+      border-radius: 4px;
+    }
+
+    .yes-badge { color: var(--accent2); background: rgba(127,255,110,.08); }
+    .no-badge  { color: var(--accent5); background: rgba(255,107,129,.08); }
+
+    /* ── Key concepts ── */
+    .concepts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .concept-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .concept-item:hover { border-color: var(--accent1); transform: translateY(-2px); }
+
+    .concept-name {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--accent1);
+      font-size: .85rem;
+      margin-bottom: .4rem;
+    }
+
+    .concept-desc { color: var(--muted); font-size: .88rem; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2.5rem 2rem;
+      color: var(--muted);
+      font-size: .85rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
+      .intro-grid { grid-template-columns: 1fr; }
+      .classes-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="badge">⬡ C# Language Reference</div>
+
+  <h1>Understanding<br/><span>C# Classes</span></h1>
+
+  <p>A complete visual guide to every class type in C# — from basics to generics, with live code examples and comparisons.</p>
+
+  <div class="hero-pills">
+    <span class="pill">Regular</span>
+    <span class="pill">Abstract</span>
+    <span class="pill">Sealed</span>
+    <span class="pill">Static</span>
+    <span class="pill">Partial</span>
+    <span class="pill">Nested</span>
+    <span class="pill">Generic</span>
+    <span class="pill">Interface</span>
+  </div>
+</section>
+
+<!-- ═══ WHAT IS A CLASS ═══ -->
+<section class="section reveal">
+  <div class="section-label">// 01 — Foundation</div>
+  <h2>What is a Class?</h2>
+
+  <div class="intro-grid">
+    <div class="intro-text">
+      <p>A <strong>class</strong> is a blueprint or template for creating objects. It bundles <strong>data</strong> (fields &amp; properties) and <strong>behavior</strong> (methods) together into a single reusable unit.</p>
+      <p>When you create an <strong>object</strong> from a class, you're creating an <em>instance</em> — a real, in-memory version of that blueprint with its own set of values.</p>
+      <p>Classes are the foundation of <strong>Object-Oriented Programming (OOP)</strong> in C# and support four key pillars: <strong>Encapsulation, Inheritance, Polymorphism,</strong> and <strong>Abstraction.</strong></p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <span class="code-file">Car.cs</span>
+      </div>
+      <div class="code-body"><pre><span class="kw">class</span> <span class="ty">Car</span>
+{
+    <span class="cm">// Fields (data)</span>
+    <span class="kw">public</span> <span class="ty">string</span> Brand;
+    <span class="kw">public</span> <span class="ty">int</span> Speed;
+
+    <span class="cm">// Method (behavior)</span>
+    <span class="kw">public void</span> <span class="fn">Drive</span>()
+    {
+        Console.<span class="fn">WriteLine</span>(
+          <span class="st">$"{Brand} at {Speed} km/h"</span>
+        );
+    }
+}
+
+<span class="cm">// Creating an object</span>
+<span class="ty">Car</span> myCar = <span class="kw">new</span> <span class="ty">Car</span>();
+myCar.Brand = <span class="st">"Toyota"</span>;
+myCar.Speed = <span class="nm">120</span>;
+myCar.<span class="fn">Drive</span>(); <span class="cm">// Toyota at 120 km/h</span></pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TYPES ═══ -->
+<section class="section reveal" style="padding-top:0;">
+  <div class="section-label">// 02 — Class Types</div>
+  <h2>8 Types of Classes in C#</h2>
+
+  <div class="classes-grid">
+
+    <!-- 1. Regular -->
+    <div class="class-card card-c1">
+      <div class="card-head">
+        <div class="card-icon">🔷</div>
+        <div class="card-title">
+          <h3>Regular (Concrete) Class</h3>
+          <p>The standard class — can be instantiated and inherited freely.</p>
+        </div>
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-yes">✓ Instantiate</span>
+        <span class="tag tag-yes">✓ Inherit</span>
+        <span class="tag tag-yes">✓ General Purpose</span>
+      </div>
+      <div class="card-code code-block">
+        <div class="code-body"><pre><span class="kw">class</span> <span class="ty">Animal</span>
+{
+    <span class="kw">public string</span> Name;
+    <span class="kw">public void</span> <span class="fn">Speak</span>()
+      => Console.<span class="fn">WriteLine</span>(<span class="st">$"{Name} speaks"</span>);
+}
+<span class="cm">// ✅ Can create object directly</span>
+<span class="ty">Animal</span> a = <span class="kw">new</span> <span class="ty">Animal</span>();</pre></div>
+      </div>
+    </div>
+
+    <!-- 2. Abstract -->
+    <div class="class-card card-c2">
+      <div class="card-head">
+        <div class="card-icon">🔶</div>
+        <div class="card-title">
+          <h3>Abstract Class</h3>
+          <p>Cannot be instantiated. Forces derived classes to implement abstract members.</p>
+        </div>
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-no">✗ Instantiate</span>
+        <span class="tag tag-yes">✓ Inherit</span>
+        <span class="tag tag-yes">✓ Base Template</span>
+      </div>
+      <div class="card-code code-block">
+        <div class="code-body"><pre><span class="kw">abstract class</span> <span class="ty">Shape</span>
+{
+    <span class="kw">public abstract double</span> <span class="fn">Area</span>();
+}
+<span class="kw">class</span> <span class="ty">Circle</span> : <span class="ty">Shape</span>
+{
+    <span class="kw">public double</span> Radius;
+    <span class="kw">public override double</span> <span class="fn">Area</span>()
+      => Math.PI * Radius * Radius;
+}</pre></div>
+      </div>
+    </div>
+
+    <!-- 3. Sealed -->
+    <div class="class-card card-c3">
+      <div class="card-head">
+        <div class="card-icon">🔒</div>
+        <div class="card-title">
+          <h3>Sealed Class</h3>
+          <p>Prevents any other class from inheriting it. Great for security or optimization.</p>
+        </div>
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-yes">✓ Instantiate</span>
+        <span class="tag tag-no">✗ Inherit</span>
+        <span class="tag tag-yes">✓ Security</span>
+      </div>
+      <div class="card-code code-block">
+        <div class="code-body"><pre><span class="kw">sealed class</span> <span class="ty">BankAccount</span>
+{
+    <span class="kw">public double</span> Balance { <span class="kw">get</span>; <span class="kw">set</span>; }
+}
+
+<span class="cm">// ❌ This would cause an error:</span>
+<span class="cm">// class Savings : BankAccount { }</span></pre></div>
+      </div>
+    </div>
+
+    <!-- 4. Static -->
+    <div class="class-card card-c4">
+      <div class="card-head">
+        <div class="card-icon">📦</div>
+        <div class="card-title">
+          <h3>Static Class</h3>
+          <p>Only contains static members. Cannot be instantiated or inherited. Used for utilities.</p>
+        </div>
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-no">✗ Instantiate</span>
+        <span class="tag tag-no">✗ Inherit</span>
+        <span class="tag tag-yes">✓ Utility</span>
+      </div>
+      <div class="card-code code-block">
+        <div class="code-body"><pre><span class="kw">static class</span> <span class="ty">MathHelper</span>
+{
+    <span class="kw">public static int</span> <span class="fn">Square</span>(<span class="kw">int</span> x) => x * x;
+    <span class="kw">public static int</span> <span class="fn">Cube</span>(<span class="kw">int</span> x) => x * x * x;
+}
+<span class="cm">// Called without creating object:</span>
+MathHelper.<span class="fn">Square</span>(<span class="nm">4</span>); <span class="cm">// → 16</span></pre></div>
+      </div>
+    </div>
+
+    <!-- 5. Partial -->
+    <div class="class-card card-c5">
+      <div class="card-head">
+        <div class="card-icon">🧩</div>
+        <div class="card-title">
+          <h3>Partial Class</h3>
+          <p>Split a single class across multiple files. All parts merge at compile time.</p>
+        </div>
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-yes">✓ Instantiate</span>
+        <span class="tag tag-yes">✓ Inherit</span>
+        <span class="tag tag-yes">✓ Multi-file</span>
+      </div>
+      <div class="card-code code-block">
+        <div class="code-body"><pre><span class="cm">// File1.cs</span>
+<span class="kw">partial class</span> <span class="ty">Employee</span>
+{
+    <span class="kw">public string</span> Name;
+}
+<span class="cm">// File2.cs</span>
+<span class="kw">partial class</span> <span class="ty">Employee</span>
+{
+    <span class="kw">public void</span> <span class="fn">Display</span>()
+      => Console.<span class="fn">WriteLine</span>(Name);
+}</pre></div>
+      </div>
+    </div>
+
+    <!-- 6. Nested -->
+    <div class="class-card card-c6">
+      <div class="card-head">
+        <div class="card-icon">🪆</div>
+        <div class="card-title">
+          <h3>Nested Class</h3>
+          <p>A class declared inside another class. Useful for grouping tightly-coupled logic.</p>
+        </div>
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-yes">✓ Instantiate</span>
+        <span class="tag tag-yes">✓ Inherit</span>
+        <span class="tag tag-yes">✓ Encapsulated</span>
+      </div>
+      <div class="card-code code-block">
+        <div class="code-body"><pre><span class="kw">class</span> <span class="ty">Outer</span>
+{
+    <span class="kw">private int</span> x = <span class="nm">10</span>;
+
+    <span class="kw">class</span> <span class="ty">Inner</span>  <span class="cm">// Nested class</span>
+    {
+        <span class="kw">public void</span> <span class="fn">Show</span>()
+          => Console.<span class="fn">WriteLine</span>(<span class="st">"Inner!"</span>);
+    }
+}</pre></div>
+      </div>
+    </div>
+
+    <!-- 7. Generic -->
+    <div class="class-card card-c7">
+      <div class="card-head">
+        <div class="card-icon">🏗️</div>
+        <div class="card-title">
+          <h3>Generic Class</h3>
+          <p>Works with any data type using type parameters &lt;T&gt;. Reusable and type-safe.</p>
+        </div>
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-yes">✓ Instantiate</span>
+        <span class="tag tag-yes">✓ Inherit</span>
+        <span class="tag tag-yes">✓ Type-Safe</span>
+      </div>
+      <div class="card-code code-block">
+        <div class="code-body"><pre><span class="kw">class</span> <span class="ty">Box</span>&lt;<span class="ty">T</span>&gt;
+{
+    <span class="kw">public</span> <span class="ty">T</span> Value;
+    <span class="kw">public void</span> <span class="fn">Show</span>()
+      => Console.<span class="fn">WriteLine</span>(Value);
+}
+<span class="ty">Box</span>&lt;<span class="ty">int</span>&gt; b1 = <span class="kw">new</span>() { Value = <span class="nm">42</span> };
+<span class="ty">Box</span>&lt;<span class="ty">string</span>&gt; b2 = <span class="kw">new</span>() { Value = <span class="st">"Hi"</span> };</pre></div>
+      </div>
+    </div>
+
+    <!-- 8. Interface -->
+    <div class="class-card card-c8">
+      <div class="card-head">
+        <div class="card-icon">📋</div>
+        <div class="card-title">
+          <h3>Interface</h3>
+          <p>Defines a contract. Classes implementing it <em>must</em> provide all members. Enables polymorphism.</p>
+        </div>
+      </div>
+      <div class="card-tags">
+        <span class="tag tag-no">✗ Instantiate</span>
+        <span class="tag tag-yes">✓ Implement</span>
+        <span class="tag tag-yes">✓ Contract</span>
+      </div>
+      <div class="card-code code-block">
+        <div class="code-body"><pre><span class="kw">interface</span> <span class="ty">IFlyable</span>
+{
+    <span class="kw">void</span> <span class="fn">Fly</span>(); <span class="cm">// No body</span>
+}
+<span class="kw">class</span> <span class="ty">Bird</span> : <span class="ty">IFlyable</span>
+{
+    <span class="kw">public void</span> <span class="fn">Fly</span>()
+      => Console.<span class="fn">WriteLine</span>(<span class="st">"Flying!"</span>);
+}</pre></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ COMPARISON TABLE ═══ -->
+<section class="concepts-section reveal">
+  <div class="section-label">// 03 — Quick Reference</div>
+  <h2>Comparison Table</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Class Type</th>
+          <th>Instantiate</th>
+          <th>Inherit</th>
+          <th>Key Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Regular</td>
+          <td><span class="yes-badge">✓ Yes</span></td>
+          <td><span class="yes-badge">✓ Yes</span></td>
+          <td>General purpose objects</td>
+        </tr>
+        <tr>
+          <td>Abstract</td>
+          <td><span class="no-badge">✗ No</span></td>
+          <td><span class="yes-badge">✓ Yes</span></td>
+          <td>Base / template class</td>
+        </tr>
+        <tr>
+          <td>Sealed</td>
+          <td><span class="yes-badge">✓ Yes</span></td>
+          <td><span class="no-badge">✗ No</span></td>
+          <td>Prevent inheritance</td>
+        </tr>
+        <tr>
+          <td>Static</td>
+          <td><span class="no-badge">✗ No</span></td>
+          <td><span class="no-badge">✗ No</span></td>
+          <td>Utility / helper methods</td>
+        </tr>
+        <tr>
+          <td>Partial</td>
+          <td><span class="yes-badge">✓ Yes</span></td>
+          <td><span class="yes-badge">✓ Yes</span></td>
+          <td>Split class across files</td>
+        </tr>
+        <tr>
+          <td>Nested</td>
+          <td><span class="yes-badge">✓ Yes</span></td>
+          <td><span class="yes-badge">✓ Yes</span></td>
+          <td>Group related logic</td>
+        </tr>
+        <tr>
+          <td>Generic</td>
+          <td><span class="yes-badge">✓ Yes</span></td>
+          <td><span class="yes-badge">✓ Yes</span></td>
+          <td>Type-safe reusable logic</td>
+        </tr>
+        <tr>
+          <td>Interface</td>
+          <td><span class="no-badge">✗ No</span></td>
+          <td><span class="yes-badge">✓ Implement</span></td>
+          <td>Define contracts</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ KEY CONCEPTS ═══ -->
+<section class="concepts-section reveal" style="padding-top:0;">
+  <div class="section-label">// 04 — Inside a Class</div>
+  <h2>Key Concepts</h2>
+
+  <div class="concepts-grid">
+    <div class="concept-item">
+      <div class="concept-name">Field</div>
+      <div class="concept-desc">A variable declared directly inside a class that stores data for the object.</div>
+    </div>
+    <div class="concept-item">
+      <div class="concept-name">Property</div>
+      <div class="concept-desc">Provides controlled access to fields via <code style="color:var(--accent1)">get</code> and <code style="color:var(--accent1)">set</code> accessors.</div>
+    </div>
+    <div class="concept-item">
+      <div class="concept-name">Method</div>
+      <div class="concept-desc">A function defined in the class that describes the behavior of its objects.</div>
+    </div>
+    <div class="concept-item">
+      <div class="concept-name">Constructor</div>
+      <div class="concept-desc">A special method called automatically when a new object is created with <code style="color:var(--accent1)">new</code>.</div>
+    </div>
+    <div class="concept-item">
+      <div class="concept-name">Destructor</div>
+      <div class="concept-desc">Called when the object is being destroyed; used to release unmanaged resources.</div>
+    </div>
+    <div class="concept-item">
+      <div class="concept-name">Inheritance</div>
+      <div class="concept-desc">A class can extend another using <code style="color:var(--accent1)">:</code>, inheriting its members and behavior.</div>
+    </div>
+    <div class="concept-item">
+      <div class="concept-name">Encapsulation</div>
+      <div class="concept-desc">Hiding internal details using access modifiers like <code style="color:var(--accent1)">private</code>, <code style="color:var(--accent1)">protected</code>, <code style="color:var(--accent1)">public</code>.</div>
+    </div>
+    <div class="concept-item">
+      <div class="concept-name">Polymorphism</div>
+      <div class="concept-desc">A method behaving differently based on the object calling it via <code style="color:var(--accent1)">override</code>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <span style="color:var(--accent1)">// C# Classes Reference</span> &nbsp;·&nbsp; Built with ♥ &nbsp;·&nbsp; <span style="color:var(--muted)">namespace CSharp.Guide</span>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
