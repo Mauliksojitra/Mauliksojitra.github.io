@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AZ-900 Notes</title>
+<style>
+  :root {
+    --bg: #0b1020; --surface: #121a33; --surface-2: #1a2547;
+    --border: #25305a; --text: #e6ecff; --muted: #97a3c8;
+    --primary: #5eead4; --accent: #a78bfa;
+    --primary-soft: rgba(94,234,212,0.12); --accent-soft: rgba(167,139,250,0.12);
+    --code-bg: #0f1530;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f7f8fc; --surface: #ffffff; --surface-2: #f1f3fb;
+      --border: #e2e6f3; --text: #1a2240; --muted: #5b6789;
+      --primary: #0f766e; --accent: #6d28d9;
+      --primary-soft: rgba(15,118,110,0.08); --accent-soft: rgba(109,40,217,0.08);
+      --code-bg: #eef1fa;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  header.top {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11,16,32,0.85); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  @media (prefers-color-scheme: light) {
+    header.top { background: rgba(247,248,252,0.85); }
+  }
+  header.top .inner {
+    max-width: 920px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  header.top .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 4px 10px; border-radius: 999px;
+    background: var(--primary-soft); color: var(--primary);
+    border: 1px solid var(--primary);
+  }
+  main { max-width: 920px; margin: 0 auto; padding: 40px 24px 96px; }
+  .hero {
+    margin-bottom: 32px; padding: 28px; border-radius: 16px;
+    background: linear-gradient(135deg, var(--primary-soft), var(--accent-soft));
+    border: 1px solid var(--border);
+  }
+  .hero p { margin: 0; color: var(--muted); }
+  article h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem); margin: 8px 0 24px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    line-height: 1.1;
+  }
+  article h2 {
+    font-size: 1.85rem; margin: 56px 0 16px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--border); color: var(--primary);
+  }
+  article h3 { font-size: 1.4rem; margin: 32px 0 12px; color: var(--accent); }
+  article h4 { font-size: 1.15rem; margin: 24px 0 8px; color: var(--text); }
+  article p { margin: 12px 0; }
+  article strong { color: var(--primary); font-weight: 600; }
+  article em { color: var(--accent); font-style: italic; }
+  article a { color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+  article a:hover { color: var(--accent); }
+  article ul, article ol { margin: 12px 0; padding-left: 1.6rem; }
+  article ul { list-style: disc; }
+  article ol { list-style: decimal; }
+  article li { margin: 4px 0; }
+  article li > ul, article li > ol { margin-top: 6px; }
+  article hr { border: none; height: 1px; background: var(--border); margin: 40px 0; }
+  article blockquote {
+    border-left: 4px solid var(--primary); background: var(--surface-2);
+    padding: 10px 16px; margin: 16px 0; border-radius: 0 8px 8px 0;
+  }
+  article code {
+    background: var(--code-bg); color: var(--accent);
+    padding: 2px 6px; border-radius: 4px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em;
+  }
+  article pre {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; overflow-x: auto;
+    font-size: 0.9em; line-height: 1.5;
+  }
+  article pre code { background: transparent; padding: 0; color: var(--text); }
+  .table-wrap {
+    overflow-x: auto; border: 1px solid var(--border);
+    border-radius: 12px; margin: 20px 0;
+  }
+  article table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  article thead { background: var(--surface-2); }
+  article th {
+    text-align: left; padding: 12px 16px;
+    color: var(--primary); font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  article td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  article tr:last-child td { border-bottom: none; }
+  footer {
+    text-align: center; color: var(--muted);
+    font-size: 13px; padding: 24px; border-top: 1px solid var(--border);
+  }
+  .err { color: #f87171; padding: 16px; border: 1px solid #f87171; border-radius: 8px; }
+</style>
+</head>
+<body>
+  <header class="top">
+    <div class="inner">
+      <span>★ Study Notes</span>
+      <span class="badge">AZ-900</span>
+    </div>
+  </header>
+  <main>
+    <div class="hero">
+      <p>Microsoft Azure Fundamentals &mdash; full notes, preserved exactly as written.</p>
+    </div>
+    <article id="content"><p style="color:var(--muted)">Loading notes&hellip;</p></article>
+  </main>
+  <footer>Single self-contained HTML &middot; AZ-900 Notes</footer>
+
+  <script id="md-source" type="text/markdown"># AZ-900 Notes
+
+
+## ☆ Responsibility Models / Cloude Service Type
+
+1) On Premises (On-Prem) (Responsibility / noted)
+2) IAAS - Cloud Responsibility - VM
+3) PAAS - Shared Responsibility - Web App, Function App
+4) SAAS - Azure DevOps, Outlook, Office 365
+
+### IAAS
+- Computing
+    - Azure VMs -> Pay by Second
+- Storage
+    - Azure Storage, Blob, FIle, Queue, Table
+    - 5 PB of storage capacity
+    - Can be configure as Data Lack for Large Data
+- Networking
+    - Virtual Network, Subnet -> Bandwith
+    - Virtual Network don't cost anything
+    - There are **ingress** and **egress** bandwidth costs
+    - **ingress** is free and 5 GB **egress** is free per month
+    - Traffic between region is Payable 
+
+### PAAS
+- Computing
+    - Azure APP Services -> Auto scalling, container, CI/CD
+- Storage
+    - Manage Storage
+    - Azure SQL Storage
+- Networking
+    - Front Door, Load Balancer, Firewall
+
+
+### SAAS
+- Office 365, OneDrive, Skype
+
+### ☆ Cloud Computing
+
+- Web APP - Run code in Azure without managing the infrastructure/VM  
+- Function APP - Run small code in the cloud without a server, you can update code directly from browser  
+- Logic APP - Connect two Apps
+
+
+### ☆ Serverless - Pay for use
+- First, you don’t manage the servers.
+- You only handle writing and running the code.
+
+- **Serverless = Consumption-Based Pricing**
+    - You only pay for what you use.
+    - No charges when your app or database is idle.
+    - No need to pre-purchase or reserve resources.
+1) Functions
+2) Container App
+3) Kubernetes
+4) SQL Database
+5) Consmos DB
+
+- **Azure SQL Database** - SQL Database Options
+    1) DTU
+        - Fixed performance level (S1, S2, etc)
+    2) vCore 
+        - You choose CPU, Memory, Storage
+    3) Serverless
+        - Autoscale CPU, Memory based on usage
+
+- Auto scale - 0.5 to 80 vCores
+- You’re charged per vCore-second and used.
+- It can pause when idle, cutting costs entirely.
+
+#### Azure Functions
+- Azure Functions is a classic serverless example
+    - First 1 million execution per month free
+    - After Pay per execution
+    - Azure handle Autoscaling
+
+
+### Serverless Pros and Cons
+
+| Advantages                          | Challenges                                |
+|-------------------------------------|-------------------------------------------|
+| No server management                | Costs may vary month-to-month             |
+| Scales automatically                | Cold starts may cause slight delays       |
+| Cost-efficient for intermittent workloads |                                           |
+
+
+---
+
+## ☆ Types of Cloud
+1) Public
+2) Private 
+    - Require Capax
+   - Azure Goverment Cloud
+   - Azure Local (Formerly Azure Stack HCI) -->It allows to run Azure functionality on your local.
+   - Azure ARC - manage platform it
+3) Hybrid cloud
+4) Multi cloud
+
+### Comparison of Cloud Deployment Models
+
+| Category       | Public Cloud                   | Private Cloud                   | Hybrid Cloud                  |
+|----------------|--------------------------------|---------------------------------|--------------------------------|
+| **Cost**       | Operational Expenditure (OpEx) | Capital Expenditure (CapEx)     | Blend                         |
+| **Ownership**  | Azure                          | You                             | Both                          |
+| **Access**     | General Public                 | Restricted                      | Combination                   |
+| **Scalability**| Massive / Elastic              | Limited                         | Flexible                      |
+| **Core Value** | Speed, Cost, Efficiency        | Control, Security, Compliance   | Flexibility and Control       |
+
+
+## ☆ Cloud Pricing
+- Region  
+- OS  
+- Instance type  
+- Disk type  
+- Bandwidth  
+- Backup storage  
+- Reserved instance  
+- Support
+
+### Factors Affecting VM Pricing
+
+| Factor                     | Description                                                                 |
+|-----------------------------|-----------------------------------------------------------------------------|
+| **Geographical Region**     | Pricing varies depending on the data center location.                       |
+| **Operating System SKU / License** | Different OS types and licensing models affect overall VM cost.          |
+| **Instance Size**           | Larger compute sizes increase pricing.                                      |
+| **Disk Type / Size**        | Premium SSDs vs. Standard HDDs impact storage cost.                         |
+| **Bandwidth**               | Outbound data transfer charges apply.                                       |
+| **Backup**                  | Additional cost for backup and recovery services.                           |
+| **Reservation / Savings Plan** | Discounts available for long-term commitments.                             |
+| **Support Agreement**       | Enterprise support plans add to overall cost.                               |
+
+
+--
+
+- Pay for time  - VM
+- Pay for GB  - Storage
+- Pay for operations  - Network/Bandwith  
+
+
+## ☆ Benefits of the Cloud
+1. **High availability / High uptime**  ==> Ability of a system to remain operational to users during planned or unplanned outages
+    - Planned outages  (We can control timing)
+        - OS security patches  
+        - Application updates  
+        - Hardware replacement  
+        - Migrating to new hosting provider
+    
+    - Methods to mitigate Planned Outages
+        - Grdual deployment stratagy
+            - 1-10-100 etc
+        - Testing and monitoring of deployment
+        - Every rollback plan     
+
+    - Unplanned Outages  
+        - Hardware failure  
+        - Network disruptions
+        - Power Outage  
+        - Natural disasters  
+        - Cyber attacks  
+        - Software bugs     
+
+    - Methods to Mitigate Unplanned Outages
+        - Every single core component has redundancy
+        - Use Azure’s built-in features for availability
+            - Availability Sets
+            - Availability Zones
+            - Cross-Region Load Balancing / Front Door
+        - Constant health monitoring / probes
+        - Automation
+        - Strong security practices
+        - Be geographically distributed
+        - Have a disaster recovery plan
+        - Test that disaster recovery plan / fire drills!
+        - Load testing
+
+2. **Scalability** ==> The ability of a system to accommodate increasing demand by adding or removing resources as needed.
+    - Options
+        - Manual
+        - Automatic
+        - Scheduled
+    - Types
+        1. Vertical Scaling
+            - Also called “scaling up” or “scaling down”
+            - Adding more resources to a single server
+            - Single server limitation 96 CPUs, 384 GB Memory (RAM)
+        2. Horizontal Scaling
+            - Also called “scaling out” or “scaling in”
+            - Adding more servers to a system
+            - No limits to scaling
+            - Additional complexities for load balancing
+        
+3. **Elasticity / Auto Scalling**
+    - The system monitor some metric such as CPU Utilization and determine how system is busy
+    - The ability of a system to **quickly and easily** scale up or down the amount of resources that a system uses in response to changing demand
+
+4. **High Quality Service**
+
+    1. **Availability**
+        - The ability of a system to be accessible and usable by **users** when they need it
+        - A conscious effort to avoid the obvious sources of downtime
+
+        - **Example** of Available Azure Servies for VM
+            - Availability Zone
+            - Virtual Machine Scale Set
+            - Availability Set
+
+    2.  **Reliability**
+        - The ability of a system to **recover from failures**
+        - Azure has several built-in services that you can use to keep an application running after a failure has occurred
+        - Failures Types
+            - Hardware failure
+            - Network interruptions
+            - Power failures
+            - Large-scale regional outage
+
+        - Tools for **Reliability**
+            - Azure Monitor
+            - Azure Service Health (Planned Outages)
+            - Azure Advisor (Recommandation)
+
+    
+    3. **Predictibility**
+        - Ability to forecast and control the performance of system
+        
+        - Tools for **Predictibility**
+           - Performance Predictability
+           - Cost Predictability
+                - TOC - Total Cost of Ownershit (Migration from on-prem to cloud)
+                - Pricing Calulator (Estimate cost)
+
+5. **Security**
+    - Security is a fundamental challenge in IT
+    - You want confidence that your cloud provider cannot easily be defeated by hackers and those with malicious intent
+
+    - **How Is It Achieved?**
+        - Industry standard compliance certifications
+        - Microsoft Security Response Center (MSRC)
+        - Always-on DDoS
+        - Azure Policy - Azure BluePrint
+        - Role based access control (RBAC)
+        - Entra ID (formerly Azure Active Directory)
+        - Always up-to-date platform services
+        - Update management
+        - Encryption by default
+        - Dozens of security services like firewall
+
+6. **Governance**
+    - How your organization does business
+    - The process of defining, implementing, and monitoring a framework of policies that guides an organization's cloud operations
+    - **Why Is It Needed?**
+        - Your company wants to ensure it’s policies are followed in the cloud
+        - Includes basic auditing and reporting, as well as enforcement
+        - You want to be compliant with industry standards such as HIPAA or PCC or GDPR
+
+    - **How Is It Achieved?**
+        - Azure Policy & Blueprint
+        - Management groups
+        - Custom roles
+        - Soft delete
+        - Guides and best practices such as Cloud Adoption Framework        
+
+7. **Managibility**
+    1. **Management of the cloude**
+        - Templates
+        - Automation
+        - Scaling
+        - Monitoring and alerts
+        - Self-healing
+    2. **Management in the cloude**
+        - Azure portal / Web Portal
+        - Command line interface and scripts
+        - APIs
+        - PowerShell
+    
+
+---
+
+# ★ Cor e Architecture Components of Azure (35-40%)
+
+## ☆ Physical Infrastructure
+- DataCenters
+- Regions - set of datacenters (minimum 3 in a set) - Total 60 Regions
+- Region Pair - 2 or more regions connected (highest speed connections) (We can't select)
+- Sovereign Region - This is not connected to public cloud
+- Availability Zone
+
+- Region --> Availablility Zone --> Data Center
+
+## ☆ Availability Zone
+
+### Three Types of Availability Zone Services
+
+1. **Zonal Services**
+    - You can choose a specific Availability Zone to deploy the service to
+    - You then should deploy a duplicate service to another zone to achieve resiliency
+    - E.g. Virtual Machines
+
+2. **Zone-Redundant Services**
+    - Automatically deployed across zones for you
+    - You don’t have to configure it
+    - E.g. Azure SQL Database
+
+3. **Always Available Services**
+    - These are global services and Microsoft takes care of the ensuring that they are always on
+    - Also called “Non-regional services”
+    - E.g. Azure Portal, Entra ID (formerly Azure Active Directory), Azure Front Door
+
+<!-- Maulik -->
+1) Zone Redundant Services (ZRS)
+    - Azure SQL Database --> Auto Deploy to diffrent zone
+
+
+## ☆ Management Infrastracture or Azure Resources & Groups  
+Management Groups  (max 6 hierarchical level & Single directory max 10,000 management groups)  
+   ↓  
+Subscriptions  
+   ↓  
+Resource Groups  
+   ↓  
+Resources (SQL, VM, APP)  
+
+### Resources
+- A generic word for any Azure service  
+    - Ex. VM, Storage Account or DB  
+    - We can create Resources with  
+        - Azure Portal  
+        - CLI  
+        - ARM Template
+    - Only one subscription per resource  
+
+### Resource Group  
+- We can combine multiple Resources and create Resource Group  
+   - It's one type of folder in that we add our resources.
+   - **We can create Resource Group with combination of resources with different Regions.**
+   - Only one Subscription per Resource.  
+   - We can provide permission at Resource Group level  
+
+
+### Subscriptions  
+   - Billing Unit  
+   - Administrative boundary for Governance, Compliance, access control Policies  
+- A single user can have access to multiple subscriptions with different roles through RBAC
+
+    1. Free Plan  
+    2. Pay as you go  
+    3. Enterprise Agreement  
+    4. Free Credits - MSDN, Startup Plans  
+
+
+### Azure Management Groups
+
+    Root Management Group
+    ├─ Subscription1
+    ├─ Subscription2
+    └─ Management Group
+        ├─ Sub3
+        └─ Sub4
+
+- Root Management Group has max 6 hierarchical level  
+- It provides inheritance to all for policies, RBAC, governance settings    
+
+## ☆ Technical Pillars of Azure
+
+### 1. Compute Services
+- Virtual Machines (IaaS)  
+- Virtual Machines scale sets (IaaS)
+    - Group of identical VMs
+    - LoadBalancing the VM is required
+    - Auto scale basd on demand
+        1. scale up
+            - Can go to 64 vCPUs or higher 
+         2. scale out   
+            - Can handle up to 100 VMs in a single scale set
+            - Can be configured to increase that to 1000 VMs in a single scale set
+    - Ex. Two or more virtual machines running the exact same code
+- Virtual Machines Availability sets & Proximity Groups(IaaS)
+    - Enable highly available VMs
+    - Fault isolation keep All VM seperate
+        - Update Domain - Ex. Used when planned outage
+        - Fault Domain - Ex. Power supply goes down
+    - Proximity Groups - Keep VMs close as possible as ex. server in same data center  
+- App services (Web APPs) (PaaS) 
+- Azure Container Instances (ACI)
+- Azure Container APPs  
+- Azure Kubernetes services (AKS)  
+- Virtual desktop 
+    - RBAC, MFA, Azure AD
+ 
+
+### 2. Networking Services
+- Virtual Network / VNets (IaaS)  
+    - By default, two virtual machines in Azure are not allowed to talk with each other – security!
+    - Address space - IPv4 or IPv6 addresses
+    - These are private addresses
+
+- Subnet
+    - All VNets are subdivided into one or more subnets
+    - The subnet is assigned a range of IP addresses which must exist in the address space of the parent VNet
+    - All virtual machines must belong to at least one subnet, using a Network Interface Card (NIC)
+    - Some VMs have more than one NIC and can connect to more than one subnet
+    - VMs can optionally be assigned a public IP, which makes it eligible to be accessed from outside Azure (subnet to security/firewalls)
+
+    **Network Security Group (NSG)**
+    - An access control list (ACL) that blocks traffic inbound and outbound from a subnet unless it matches certain rules
+    - The rules are based on source IP, source port, destination IP, destination port, and protocol(5-tuple match)
+    - You can allow communication between different subnets on the same network through adding specific NSG rules
+    - No traffic passes the NSG filter unless an “ALLOW” rule matches
+    - Rules have priorities, and the highest priority rule that matches is the one that applies
+
+    **Peering**
+    - Communication is blocked between two subnets on different networks
+    - Connecting two subnets together is called peering
+    - This allows communication between a VM on one network and a VM on a different network
+
+
+    **Azure DNS**
+    - DNS stands for Domain Name System
+    - You can give your IP addresses names using a DNS
+    - DNS only applies internally to Azure to applied networks
+
+
+    **Azure VPN Gateway**
+    - VPN is Virtual Private Network
+    - Allows communication between a workstation and a network, or between two networks
+    - Encrypts traffic between those two points
+
+    **VPNs**
+    - Outside of Azure, VPNs require a physical device to be installed on a network
+    - Inside of Azure, you can install a VPN Gateway as a virtual device on your network
+    - VPN Gateway requires its own subnet
+
+    **Connectivity Options**
+    - Point-to-Point VPN
+    - Site-to-Site VPN
+    - Azure ExpressRoute
+
+    **ExpressRoute**
+    - If communicating into Azure at high speeds is important to you, you might want to look into ExpressRoute
+    - A private connection from your ISP to an Azure endpoint
+    - Bypasses the public Internet
+
+### Comparing Endpoints
+
+| Feature | Public Endpoint (With Internet Access) | Public Endpoint + Specified Network | Private Endpoint |
+|--------|----------------------------------------|-------------------------------------|------------------|
+| IP Type | Public IP | Public IP | Private IP |
+| Accessibility | Accessible from anywhere on the Internet | Accessible from Internet and selected networks | Accessible only from within your VNet |
+| Traffic Flow | Traffic can go to the public Internet (SSL) | Traffic from selected networks stays in Azure | Traffic never travels the public Internet |
+| Network Control | No restrictions | Can filter IP ranges | Restricted to private network only |
+
+
+
+### 3. Storage Account (IaaS)
+- **UnMannaged** - Container (Blob) storage (GPV)  
+- **Managed** - Disk Storage - Virtual Hard Disks (VHDs)  
+- Azure File storage  
+- Storage tiers  
+
+1. **Azure Storage (GPV2) - General Purpose**  
+    - Standard storage  
+    - It can store Container, File, Queue, Table  
+    - Can hold up to 5PB = 5 million GB
+    - Pay for what you use, $0.02 per GB per month
+    - Extreamly cheap cloud storage
+    - Not Recommended for high-demand workloads  
+    
+    - **Data Lake**
+        - A setting when creating a GPv2 acct
+        - A data lake is extremely large
+        - Can hold petabytes and exabytes
+        - Good for “big data” analytics
+
+    - **Premium Options**
+        - Blob – can only hold containers (blobs)
+            - Can choose block blobs or page blobs
+        - File Storage
+        - Uses premium SSD (solid state disks)
+        - Triple the “operations per second (OPS)”
+        - Lower latency (time to first byte)
+        - More expensive
+
+    - **High Performance**
+       - Premium SSD  
+       - Premium SSD2  
+       - Ultra Disk  
+
+
+2. **Container Storage - (Blob storage)** 
+    - Binary Large Object (BLOB)
+    - These are files of any type (TXT, PDF, ZIP, CSV, XLSX, JPG, AVI, … whatever)
+    - Stored loosely in a container
+    - Public or private
+    - “Unstructured data”
+
+
+    -  **Container Storage**
+        - Create multiple containers
+        - Each container can contain blobs
+        - Can be organized into folders (yes and no)
+        - Only pay for what you use
+
+    - **Redundancy**
+        - Azure keeps 3 copies of your data by default
+        - Locally- or zone-redundant
+        - Azure will almost never, ever lose a file once it’s successfully received it
+
+
+    - **Global Redundancy**
+        - You can choose global redundancy for
+        - Azure keeps 6 copies of your data
+        - 3 locally, and 3 in another region of the “geo”
+        - Honors data sovereignty laws 
+
+    - **Access Tiers**  
+        - Hot – the default, balanced access
+        - Cool – can be set as default, cheaper with more expensive read/write operations
+        - Cold – much cheaper , more expensive read/write operations
+        - Archive – cannot get immediate access to files, cheapest , most expensive operations
+
+    - **Failover**
+        - Hard disks fail every so often
+        - Azure takes care of this without you doing anything
+        - 3 copies of your data, they can recreate a hard disk behind the scenes
+
+
+
+### ☆ **Data Transfer & Migration**
+
+- **AZ Copy** 
+    - Copy data from one storage container to another (CLI)  
+    - Data Egress is chargeable  
+    - SAS Token  - for direct access path
+
+- **Azure Files**
+    - True hierarchical structure with folders
+    - You can “mount” this to a server and use a drive letter with it (i.e. “S: drive”) – Windows, Linux, macOS
+    - Supports SMB, or NFS (Linux)
+        - **Why?**
+            - Replace or supplement your on-prem file
+            - Lift and shift migration to the cloud
+            - Adds redundancy, data recovery, failover benefits
+
+- **Azure File Sync**
+    - Hybrid option – on prem files with cloud option
+    - Cloud tiering
+    - Distributed access
+    - Cloud backup
+
+- **Azure Migrate**  
+    - Migrate your resources from on-prem to cloud  
+    - Migrate Hub (on Azure)  
+    - Discovery tool (on-prem server)  it will check performance of existing on-prem server
+
+- **Azure Data Box**  
+    - Data Box Disk - 8TB  
+    - Data Box - 100TB  
+    - Data Box Heavy - 1PB  
+    - Encrypted (travel)  
+    - Wiped after used  
+
+
+## ☆ Azure Active Directory / EntraId
+- Centralized Proven Identity system.  
+- Legacy Active Directory uses LDAP & Kerberos Protocol for authentication.  
+- EntraId uses modern authentication protocol such as SAML and OAuth for communication.  
+
+- **Benefits of EntraId**  
+    - Security  
+    - Social media Logins  
+    - Reduce development time + support  
+    - Multifactor Authentication (MFA)  
+    - Single signon (SSO)  
+    - Work with cloud services Ex. Storage Accounts  
+    - Conditional Access  
+
+- **Single sign-on (SSO)**  
+   - EntraId issues token that proves who you are  
+   - Instead of asking your password again, it checks your token  
+   - Authenticate once, trusted everywhere  
+   - The application is registered with your EntraId  
+
+- **Authorization - RBAC**  
+    <!-- Maulik -->
+
+- **External Identity in Azure**  
+    - B2B - Same as your organization’s user but external  
+    - B2C - They do not appear in organization, Users use social identities  (social media login)
+
+- **Entra Conditional Access (you have to pay)** 
+
+- **MFA**
+    - Microsoft Authenticator App
+    - Authenticator Lite (in Outlook)
+    - Windows Hello for Business - data kept on the device
+    - FIDO2 security key
+    - OATH hardware token (in preview)
+    - OATH software token
+    - SMS
+    - Voice call
+
+- **Role Based Access Control (RBAC)**  
+   - We can create custom Role (Require Premium Tier)  
+   - 3 Basic Roles  
+      1. Reader  
+      2. Contributor (Can have Admin access but not assign permission to use other user)  
+      3. Owner (Assign permission to use other user)  
+
+- **Zero Trust Model**  
+    - **DMZ** - Boundary between the company and the public internet.  
+    - Just-in-Time (JIT) Access  
+    - Just-enough-access (JEA)  
+    - Microsoft Defender for cloud 
+
+
+## ☆  Cost Management
+ 
+
+1. Resource Type  
+2. Usage and Billing Model  
+   - Pay-as-you-go  
+   - Reserved instances (3 years)  
+   - Spot Pricing  
+
+3. Service Tiers and Configuration  
+   - App service  
+   - CPU, memory  
+   - Region  
+
+4. Licensing Cost  
+   - Azure Hybrid Benefit (existing license)  
+
+5. Data transfer (Bandwidth)  
+   - Outbound data  
+   - inter-region transfer  
+
+6. Idle or Unused Resources  
+
+7. Additional Considerations  
+   - Storage access - hot, cool, cold, archive  
+   - Read-write operation  
+
+
+## ☆  Azure Governance and Compliance
+- Azure Blueprints will be **retired**  
+- **New Approach** → Template spaces (ARMs)  
+- Deployment stack  
+- Azure Policy  
+- Resource Locks  
+- Microsoft Purview (data governance)  
+- RBAC  
+
+**Azure Policy**  
+- Require SQL server 12.0  
+- Allowed deployment location  
+- Allowed Storage Account & etc.  
+- We can create a Custom Policy using JSON  
+
+        All services → Policy → Authorizing → Definitions
+
+**Resource Lock**
+- Types
+    1. Read-only  
+    2. Delete  
+
+- Scope
+    1. Resource Level
+    2. Resource Group Level
+    3. Subscription Level
+
+## ☆ Data Governance / Microsoft Purview
+**Communication Compliance**
+- SEC Compliance (Internal Communication)
+- FINRA (Finance Related)
+- Sharing of adult content
+
+
+**Information Protection**
+- Know your data 
+	- What & Where information is stored
+- Protect your data
+	- Encryption, Sensitive Lables
+- Prevent data loss
+
+**Insider Risk Management**
+
+
+## ☆ Tools
+1. Azure Portal  
+2. Azure Cloud Shell  
+   - Combination of Azure CLI and PowerShell  
+   - Browser based shell environment embedded in web portal  
+   - Get-AzVM or az vm list  
+   - Get-AzKeyVault or az keyvault list  
+
+    * Window CLI & PowerShell  
+        - AZ module require for PowerShell  
+        - PowerShell 7  
+
+3. Azure ARC  
+   - Cross Platform VM & container management  
+   - We can manage all servers on-prem or cloud  
+
+* Infrastructure as code (IaC)  
+   - Create file that contain all resource & settings  
+      - ARM Templates (JSON)  
+      - Bicep  
+      - Terraform  
+      - Chef, Puppet, PowerShell scripts  
+      - other type of code  
+
+
+**ARM Templates**
+- Azure Resource Manager
+
+**Monitoring Tool**
+- Advisor
+
+
+
+---
+
+**SLA** - Service Uptime Agreement  
+- Represented as (%)  
+- Different services have different % of SLA  
+- Higher SLA 99.99% is costly (compare to lower)  
+
+**Scaling Options**  
+- Manual  
+- Automatic  
+- Scheduled  
+
+**Availability Options (VM)**  
+- Availability Zone  
+- Virtual Machine Scale Set  
+- Availability Set  
+
+**Tools for Reliability & Reductability**  
+- Azure Monitor  
+- Azure Service Health (Planned outages)  
+- Azure Advisor (Recommendation)  
+- Performance Predictability 
+- Cost Predictability
+
+---
+
+---
+
+Azure Virtual Network  
+→ Connectivity options  
+- Point-to-Point VPN  
+- Site-to-Site VPN  
+- Azure ExpressRoute  
+
+Azure functions  
+- Durable functions  
+
+---
+
+**Azure Storage Accounts**
+
+**Types**
+1. Standard General Purpose  
+   - Blob  
+   - Queue  
+   - Files  
+   - Tables  
+
+2. Premium Block Blobs  
+   - Blob (Azure files)  
+
+3. Premium File Shares  
+   - only support files  
+
+4. Premium Page Blobs  
+   - only support page blobs  
+
+**Redundancy**  
+Primary Region  
+
+---
+
+* Storage Services
+
+- Azure Blobs
+- Azure Files
+- Azure Queues
+- Azure Disks
+
+- Blob - Object Storage Solution  
+        - Image, video file etc.  
+- Files - Fully managed file share  
+        - Access via SMB or NFS  
+- Queue - Great layer message off exchange  
+        - Access via HTTP, HTTPS  
+        - Similar to AWS SQS  
+- Disk - Azure managed Disk  
+        - Block-level storage  
+
+=> Tiers - Hot + Cool + Archive  
+
+---
+
+# Azure File Movement  
+- AzCopy  
+- Azure Storage Explorer  
+- Azure File Sync - Compatible File Share  
+
+* Azure Identity Services  
+- Extended AD onboard SSO, Authentication  
+- Microsoft Entra Connect - On Prem AD to Entra AD  
+- Microsoft Domain Services  
+
+Domain Join  
+- Secure Policy  
+- Suspended objects & applications  
+
+Passwordless Authentications  
+- Windows Hello for Business  
+- Microsoft Authenticator app  
+- FIDO2 security keys  
+
+* Azure Conditional Access  
+Conditional Access allows or blocks access to resources based on certain conditions (like if we want MFA compulsory)  
+
+---
+
+**Parameters**
+- User location  
+- User device  
+- App used  
+
+**Actions**
+- Allow full access  
+- Acquire second authentication  
+- Block access  
+
+**Use case**
+- Control access to Azure resources  
+- Temporary access to users  
+- Enforce least privilege model  
+
+**Azure Role-Based Access Control (RBAC)**  
+
+Defense-in-depth & Zero trust model  
+
+---
+
+= Cost management
+
+⭐ Pricing Calculators (Fee Estimation)
+- Total Cost of Ownership (TCO) calculator
+- Compare on-prem infra with Azure cloud infra
+
+⭐ Azure Blueprints
+- Define repeatable set of Azure Resources
+
+⭐ Azure Policy
+we can assign Policy using
+- Azure Portal
+- Azure CLI
+- Azure Powershell
+- Azure Template (ARM)
+
+⭐ Approaches to Implementing Policies
+- Policy Definition
+- Initiative Definition
+
+---
+
+⭐ Resource Locks  
+- Delete Lock  
+  - can modify  
+  - cannot delete  
+- Read-only Lock  
+  - can only read  
+  - cannot modify or delete  
+
+→ Resource lock override in Azure  
+→ To are want to modify first we have to remove Resource lock override RBAC Permissions  
+
+⭐ Manage Azure Resource  
+→ Azure Cloudshell  
+  - Browser-based tool  
+  - Support Azure Powershell & Azure CLI  
+
+---
+
+⭐ Azure Arc  
+- Centralized way to manage the environment  
+- Consist multicloud & on-prem platform  
+
+⭐ Blueprint are a superset of ARM templates  
+Blueprint = ARM templates + Policies + RBAC  
+
+- ARM template focus on Resource level for create & delete operations  
+- Blueprint are like master plan that can include ARM templates along with other governance components  
+
+⭐ Azure Advisor  
+- It provide Recommendation for optimization  
+
+⭐ Azure Service Health  
+- Know about Azure Service Health  
+- Service Health (Outage maintenance & advisory)  
+- Resource Health  
+
+---
+
+**Azure Monitor**
+
+- Data Sources  
+- Data Platform  
+- Consumption  
+
+=> Tools:  
+- Application Insights  
+- Container Insights  
+- Metrics Explorer  
+- Log Analytics  
+
+---
+
+9 -> RBAC - Azure Conditional Access  
+-> Azure geography  
+-> each model Azure RBAC use to manage permissions  
+-> GRS - Data copy to Primary & Secondary Region  
+   - Synchronously  
+   - Data Copied - Synchronously in Primary region & Asynchronously to Secondary Region  
+=> Azure Storage Account are only available within the region they created  
+=> Diff between Azure CLI & Azure PowerShell  
+Ans -> False  
+
+---
+---</script>
+
+  <script>
+    (function () {
+      var contentEl = document.getElementById('content');
+      var srcEl = document.getElementById('md-source');
+      var mdText = srcEl ? srcEl.textContent : '';
+
+      function loadScript(url) {
+        return new Promise(function (resolve, reject) {
+          var s = document.createElement('script');
+          s.src = url; s.async = true;
+          s.onload = resolve;
+          s.onerror = function () { reject(new Error('Failed: ' + url)); };
+          document.head.appendChild(s);
+        });
+      }
+
+      function render() {
+        try {
+          var html;
+          if (typeof marked !== 'undefined') {
+            if (typeof marked.parse === 'function') {
+              html = marked.parse(mdText, { gfm: true });
+            } else {
+              html = marked(mdText, { gfm: true });
+            }
+          } else {
+            throw new Error('marked not loaded');
+          }
+          contentEl.innerHTML = html;
+          contentEl.querySelectorAll('table').forEach(function (t) {
+            var wrap = document.createElement('div');
+            wrap.className = 'table-wrap';
+            t.parentNode.insertBefore(wrap, t);
+            wrap.appendChild(t);
+          });
+        } catch (e) {
+          contentEl.innerHTML = '<div class="err">Error rendering markdown: ' + e.message + '</div><pre>' + mdText.replace(/[&<>]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}) + '</pre>';
+        }
+      }
+
+      loadScript('https://cdn.jsdelivr.net/npm/marked@12/marked.min.js')
+        .catch(function () { return loadScript('https://unpkg.com/marked@12/marked.min.js'); })
+        .catch(function () { return loadScript('https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js'); })
+        .then(render)
+        .catch(function (e) {
+          contentEl.innerHTML = '<div class="err">Could not load markdown renderer. Showing raw content:</div><pre>' + mdText.replace(/[&<>]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}) + '</pre>';
+        });
+    })();
+  </script>
+</body>
+</html>
