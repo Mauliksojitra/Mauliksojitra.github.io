@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C# Class & Constructor Reference Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        .search-container {
+            padding: 30px 40px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #667eea;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 8px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 14px;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+            transform: scale(1.01);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-yes {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-no {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-partial {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-invalid {
+            background: #f5c6cb;
+            color: #721c24;
+            font-style: italic;
+        }
+
+        .notes {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+        }
+
+        .notes h3 {
+            color: #2196F3;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .notes ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .notes li {
+            margin-bottom: 10px;
+        }
+
+        .key-rules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .rule-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .rule-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .rule-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .rule-card p {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            th, td {
+                padding: 10px 8px;
+                font-size: 12px;
+            }
+
+            .key-rules {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .tab:hover {
+            color: #667eea;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 C# Class & Constructor Reference Guide</h1>
+            <p>Complete scenarios for instantiation and inheritance rules</p>
+        </header>
+
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchInput" placeholder="🔍 Search for class types, constructors, or scenarios...">
+        </div>
+
+        <div class="content">
+            <!-- Tab Navigation -->
+            <div class="tab-container">
+                <button class="tab active" onclick="switchTab('basics')">📋 Basics</button>
+                <button class="tab" onclick="switchTab('constructors')">🔧 Constructors</button>
+                <button class="tab" onclick="switchTab('special')">⚡ Special Scenarios</button>
+                <button class="tab" onclick="switchTab('rules')">📖 Key Rules</button>
+            </div>
+
+            <!-- Tab 1: Basics -->
+            <div id="basics" class="tab-content active">
+                <div class="section">
+                    <h2 class="section-title">Class Types in C#</h2>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Class Type</th>
+                                    <th>Instantiable</th>
+                                    <th>Inheritable</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Public Class</strong></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>Standard class, can be instantiated and inherited.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Abstract Class</strong></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>Must be inherited; derived class must implement abstract members.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sealed Class</strong></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td>Can be instantiated but cannot be inherited.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Static Class</strong></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td>Cannot be instantiated or inherited; only contains static members.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Internal Class</strong></td>
+                                    <td><span class="badge badge-partial">✅ Yes*</span></td>
+                                    <td><span class="badge badge-partial">✅ Yes*</span></td>
+                                    <td>*Within same assembly only. Access limited to assembly scope.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Private Class (nested)</strong></td>
+                                    <td><span class="badge badge-partial">✅ Yes*</span></td>
+                                    <td><span class="badge badge-partial">✅ Yes*</span></td>
+                                    <td>*Within containing class only. Only accessible inside the containing class.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Partial Class</strong></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>Split across multiple files; behaves like a normal class.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Record Class (C# 9+)</strong></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>Immutable reference type with value semantics.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Constructors -->
+            <div id="constructors" class="tab-content">
+                <div class="section">
+                    <h2 class="section-title">Constructor Scenarios in C#</h2>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Class Type</th>
+                                    <th>Constructor Type</th>
+                                    <th>Instantiable</th>
+                                    <th>Inheritable</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Public Class</strong></td>
+                                    <td>Public Constructor</td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>Normal instantiation and inheritance.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Public Class</strong></td>
+                                    <td>Private Constructor</td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td>Used for Singleton or Factory patterns.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Public Class</strong></td>
+                                    <td>Protected Constructor</td>
+                                    <td><span class="badge badge-no">❌ No*</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>*Outside class. Only derived classes can call it.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Public Class</strong></td>
+                                    <td>Internal Constructor</td>
+                                    <td><span class="badge badge-partial">✅ Yes*</span></td>
+                                    <td><span class="badge badge-partial">✅ Yes*</span></td>
+                                    <td>*Only within same assembly.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Public Class</strong></td>
+                                    <td>Static Constructor</td>
+                                    <td><span class="badge badge-partial">N/A</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>Used for static initialization; runs once per type.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Abstract Class</strong></td>
+                                    <td>Public/Protected Constructor</td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>Derived classes can call base constructor.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Abstract Class</strong></td>
+                                    <td>Private Constructor</td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td><span class="badge badge-partial">✅ Yes*</span></td>
+                                    <td>*Derived classes cannot call it; used for static factory methods.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sealed Class</strong></td>
+                                    <td>Public Constructor</td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td>Instantiable but not inheritable.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sealed Class</strong></td>
+                                    <td>Private Constructor</td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td>Singleton pattern (e.g., static factory).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sealed Class</strong></td>
+                                    <td>Protected Constructor</td>
+                                    <td><span class="badge badge-invalid">⚠️ Invalid</span></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td>Compilation warning: Protected is meaningless in sealed class.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Static Class</strong></td>
+                                    <td>Static Constructor</td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td>Only static members; constructor runs once automatically.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Static Class</strong></td>
+                                    <td>Instance Constructor</td>
+                                    <td><span class="badge badge-invalid">⚠️ Error</span></td>
+                                    <td><span class="badge badge-invalid">⚠️ Error</span></td>
+                                    <td>Compilation error: Static classes cannot have instance constructors.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nested Private Class</strong></td>
+                                    <td>Public Constructor</td>
+                                    <td><span class="badge badge-partial">✅ Yes*</span></td>
+                                    <td><span class="badge badge-partial">✅ Yes*</span></td>
+                                    <td>*Inside containing class. Scope limited to containing class.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Special Scenarios -->
+            <div id="special" class="tab-content">
+                <div class="section">
+                    <h2 class="section-title">Special Constructor Scenarios</h2>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Scenario</th>
+                                    <th>Instantiable</th>
+                                    <th>Inheritable</th>
+                                    <th>Explanation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Class with ONLY private constructor(s)</strong></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td>Singleton pattern / Factory pattern</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Class with private + protected constructors</strong></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>Derived classes can use protected constructor</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Class with private + public constructors</strong></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>Public constructor allows instantiation</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Class with ONLY static constructor</strong></td>
+                                    <td><span class="badge badge-yes">✅ Yes*</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>*Compiler adds default public constructor (unless it's a static class)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Abstract class with ONLY private constructor</strong></td>
+                                    <td><span class="badge badge-no">❌ No</span></td>
+                                    <td><span class="badge badge-partial">✅ Yes*</span></td>
+                                    <td>*Derived classes cannot call constructor; static factory pattern</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Class with multiple constructors (overloading)</strong></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>As long as at least one is accessible</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Record with positional parameters (C# 9+)</strong></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td><span class="badge badge-yes">✅ Yes</span></td>
+                                    <td>Generates constructor + properties automatically</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="notes">
+                        <h3>📝 Special Notes</h3>
+                        <ul>
+                            <li><strong>Default Constructor:</strong> If no constructor is defined, C# provides a default public constructor (except for static classes).</li>
+                            <li><strong>Copy Constructor:</strong> Not built-in like C++, but can be manually defined.</li>
+                            <li><strong>Private Constructors in Abstract Classes:</strong> Prevent derived classes from calling that specific constructor.</li>
+                            <li><strong>Static Constructors:</strong> Cannot have parameters, cannot be called explicitly, and execute once per type.</li>
+                            <li><strong>Protected Internal:</strong> Accessible within same assembly OR derived classes (anywhere).</li>
+                            <li><strong>Private Protected (C# 7.2+):</strong> Accessible only in derived classes within same assembly.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Key Rules -->
+            <div id="rules" class="tab-content">
+                <div class="section">
+                    <h2 class="section-title">Key Rules to Remember</h2>
+                    
+                    <div class="key-rules">
+                        <div class="rule-card">
+                            <h4>🔒 Static Classes</h4>
+                            <p>No instance constructors, no inheritance, only static members allowed.</p>
+                        </div>
+                        
+                        <div class="rule-card">
+                            <h4>🎨 Abstract Classes</h4>
+                            <p>Cannot instantiate directly, but derived classes call base constructors.</p>
+                        </div>
+                        
+                        <div class="rule-card">
+                            <h4>🔐 Sealed Classes</h4>
+                            <p>Cannot inherit, but can instantiate (unless private constructor).</p>
+                        </div>
+                        
+                        <div class="rule-card">
+                            <h4>🏭 Private Constructors</h4>
+                            <p>Block external instantiation; used for Singletons/Factories.</p>
+                        </div>
+                        
+                        <div class="rule-card">
+                            <h4>🛡️ Protected Constructors</h4>
+                            <p>Prevent external instantiation, allow inheritance.</p>
+                        </div>
+                        
+                        <div class="rule-card">
+                            <h4>⚡ Static Constructors</h4>
+                            <p>Run once per type, automatically invoked, no parameters allowed.</p>
+                        </div>
+                        
+                        <div class="rule-card">
+                            <h4>🆕 Default Constructor</h4>
+                            <p>Auto-generated ONLY if no constructors are defined (except static-only).</p>
+                        </div>
+                        
+                        <div class="rule-card">
+                            <h4>📦 Records (C# 9+)</h4>
+                            <p>Reference types with built-in value semantics and primary constructors.</p>
+                        </div>
+                    </div>
+
+                    <div class="notes" style="margin-top: 30px; background: #fff3cd; border-left-color: #ffc107;">
+                        <h3>⚠️ Invalid Combinations (Compilation Errors)</h3>
+                        <ul>
+                            <li><span class="highlight">abstract sealed class</span> - Cannot combine abstract and sealed modifiers</li>
+                            <li><span class="highlight">Static class with instance constructor</span> - Static classes cannot have instance members</li>
+                            <li><span class="highlight">Sealed class with protected constructor</span> - Warning: Protected is meaningless (no inheritance possible)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="badge badge-yes">✅ Yes</span>
+                    <span>Fully allowed</span>
+                </div>
+                <div class="legend-item">
+                    <span class="badge badge-no">❌ No</span>
+                    <span>Not allowed</span>
+                </div>
+                <div class="legend-item">
+                    <span class="badge badge-partial">✅ Yes*</span>
+                    <span>Conditional/Restricted</span>
+                </div>
+                <div class="legend-item">
+                    <span class="badge badge-invalid">⚠️ Invalid</span>
+                    <span>Compilation error/warning</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>C# Class & Constructor Reference Guide</strong></p>
+            <p>Comprehensive guide covering all instantiation and inheritance scenarios</p>
+            <p style="margin-top: 10px; opacity: 0.8;">Perfect for interviews, certification prep, and quick revision 🚀</p>
+        </footer>
+    </div>
+
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const tables = document.querySelectorAll('table tbody tr');
+            
+            tables.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

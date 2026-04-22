@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C# Reference Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   THEME TOKENS
+══════════════════════════════════════ */
+:root {
+  --sidebar-w: 288px;
+  --topbar-h:  54px;
+  --radius:    10px;
+  --tr:        0.22s ease;
+}
+
+[data-theme="dark"] {
+  --bg:        #0e1117;
+  --bg2:       #131820;
+  --bg3:       #181f2a;
+  --surface:   #1c2433;
+  --surface2:  #212d40;
+  --border:    #263044;
+  --accent:    #34d399;
+  --accent2:   #60a5fa;
+  --accent3:   #fbbf24;
+  --accent4:   #f87171;
+  --accent5:   #a78bfa;
+  --text:      #edf2f7;
+  --text2:     #8ba0bc;
+  --text3:     #4d6480;
+  --code-bg:   #0b0f18;
+  --hero-bg:   linear-gradient(145deg,#131820 0%,#181f2a 60%,#0e1117 100%);
+  --shadow:    0 8px 36px rgba(0,0,0,.5);
+  --tag-bg:    rgba(52,211,153,.08);
+}
+
+[data-theme="light"] {
+  --bg:        #f7f9fc;
+  --bg2:       #ffffff;
+  --bg3:       #edf1f8;
+  --surface:   #eef2f9;
+  --surface2:  #e4eaf5;
+  --border:    #cdd6ea;
+  --accent:    #059669;
+  --accent2:   #2563eb;
+  --accent3:   #d97706;
+  --accent4:   #dc2626;
+  --accent5:   #7c3aed;
+  --text:      #0f172a;
+  --text2:     #475569;
+  --text3:     #94a3b8;
+  --code-bg:   #1a2133;
+  --hero-bg:   linear-gradient(145deg,#d1fae5 0%,#dbeafe 55%,#ede9fe 100%);
+  --shadow:    0 4px 20px rgba(0,0,0,.08);
+  --tag-bg:    rgba(5,150,105,.1);
+}
+
+/* ══════════════════════════════════════
+   RESET
+══════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);color:var(--text);
+  display:flex;min-height:100vh;overflow-x:hidden;
+  transition:background var(--tr),color var(--tr);
+}
+
+/* ══════════════════════════════════════
+   MOBILE TOPBAR
+══════════════════════════════════════ */
+#topbar{
+  display:none;position:fixed;
+  top:0;left:0;right:0;
+  height:var(--topbar-h);
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  z-index:200;align-items:center;
+  padding:0 14px;gap:10px;
+  box-shadow:var(--shadow);
+}
+.tb-logo{
+  font-family:'Fraunces',serif;
+  font-weight:700;font-size:18px;
+  color:var(--text);
+  display:flex;align-items:center;gap:9px;flex:1;
+}
+.logo-chip{
+  width:30px;height:30px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;font-weight:600;color:#fff;flex-shrink:0;
+}
+.icon-btn{
+  background:none;border:1px solid var(--border);
+  border-radius:8px;width:36px;height:36px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:14px;transition:all .2s;flex-shrink:0;color:var(--text2);
+}
+.icon-btn:hover{background:var(--surface);border-color:var(--accent);}
+
+#hamburger{flex-direction:column;gap:4.5px;}
+#hamburger span{display:block;width:17px;height:2px;background:var(--text2);border-radius:2px;transition:all .3s;}
+#hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+#hamburger.open span:nth-child(2){opacity:0;}
+#hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
+#sidebar{
+  width:var(--sidebar-w);
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  position:fixed;top:0;left:0;bottom:0;
+  overflow-y:auto;z-index:150;
+  display:flex;flex-direction:column;
+  transition:transform .3s ease,background var(--tr),border-color var(--tr);
+}
+.sb-header{padding:26px 22px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.sb-logo{
+  font-family:'Fraunces',serif;font-weight:700;font-size:20px;
+  color:var(--text);display:flex;align-items:center;gap:10px;
+}
+.sb-sub{
+  font-size:11px;color:var(--text3);margin-top:5px;
+  font-family:'IBM Plex Mono',monospace;letter-spacing:.4px;
+}
+.theme-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;}
+.theme-lbl{font-size:11px;color:var(--text3);font-family:'IBM Plex Mono',monospace;letter-spacing:.3px;}
+.toggle-wrap{position:relative;width:48px;height:26px;cursor:pointer;}
+.toggle-wrap input{display:none;}
+.t-track{position:absolute;inset:0;border-radius:13px;background:var(--surface2);border:1px solid var(--border);transition:background .3s;}
+.t-thumb{
+  position:absolute;top:4px;left:4px;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--accent);transition:transform .3s;
+  display:flex;align-items:center;justify-content:center;font-size:9px;
+}
+[data-theme="light"] .t-thumb{transform:translateX(22px);}
+
+/* Nav */
+.sb-nav{padding:10px 0;flex:1;overflow-y:auto;}
+.nav-cat{
+  font-size:9.5px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;
+  color:var(--text3);padding:14px 22px 4px;
+  font-family:'IBM Plex Mono',monospace;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 22px;cursor:pointer;
+  transition:all .2s;border-left:2px solid transparent;
+  font-size:13.5px;color:var(--text2);text-decoration:none;
+  font-weight:500;
+}
+.nav-item:hover{color:var(--text);background:var(--surface);border-left-color:var(--accent);}
+.nav-item.active{color:var(--accent);background:var(--tag-bg);border-left-color:var(--accent);}
+.nav-item .tag{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;
+  padding:2px 7px;border-radius:100px;border:1px solid;
+  font-weight:600;letter-spacing:.4px;margin-left:auto;flex-shrink:0;
+}
+
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:140;backdrop-filter:blur(2px);}
+
+/* ══════════════════════════════════════
+   MAIN
+══════════════════════════════════════ */
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0;}
+
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+.hero{
+  background:var(--hero-bg);
+  padding:88px 64px 76px;
+  border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'C#';
+  position:absolute;right:-30px;top:-20px;
+  font-family:'Fraunces',serif;font-size:280px;font-weight:900;
+  color:var(--accent);opacity:.04;pointer-events:none;line-height:1;
+  letter-spacing:-10px;
+}
+.hero-theme-btn{
+  position:absolute;top:22px;right:22px;
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:100px;padding:6px 14px 6px 10px;
+  cursor:pointer;font-size:12px;color:var(--text2);
+  font-family:'IBM Plex Mono',monospace;transition:all .2s;z-index:5;
+}
+.hero-theme-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--accent);}
+
+.hero-eyebrow{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  color:var(--accent);letter-spacing:2.5px;text-transform:uppercase;
+  margin-bottom:16px;opacity:0;animation:fadeUp .6s ease forwards .1s;
+}
+.hero-title{
+  font-family:'Fraunces',serif;
+  font-size:58px;font-weight:900;line-height:1;
+  letter-spacing:-2px;margin-bottom:18px;
+  opacity:0;animation:fadeUp .6s ease forwards .2s;
+}
+.hero-title em{font-style:italic;color:var(--accent);}
+.hero-desc{
+  font-size:16px;color:var(--text2);max-width:580px;
+  line-height:1.75;font-weight:300;
+  opacity:0;animation:fadeUp .6s ease forwards .35s;
+}
+.hero-tags{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:28px;
+  opacity:0;animation:fadeUp .6s ease forwards .5s;
+}
+.htag{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  padding:5px 13px;border-radius:100px;border:1px solid;font-weight:500;
+  letter-spacing:.3px;
+}
+.t-green {color:var(--accent); border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.08);}
+.t-blue  {color:var(--accent2);border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.08);}
+.t-amber {color:var(--accent3);border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.08);}
+.t-red   {color:var(--accent4);border-color:rgba(248,113,113,.35);background:rgba(248,113,113,.08);}
+.t-purple{color:var(--accent5);border-color:rgba(167,139,250,.35);background:rgba(167,139,250,.08);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════════════════════
+   CONTENT
+══════════════════════════════════════ */
+.content{padding:0 64px 88px;}
+
+.section{padding-top:64px;border-bottom:1px solid var(--border);padding-bottom:64px;}
+.section:last-child{border-bottom:none;}
+
+.section-header{display:flex;align-items:flex-start;gap:18px;margin-bottom:32px;}
+.s-icon{
+  width:48px;height:48px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;margin-top:2px;
+}
+.si-green {background:rgba(52,211,153,.1); border:1px solid rgba(52,211,153,.22);}
+.si-blue  {background:rgba(96,165,250,.1); border:1px solid rgba(96,165,250,.22);}
+.si-amber {background:rgba(251,191,36,.1); border:1px solid rgba(251,191,36,.22);}
+.si-red   {background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.22);}
+.si-purple{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.22);}
+.si-teal  {background:rgba(45,212,191,.1); border:1px solid rgba(45,212,191,.22);}
+
+.section-title{
+  font-family:'Fraunces',serif;
+  font-size:30px;font-weight:700;letter-spacing:-.6px;margin-bottom:6px;
+}
+.section-desc{font-size:14.5px;color:var(--text2);line-height:1.65;font-weight:300;}
+
+.sub{margin-bottom:32px;}
+.sub-title{
+  font-family:'Fraunces',serif;font-size:18px;font-weight:600;
+  margin-bottom:12px;display:flex;align-items:center;gap:10px;color:var(--text);
+}
+.sub-title::before{content:'';width:3px;height:18px;background:var(--accent);border-radius:2px;flex-shrink:0;}
+
+p{font-size:14.5px;line-height:1.8;color:var(--text2);margin-bottom:12px;font-weight:300;}
+p strong{color:var(--text);font-weight:600;}
+
+/* ── CODE ── */
+.code-block{
+  background:var(--code-bg);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;margin:16px 0;
+}
+.code-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 15px;
+  background:rgba(255,255,255,.03);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.code-lang{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;
+  color:var(--accent);font-weight:600;letter-spacing:.8px;text-transform:uppercase;
+}
+.dots{display:flex;gap:5px;}
+.d{width:10px;height:10px;border-radius:50%;}
+.dr{background:#ff5f57;}.dy{background:#febc2e;}.dg{background:#28c840;}
+.code-block pre{
+  padding:18px 20px;overflow-x:auto;
+  font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.75;
+}
+.code-block code{color:#cbd5e1;}
+/* Syntax */
+.kw {color:#7dd3fc;font-weight:600;}.fn {color:#fbbf24;}
+.str{color:#86efac;}.cmt{color:#475569;font-style:italic;}
+.num{color:#f87171;}.op {color:#c4b5fd;}.type{color:#93c5fd;}
+.dt {color:#6ee7b7;}
+
+/* ── TABLES ── */
+.table-wrap{overflow-x:auto;margin:16px 0;border-radius:var(--radius);border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+thead tr{background:var(--surface);border-bottom:2px solid var(--border);}
+th{
+  padding:11px 15px;text-align:left;
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;
+  color:var(--accent);letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;
+}
+td{
+  padding:10px 15px;color:var(--text2);
+  border-bottom:1px solid var(--border);font-size:13.5px;vertical-align:middle;
+}
+tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:rgba(52,211,153,.03);}
+td strong{color:var(--text);font-weight:600;}
+td code{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent3);}
+
+/* ── CALLOUTS ── */
+.callout{
+  padding:14px 18px;border-radius:var(--radius);margin:16px 0;
+  display:flex;gap:11px;align-items:flex-start;
+  font-size:13.5px;line-height:1.65;font-weight:400;
+}
+.ci{font-size:16px;flex-shrink:0;margin-top:1px;}
+.c-green {background:rgba(52,211,153,.08); border:1px solid rgba(52,211,153,.22);color:var(--text2);}
+.c-blue  {background:rgba(96,165,250,.08); border:1px solid rgba(96,165,250,.22); color:var(--text2);}
+.c-amber {background:rgba(251,191,36,.08); border:1px solid rgba(251,191,36,.22); color:var(--text2);}
+.c-red   {background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.22);color:var(--text2);}
+.c-purple{background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.22);color:var(--text2);}
+
+/* ── GRIDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0;}
+
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px;
+  transition:border-color .2s,background .2s;
+}
+.card:hover{border-color:var(--accent);background:var(--surface2);}
+.card-label{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;
+}
+.card-text{font-size:13px;color:var(--text2);line-height:1.65;font-weight:300;}
+
+/* Comparison chips */
+.chip{
+  display:inline-block;font-family:'IBM Plex Mono',monospace;
+  font-size:11px;padding:3px 10px;border-radius:100px;
+  border:1px solid;font-weight:600;
+}
+.chip-green {color:var(--accent); border-color:rgba(52,211,153,.4);}
+.chip-red   {color:var(--accent4);border-color:rgba(248,113,113,.4);}
+.chip-blue  {color:var(--accent2);border-color:rgba(96,165,250,.4);}
+.chip-amber {color:var(--accent3);border-color:rgba(251,191,36,.4);}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media(max-width:1100px){
+  .hero{padding:64px 44px 58px;}
+  .content{padding:0 44px 72px;}
+  .hero-title{font-size:48px;}
+  .g3{grid-template-columns:1fr 1fr;}
+  .g4{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:768px){
+  #topbar{display:flex;}
+  #sidebar{transform:translateX(-100%);top:0;box-shadow:var(--shadow);}
+  #sidebar.open{transform:translateX(0);}
+  #overlay.show{display:block;}
+  #main{margin-left:0;padding-top:var(--topbar-h);}
+  .hero{padding:30px 18px 36px;}
+  .hero-title{font-size:32px;letter-spacing:-1px;}
+  .hero-desc{font-size:14px;}
+  .hero::before{font-size:160px;right:-10px;}
+  .hero-theme-btn{display:none;}
+  .content{padding:0 18px 60px;}
+  .section{padding-top:44px;padding-bottom:44px;}
+  .section-title{font-size:24px;}
+  .g2,.g3,.g4{grid-template-columns:1fr;}
+  th,td{padding:9px 11px;}
+  table{font-size:12.5px;}
+  .code-block pre{font-size:12px;}
+}
+@media(max-width:400px){
+  .hero-title{font-size:26px;}
+  .s-icon{width:38px;height:38px;font-size:17px;}
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE TOPBAR -->
+<div id="topbar">
+  <button class="icon-btn" id="hamburger" style="flex-direction:column;gap:4.5px;">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="tb-logo">
+    <div class="logo-chip">C#</div>
+    C# Ref
+  </div>
+  <button class="icon-btn" id="mobileThemeBtn" title="Toggle theme">☀️</button>
+</div>
+
+<!-- OVERLAY -->
+<div id="overlay"></div>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sb-header">
+    <div class="sb-logo"><div class="logo-chip">C#</div>C# Reference</div>
+    <div class="sb-sub">// complete guide · v1.0</div>
+    <div class="theme-row">
+      <span class="theme-lbl" id="themeLabel">Dark mode</span>
+      <label class="toggle-wrap">
+        <input type="checkbox" id="themeCheck">
+        <div class="t-track"></div>
+        <div class="t-thumb" id="tThumb">🌙</div>
+      </label>
+    </div>
+  </div>
+  <div class="sb-nav">
+    <div class="nav-cat">Topics</div>
+
+    <a class="nav-item active" href="#async" onclick="closeSidebar()">
+      ⚡ Async / Await
+      <span class="tag t-green">Tasks</span>
+    </a>
+    <a class="nav-item" href="#bcl" onclick="closeSidebar()">
+      📦 Base Class Library
+      <span class="tag t-blue">BCL</span>
+    </a>
+    <a class="nav-item" href="#constructors" onclick="closeSidebar()">
+      🏗️ Constructors
+      <span class="tag t-amber">OOP</span>
+    </a>
+    <a class="nav-item" href="#delegates" onclick="closeSidebar()">
+      🔗 Delegates
+      <span class="tag t-purple">FP</span>
+    </a>
+    <a class="nav-item" href="#dictionary" onclick="closeSidebar()">
+      🗂️ Dictionary (Thread-Safe)
+      <span class="tag t-blue">Concurrency</span>
+    </a>
+    <a class="nav-item" href="#array-vs-arraylist" onclick="closeSidebar()">
+      📋 Array vs ArrayList
+      <span class="tag t-amber">Collections</span>
+    </a>
+    <a class="nav-item" href="#gc" onclick="closeSidebar()">
+      🗑️ Garbage Collection
+      <span class="tag t-red">Memory</span>
+    </a>
+    <a class="nav-item" href="#jobs" onclick="closeSidebar()">
+      ⚙️ Jobs &amp; Agents
+      <span class="tag t-green">BG Tasks</span>
+    </a>
+    <a class="nav-item" href="#ref-out" onclick="closeSidebar()">
+      🔄 ref &amp; out Keywords
+      <span class="tag t-purple">Keywords</span>
+    </a>
+    <a class="nav-item" href="#task-thread" onclick="closeSidebar()">
+      🧵 Task vs Thread
+      <span class="tag t-red">Threading</span>
+    </a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <button class="hero-theme-btn" id="heroThemeBtn">
+      <span id="heroIcon">🌙</span>
+      <span id="heroLabel">Dark</span>
+    </button>
+    <div class="hero-eyebrow">// C# Reference Guide</div>
+    <h1 class="hero-title">Master<br><em>C# &amp; .NET</em></h1>
+    <p class="hero-desc">A comprehensive reference covering Async/Await, Memory Management, OOP patterns, Collections, Threading, and more — with working code examples and visual diagrams.</p>
+    <div class="hero-tags">
+      <span class="htag t-green">Async / Await</span>
+      <span class="htag t-blue">BCL &amp; FCL</span>
+      <span class="htag t-amber">Constructors</span>
+      <span class="htag t-purple">Delegates</span>
+      <span class="htag t-red">Garbage Collection</span>
+      <span class="htag t-blue">Task &amp; Thread</span>
+      <span class="htag t-amber">ref &amp; out</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════════════════════ ASYNC / AWAIT ══════════════════════ -->
+    <section class="section" id="async">
+      <div class="section-header">
+        <div class="s-icon si-green">⚡</div>
+        <div>
+          <div class="section-title">Async / Await</div>
+          <div class="section-desc">Scale APIs without deadlocks. Async/await does not create a new thread — it frees the calling thread to do other work while waiting for I/O or long-running operations.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">What async/await Really Does</div>
+        <p>When you <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent3);font-size:13px">await</code> an operation, the current thread is released back to the thread pool. When the awaited operation completes, execution resumes — possibly on a different thread. <strong>No new thread is created.</strong></p>
+        <div class="callout c-amber"><span class="ci">⚠️</span><div>Never use <strong>.Result</strong> or <strong>.Wait()</strong> on async tasks in non-async code — this causes deadlocks by blocking the thread that the continuation needs to resume on.</div></div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Common Mistakes</div>
+        <div class="g3" style="margin-top:0">
+          <div class="card"><div class="card-label" style="color:var(--accent4)">❌ .Result / .Wait()</div><div class="card-text">Blocks the calling thread. Can deadlock in ASP.NET or UI contexts.</div></div>
+          <div class="card"><div class="card-label" style="color:var(--accent4)">❌ async void</div><div class="card-text">Exceptions can't be caught by the caller. Only valid for event handlers.</div></div>
+          <div class="card"><div class="card-label" style="color:var(--accent4)">❌ Fire &amp; Forget</div><div class="card-text">Exceptions are swallowed silently. Use <code style="font-family:'IBM Plex Mono',monospace;font-size:11px">_ = Task.Run()</code> only if you truly don't care about the result.</div></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Parallel Patterns: WhenAll &amp; WhenAny</div>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C# — Task.WhenAll</div></div>
+          <pre><code><span class="cmt">// Run multiple tasks in parallel — wait for ALL to complete</span>
+<span class="kw">var</span> task1 = FetchUserAsync(userId);
+<span class="kw">var</span> task2 = FetchOrdersAsync(userId);
+<span class="kw">var</span> task3 = FetchPreferencesAsync(userId);
+
+<span class="kw">await</span> Task.<span class="fn">WhenAll</span>(task1, task2, task3);
+
+<span class="kw">var</span> user    = <span class="kw">await</span> task1;
+<span class="kw">var</span> orders  = <span class="kw">await</span> task2;
+<span class="kw">var</span> prefs   = <span class="kw">await</span> task3;</code></pre>
+        </div>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C# — Task.WhenAny (timeout pattern)</div></div>
+          <pre><code><span class="kw">var</span> fetchTask   = FetchDataAsync();
+<span class="kw">var</span> timeoutTask = Task.<span class="fn">Delay</span>(TimeSpan.<span class="fn">FromSeconds</span>(<span class="num">5</span>));
+
+<span class="kw">var</span> completed = <span class="kw">await</span> Task.<span class="fn">WhenAny</span>(fetchTask, timeoutTask);
+
+<span class="kw">if</span> (completed == timeoutTask)
+    <span class="kw">throw new</span> <span class="type">TimeoutException</span>(<span class="str">"Request timed out"</span>);</code></pre>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Cancellation with CancellationToken</div>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+          <pre><code><span class="kw">public async</span> Task <span class="fn">ProcessAsync</span>(CancellationToken ct)
+{
+    <span class="kw">using var</span> cts = CancellationTokenSource.<span class="fn">CreateLinkedTokenSource</span>(ct);
+    cts.CancelAfter(TimeSpan.<span class="fn">FromSeconds</span>(<span class="num">10</span>));
+
+    <span class="kw">await</span> <span class="fn">SomeOperationAsync</span>(cts.Token);
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Concurrency Limits with SemaphoreSlim</div>
+        <p>Avoid self-DDoSing external APIs by limiting how many requests run concurrently.</p>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C# — SemaphoreSlim</div></div>
+          <pre><code><span class="kw">var</span> semaphore = <span class="kw">new</span> <span class="type">SemaphoreSlim</span>(<span class="num">3</span>); <span class="cmt">// max 3 concurrent requests</span>
+
+<span class="kw">async</span> Task <span class="fn">ProcessItemAsync</span>(<span class="type">string</span> item)
+{
+    <span class="kw">await</span> semaphore.<span class="fn">WaitAsync</span>();
+    <span class="kw">try</span>   { <span class="kw">await</span> <span class="fn">CallExternalApiAsync</span>(item); }
+    <span class="kw">finally</span> { semaphore.<span class="fn">Release</span>(); }
+}</code></pre>
+        </div>
+        <div class="callout c-green"><span class="ci">✅</span>Use <strong>SemaphoreSlim</strong> (not <strong>Semaphore</strong>) in async code — it has async-compatible <code style="font-family:'IBM Plex Mono',monospace;font-size:12px">WaitAsync()</code>.</div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Interview Questions</div>
+        <div class="g2">
+          <div class="card"><div class="card-label" style="color:var(--accent2)">Q: When would you use Task.Run()?</div><div class="card-text">To offload CPU-bound work to the thread pool, keeping the UI thread or request thread responsive. Don't use it for I/O-bound work that already has an async API.</div></div>
+          <div class="card"><div class="card-label" style="color:var(--accent2)">Q: Why is .Result dangerous?</div><div class="card-text">It blocks the calling thread synchronously. If the continuation needs that same thread (SynchronizationContext), you get a deadlock.</div></div>
+          <div class="card"><div class="card-label" style="color:var(--accent2)">Q: How do you limit concurrency safely?</div><div class="card-text">Use SemaphoreSlim with WaitAsync(), or Channels, or custom task schedulers with a degree-of-parallelism limit.</div></div>
+          <div class="card"><div class="card-label" style="color:var(--accent2)">Q: What's wrong with async void?</div><div class="card-text">Exceptions thrown inside async void crash the process because the caller cannot observe them. Always use async Task instead.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════ BCL ══════════════════════ -->
+    <section class="section" id="bcl">
+      <div class="section-header">
+        <div class="s-icon si-blue">📦</div>
+        <div>
+          <div class="section-title">Base Class Library (BCL)</div>
+          <div class="section-desc">The core set of pre-built classes and types provided by Microsoft in .NET — ready-to-use functionality for strings, collections, files, networking, and more.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Key Namespaces</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Namespace</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>System</code></td><td>Core types: <code>String</code>, <code>Int32</code>, <code>DateTime</code>, <code>Math</code></td></tr>
+            <tr><td><code>System.IO</code></td><td>File and stream handling: <code>File</code>, <code>StreamReader</code></td></tr>
+            <tr><td><code>System.Collections</code></td><td>Non-generic: <code>ArrayList</code>, <code>Hashtable</code></td></tr>
+            <tr><td><code>System.Collections.Generic</code></td><td>Strongly typed: <code>List&lt;T&gt;</code>, <code>Dictionary&lt;TKey,TValue&gt;</code></td></tr>
+            <tr><td><code>System.Net</code></td><td>Networking: HTTP clients, sockets</td></tr>
+            <tr><td><code>System.Threading</code></td><td>Multithreading and synchronization primitives</td></tr>
+            <tr><td><code>System.Security</code></td><td>Cryptography, hashing, permissions</td></tr>
+            <tr><td><code>System.Reflection</code></td><td>Metadata and runtime type inspection</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">BCL in Action</div>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+          <pre><code><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections.Generic;
+<span class="kw">using</span> System.IO;
+
+<span class="kw">class</span> <span class="type">Program</span>
+{
+    <span class="kw">static void</span> <span class="fn">Main</span>()
+    {
+        <span class="cmt">// System namespace</span>
+        <span class="type">string</span> msg = <span class="str">"Hello, BCL!"</span>;
+        Console.<span class="fn">WriteLine</span>(msg.<span class="fn">ToUpper</span>()); <span class="cmt">// HELLO, BCL!</span>
+
+        <span class="cmt">// System.Collections.Generic</span>
+        List&lt;<span class="type">int</span>&gt; numbers = <span class="kw">new</span> List&lt;<span class="type">int</span>&gt; { <span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span> };
+        numbers.<span class="fn">ForEach</span>(n =&gt; Console.<span class="fn">WriteLine</span>(n));
+
+        <span class="cmt">// System.IO</span>
+        File.<span class="fn">WriteAllText</span>(<span class="str">"example.txt"</span>, <span class="str">"Written using BCL."</span>);
+        <span class="type">string</span> content = File.<span class="fn">ReadAllText</span>(<span class="str">"example.txt"</span>);
+        Console.<span class="fn">WriteLine</span>(content);
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">BCL vs FCL</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Feature</th><th>BCL</th><th>FCL</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Definition</strong></td><td>Core fundamental classes</td><td>Entire collection of .NET libraries</td></tr>
+            <tr><td><strong>Scope</strong></td><td>Basic types, collections, I/O, threading</td><td>BCL + web, data, XML, LINQ, EF, etc.</td></tr>
+            <tr><td><strong>Examples</strong></td><td><code>System</code>, <code>System.IO</code>, <code>System.Collections.Generic</code></td><td><code>System.Web</code>, <code>System.Data</code>, <code>System.Linq</code></td></tr>
+            <tr><td><strong>Purpose</strong></td><td>Foundation for all .NET apps</td><td>Full-featured framework for all domains</td></tr>
+          </tbody>
+        </table></div>
+        <div class="callout c-blue"><span class="ci">💡</span>Think of BCL as the <strong>foundation</strong> and FCL as the <strong>entire building</strong> — BCL is always a subset of FCL.</div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════ CONSTRUCTORS ══════════════════════ -->
+    <section class="section" id="constructors">
+      <div class="section-header">
+        <div class="s-icon si-amber">🏗️</div>
+        <div>
+          <div class="section-title">Constructors in C#</div>
+          <div class="section-desc">A special method automatically called when an object is created. Same name as the class, no return type. Used to initialize object data members.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">1. Default Constructor</div>
+        <p>No parameters. Automatically provided by the compiler if none is defined. Initializes numerics to <strong>0</strong>, booleans to <strong>false</strong>, reference types to <strong>null</strong>.</p>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+          <pre><code><span class="kw">class</span> <span class="type">Geeks</span> {
+    <span class="type">int</span> num;      <span class="cmt">// default: 0</span>
+    <span class="type">string</span> name;  <span class="cmt">// default: null</span>
+    <span class="type">bool</span> flag;    <span class="cmt">// default: false</span>
+
+    <span class="kw">public</span> <span class="fn">Geeks</span>() { Console.<span class="fn">WriteLine</span>(<span class="str">"Constructor Called"</span>); }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">2. Parameterized Constructor</div>
+        <p>Takes at least one parameter — allows each instance to be initialized with different values.</p>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+          <pre><code><span class="kw">class</span> <span class="type">Geek</span> {
+    <span class="type">string</span> n; <span class="type">int</span> i;
+
+    <span class="fn">Geek</span>(<span class="type">string</span> n, <span class="type">int</span> i) { <span class="kw">this</span>.n = n; <span class="kw">this</span>.i = i; }
+
+    <span class="kw">public static void</span> <span class="fn">Main</span>() {
+        <span class="type">Geek</span> o = <span class="kw">new</span> <span class="fn">Geek</span>(<span class="str">"GFG"</span>, <span class="num">1</span>);
+        Console.<span class="fn">WriteLine</span>(<span class="str">$"Name = {o.n} Id = {o.i}"</span>); <span class="cmt">// Name = GFG Id = 1</span>
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">3. Copy Constructor</div>
+        <p>Creates a new object by copying values from an existing object of the same class. C# does not provide one automatically — you write it manually.</p>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+          <pre><code><span class="kw">public</span> <span class="fn">Geeks</span>(<span class="type">Geeks</span> s) { <span class="cmt">// Copy constructor</span>
+    month = s.month;
+    year  = s.year;
+}
+
+<span class="type">Geeks</span> g1 = <span class="kw">new</span> <span class="fn">Geeks</span>(<span class="str">"June"</span>, <span class="num">2018</span>);
+<span class="type">Geeks</span> g2 = <span class="kw">new</span> <span class="fn">Geeks</span>(g1); <span class="cmt">// g1 copied to g2</span></code></pre>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="sub">
+          <div class="sub-title">4. Private Constructor</div>
+          <p>Prevents direct instantiation. Used for the <strong>Singleton pattern</strong> and classes with only static members.</p>
+          <div class="code-block">
+            <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+            <pre><code><span class="kw">public class</span> <span class="type">Singleton</span> {
+    <span class="kw">private static</span> <span class="type">Singleton</span> _instance;
+
+    <span class="kw">private</span> <span class="fn">Singleton</span>() { } <span class="cmt">// private!</span>
+
+    <span class="kw">public static</span> <span class="type">Singleton</span> Instance =&gt;
+        _instance ??= <span class="kw">new</span> <span class="type">Singleton</span>();
+}</code></pre>
+          </div>
+        </div>
+        <div class="sub">
+          <div class="sub-title">5. Static Constructor</div>
+          <p>Invoked <strong>once</strong> per class. No parameters, no access modifier. Runs before the first instance is created or any static member is accessed.</p>
+          <div class="code-block">
+            <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+            <pre><code><span class="kw">class</span> <span class="type">Config</span> {
+    <span class="kw">static</span> <span class="fn">Config</span>() {
+        <span class="cmt">// runs once, no params</span>
+        Console.<span class="fn">WriteLine</span>(<span class="str">"Static ctor"</span>);
+    }
+    <span class="kw">public</span> <span class="fn">Config</span>(<span class="type">int</span> i) {
+        Console.<span class="fn">WriteLine</span>(<span class="str">$"Instance {i}"</span>);
+    }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout c-amber"><span class="ci">📌</span>Constructor ordering: Static → Instance. The static constructor runs <strong>once</strong>, before the first instance constructor is ever called.</div>
+    </section>
+
+    <!-- ══════════════════════ DELEGATES ══════════════════════ -->
+    <section class="section" id="delegates">
+      <div class="section-header">
+        <div class="s-icon si-purple">🔗</div>
+        <div>
+          <div class="section-title">Delegates</div>
+          <div class="section-desc">A type-safe function pointer — allows methods to be referenced and invoked dynamically. Foundation of events, callbacks, and functional-style programming in C#.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Declaration &amp; Basic Usage</div>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C# — Basic Delegate</div></div>
+          <pre><code><span class="cmt">// 1. Declare</span>
+<span class="kw">public delegate void</span> <span class="type">MyDelegate</span>(<span class="type">string</span> message);
+
+<span class="cmt">// 2. Method matching the signature</span>
+<span class="kw">public static void</span> <span class="fn">DisplayMessage</span>(<span class="type">string</span> msg)
+    => Console.<span class="fn">WriteLine</span>(<span class="str">"Message: "</span> + msg);
+
+<span class="cmt">// 3. Instantiate &amp; invoke</span>
+<span class="type">MyDelegate</span> del = <span class="fn">DisplayMessage</span>;
+del(<span class="str">"Hello from delegate!"</span>); <span class="cmt">// Message: Hello from delegate!</span></code></pre>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Multicast Delegates</div>
+        <p>Delegates can reference <strong>multiple methods</strong> using <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent3);font-size:13px">+=</code>. All methods are called in FIFO order.</p>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C# — Multicast</div></div>
+          <pre><code><span class="kw">public delegate void</span> <span class="type">Notify</span>();
+
+<span class="kw">public static void</span> <span class="fn">MethodA</span>() => Console.<span class="fn">WriteLine</span>(<span class="str">"Method A executed"</span>);
+<span class="kw">public static void</span> <span class="fn">MethodB</span>() => Console.<span class="fn">WriteLine</span>(<span class="str">"Method B executed"</span>);
+
+<span class="type">Notify</span> notify = <span class="fn">MethodA</span>;
+notify += <span class="fn">MethodB</span>;  <span class="cmt">// chain MethodB</span>
+notify -= <span class="fn">MethodA</span>; <span class="cmt">// remove MethodA</span>
+
+notify(); <span class="cmt">// Method B executed</span></code></pre>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Delegates with Return Types</div>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+          <pre><code><span class="kw">public delegate int</span> <span class="type">Operation</span>(<span class="type">int</span> x, <span class="type">int</span> y);
+
+<span class="kw">public static int</span> <span class="fn">Add</span>(<span class="type">int</span> a, <span class="type">int</span> b) => a + b;
+<span class="kw">public static int</span> <span class="fn">Multiply</span>(<span class="type">int</span> a, <span class="type">int</span> b) => a * b;
+
+<span class="type">Operation</span> op = <span class="fn">Add</span>;
+Console.<span class="fn">WriteLine</span>(op(<span class="num">5</span>, <span class="num">3</span>)); <span class="cmt">// 8</span>
+
+op = <span class="fn">Multiply</span>;
+Console.<span class="fn">WriteLine</span>(op(<span class="num">5</span>, <span class="num">3</span>)); <span class="cmt">// 15</span></code></pre>
+        </div>
+      </div>
+
+      <div class="g3" style="margin-top:8px">
+        <div class="card"><div class="card-label" style="color:var(--accent5)">Callbacks</div><div class="card-text">Pass behavior as a parameter — e.g., a custom sort comparison, progress reporter.</div></div>
+        <div class="card"><div class="card-label" style="color:var(--accent5)">Event Handling</div><div class="card-text">Events in C# are built on top of delegates — <code style="font-family:'IBM Plex Mono',monospace;font-size:11px">event MyDelegate OnAction;</code></div></div>
+        <div class="card"><div class="card-label" style="color:var(--accent5)">Func &amp; Action</div><div class="card-text">Built-in delegate types: <code style="font-family:'IBM Plex Mono',monospace;font-size:11px">Func&lt;T,TResult&gt;</code> and <code style="font-family:'IBM Plex Mono',monospace;font-size:11px">Action&lt;T&gt;</code> avoid custom declarations.</div></div>
+      </div>
+      <div class="callout c-purple"><span class="ci">💡</span>For multicast delegates with return values, only the <strong>last method's return value</strong> is returned to the caller — previous return values are discarded.</div>
+    </section>
+
+    <!-- ══════════════════════ DICTIONARY ══════════════════════ -->
+    <section class="section" id="dictionary">
+      <div class="section-header">
+        <div class="s-icon si-blue">🗂️</div>
+        <div>
+          <div class="section-title">Dictionary — Thread Safety</div>
+          <div class="section-desc">A static <code style="font-family:'IBM Plex Mono',monospace;font-size:14px">Dictionary&lt;TKey,TValue&gt;</code> is not thread-safe. Multiple concurrent reads/writes cause race conditions, exceptions, and corrupted state.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Solution 1: lock (Simple &amp; Safe)</div>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+          <pre><code><span class="kw">public static class</span> <span class="type">Repository</span>
+{
+    <span class="kw">private static</span> Dictionary&lt;<span class="type">int</span>, <span class="type">string</span>&gt; _data = <span class="kw">new</span>();
+    <span class="kw">private static readonly object</span> _lock = <span class="kw">new object</span>();
+
+    <span class="kw">public static void</span> <span class="fn">AddOrUpdate</span>(<span class="type">int</span> key, <span class="type">string</span> value)
+    {
+        <span class="kw">lock</span> (_lock) { _data[key] = value; }
+    }
+
+    <span class="kw">public static string</span> <span class="fn">Get</span>(<span class="type">int</span> key)
+    {
+        <span class="kw">lock</span> (_lock)
+            <span class="kw">return</span> _data.<span class="fn">ContainsKey</span>(key) ? _data[key] : <span class="kw">null</span>;
+    }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Solution 2: ConcurrentDictionary (Recommended)</div>
+        <p>From <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent3);font-size:13px">System.Collections.Concurrent</code> — thread-safe out of the box with better performance than manual locks in high-concurrency scenarios.</p>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C# — ASP.NET Core Session Cache Example</div></div>
+          <pre><code><span class="kw">using</span> System.Collections.Concurrent;
+
+<span class="kw">public static class</span> <span class="type">SessionRepository</span>
+{
+    <span class="kw">private static</span> ConcurrentDictionary&lt;<span class="type">string</span>, <span class="type">string</span>&gt; _sessions = <span class="kw">new</span>();
+
+    <span class="kw">public static void</span> <span class="fn">AddOrUpdate</span>(<span class="type">string</span> userId, <span class="type">string</span> token)
+        => _sessions.<span class="fn">AddOrUpdate</span>(userId, token, (k, old) => token);
+
+    <span class="kw">public static string</span> <span class="fn">Get</span>(<span class="type">string</span> userId)
+    {
+        _sessions.<span class="fn">TryGetValue</span>(userId, <span class="kw">out var</span> token);
+        <span class="kw">return</span> token;
+    }
+
+    <span class="kw">public static bool</span> <span class="fn">Remove</span>(<span class="type">string</span> userId)
+        => _sessions.<span class="fn">TryRemove</span>(userId, <span class="kw">out</span> _);
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Solution 3: ReaderWriterLockSlim (Read-Heavy Workloads)</div>
+        <p>Allows multiple simultaneous readers, but exclusive access for writers — more scalable when reads far outnumber writes.</p>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+          <pre><code><span class="kw">private static</span> <span class="type">ReaderWriterLockSlim</span> _lock = <span class="kw">new</span>();
+
+<span class="kw">public static string</span> <span class="fn">Get</span>(<span class="type">int</span> key)
+{
+    _lock.<span class="fn">EnterReadLock</span>();   <span class="cmt">// multiple readers allowed</span>
+    <span class="kw">try</span>   { <span class="kw">return</span> _data[key]; }
+    <span class="kw">finally</span> { _lock.<span class="fn">ExitReadLock</span>(); }
+}
+
+<span class="kw">public static void</span> <span class="fn">Set</span>(<span class="type">int</span> key, <span class="type">string</span> val)
+{
+    _lock.<span class="fn">EnterWriteLock</span>();  <span class="cmt">// exclusive write access</span>
+    <span class="kw">try</span>   { _data[key] = val; }
+    <span class="kw">finally</span> { _lock.<span class="fn">ExitWriteLock</span>(); }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="table-wrap"><table>
+        <thead><tr><th>Approach</th><th>Best For</th><th>Performance</th></tr></thead>
+        <tbody>
+          <tr><td><strong>lock</strong></td><td>Simple cases, low contention</td><td>Good for low traffic</td></tr>
+          <tr><td><strong>ConcurrentDictionary</strong></td><td>Web APIs, high concurrency</td><td>Best overall</td></tr>
+          <tr><td><strong>ReaderWriterLockSlim</strong></td><td>Read-heavy workloads</td><td>Best when reads dominate</td></tr>
+          <tr><td><strong>ImmutableDictionary</strong></td><td>Rare updates, snapshot reads</td><td>Zero lock overhead for readers</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- ══════════════════════ ARRAY vs ARRAYLIST ══════════════════════ -->
+    <section class="section" id="array-vs-arraylist">
+      <div class="section-header">
+        <div class="s-icon si-amber">📋</div>
+        <div>
+          <div class="section-title">Array vs ArrayList</div>
+          <div class="section-desc">Both store collections of data, but differ significantly in type safety, size flexibility, and performance.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Comparison</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Feature</th><th>Array</th><th>ArrayList</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Type Safety</strong></td><td>✅ Strongly typed — all elements same type</td><td>❌ Not type-safe — mixed types allowed</td></tr>
+            <tr><td><strong>Size</strong></td><td>Fixed — must declare size at creation</td><td>Dynamic — grows/shrinks automatically</td></tr>
+            <tr><td><strong>Performance</strong></td><td>✅ Faster — no boxing/unboxing</td><td>❌ Slower — boxing for value types</td></tr>
+            <tr><td><strong>Generics</strong></td><td><code>int[]</code>, <code>string[]</code></td><td>Non-generic; prefer <code>List&lt;T&gt;</code></td></tr>
+            <tr><td><strong>Best Use Case</strong></td><td>Fixed-size, same-type collections</td><td>Dynamic collections (legacy code only)</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="g2">
+        <div class="sub">
+          <div class="sub-title">Array Example</div>
+          <div class="code-block">
+            <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+            <pre><code><span class="type">int</span>[] arr = <span class="kw">new int</span>[<span class="num">4</span>];
+arr[<span class="num">0</span>] = <span class="num">47</span>;
+arr[<span class="num">1</span>] = <span class="num">77</span>;
+arr[<span class="num">2</span>] = <span class="num">87</span>;
+arr[<span class="num">3</span>] = <span class="num">97</span>;
+
+<span class="kw">foreach</span> (<span class="type">int</span> n <span class="kw">in</span> arr)
+    Console.<span class="fn">WriteLine</span>(n);</code></pre>
+          </div>
+          <div class="callout c-green"><span class="ci">✅</span>Type-safe, fast, fixed size. Use for homogeneous data.</div>
+        </div>
+        <div class="sub">
+          <div class="sub-title">ArrayList Example</div>
+          <div class="code-block">
+            <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+            <pre><code"><span class="type">ArrayList</span> al = <span class="kw">new</span> <span class="type">ArrayList</span>();
+al.<span class="fn">Add</span>(<span class="str">"Ajay"</span>);
+al.<span class="fn">Add</span>(<span class="str">"Ankit"</span>);
+al.<span class="fn">Add</span>(<span class="num">10</span>);
+al.<span class="fn">Add</span>(<span class="num">10.10</span>);
+
+<span class="kw">foreach</span> (<span class="kw">var</span> item <span class="kw">in</span> al)
+    Console.<span class="fn">WriteLine</span>(item);</code></pre>
+          </div>
+          <div class="callout c-red"><span class="ci">⚠️</span>ArrayList is legacy. Use <strong>List&lt;T&gt;</strong> in all modern C# code.</div>
+        </div>
+      </div>
+
+      <div class="callout c-amber"><span class="ci">📌</span>In modern C#, always prefer <strong>List&lt;T&gt;</strong> over ArrayList. It is generic, type-safe, and performs better because it avoids boxing/unboxing.</div>
+    </section>
+
+    <!-- ══════════════════════ GARBAGE COLLECTION ══════════════════════ -->
+    <section class="section" id="gc">
+      <div class="section-header">
+        <div class="s-icon si-red">🗑️</div>
+        <div>
+          <div class="section-title">Garbage Collection</div>
+          <div class="section-desc">Automatic memory management by the CLR. Objects with no references become eligible for collection — developers don't need to manually free memory like in C/C++.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Generations</div>
+        <div class="g3">
+          <div class="card">
+            <div class="card-label" style="color:var(--accent)">Generation 0 — Newly Allocated</div>
+            <div class="card-text">All new objects start here. GC collects Gen 0 most frequently since most objects are short-lived. Survivors are promoted to Gen 1.</div>
+          </div>
+          <div class="card">
+            <div class="card-label" style="color:var(--accent2)">Generation 1 — Buffer Zone</div>
+            <div class="card-text">Survivors of at least one Gen 0 collection. Acts as a buffer between short-lived and long-lived objects. Collected less often.</div>
+          </div>
+          <div class="card">
+            <div class="card-label" style="color:var(--accent3)">Generation 2 — Long-Lived</div>
+            <div class="card-text">Objects surviving multiple collections: static data, caches, app-lifetime objects. Collected least frequently — expensive to scan.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Phases of Collection</div>
+        <div class="g3">
+          <div class="card"><div class="card-label" style="color:var(--accent5)">1. Marking</div><div class="card-text">GC scans objects, identifies all reachable (live) objects. Unreferenced objects are marked as garbage.</div></div>
+          <div class="card"><div class="card-label" style="color:var(--accent5)">2. Relocating</div><div class="card-text">References of live objects are updated so pointers remain valid when objects are moved during compaction.</div></div>
+          <div class="card"><div class="card-label" style="color:var(--accent5)">3. Compacting</div><div class="card-text">Dead objects are freed. Live objects are moved together to eliminate gaps, reducing fragmentation.</div></div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Key GC Methods</div>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+          <pre><code><span class="cmt">// Force collection (use sparingly — impacts performance)</span>
+GC.<span class="fn">Collect</span>();
+GC.<span class="fn">WaitForPendingFinalizers</span>();
+
+<span class="cmt">// Memory usage</span>
+<span class="type">long</span> before = GC.<span class="fn">GetTotalMemory</span>(<span class="kw">false</span>);
+<span class="type">int</span>[] arr = <span class="kw">new int</span>[<span class="num">1000</span>];
+<span class="type">long</span> after = GC.<span class="fn">GetTotalMemory</span>(<span class="kw">false</span>);
+Console.<span class="fn">WriteLine</span>(<span class="str">$"Allocated: {after - before} bytes"</span>);
+
+<span class="cmt">// Generation info</span>
+Console.<span class="fn">WriteLine</span>(<span class="str">"Max generation: "</span> + GC.MaxGeneration); <span class="cmt">// 2</span>
+Console.<span class="fn">WriteLine</span>(<span class="str">"String gen: "</span> + GC.<span class="fn">GetGeneration</span>(<span class="str">"hello"</span>));</code></pre>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="callout c-green"><span class="ci">✅</span><strong>Advantages:</strong> No manual memory management, prevents leaks, compaction reduces fragmentation.</div>
+        <div class="callout c-red"><span class="ci">⚠️</span><strong>Limitations:</strong> Non-deterministic timing, GC pauses can impact latency, finalizers run on separate thread.</div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════ JOBS & AGENTS ══════════════════════ -->
+    <section class="section" id="jobs">
+      <div class="section-header">
+        <div class="s-icon si-green">⚙️</div>
+        <div>
+          <div class="section-title">Jobs &amp; Agents</div>
+          <div class="section-desc">Jobs are units of work; Agents are the services that execute them. Together they power automation and scheduling in SQL Server and .NET applications.</div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Background Job with Hangfire</div>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C# — Hangfire</div></div>
+          <pre><code><span class="kw">public class</span> <span class="type">EmailService</span>
+{
+    <span class="kw">public void</span> <span class="fn">SendEmail</span>(<span class="type">string</span> to, <span class="type">string</span> subject, <span class="type">string</span> body)
+        => Console.<span class="fn">WriteLine</span>(<span class="str">$"Email sent to {to}: {subject}"</span>);
+}
+
+<span class="cmt">// Enqueue a fire-and-track background job</span>
+BackgroundJob.<span class="fn">Enqueue</span>(() =>
+    <span class="kw">new</span> <span class="type">EmailService</span>().<span class="fn">SendEmail</span>(<span class="str">"user@example.com"</span>, <span class="str">"Hello"</span>, <span class="str">"Test"</span>));</code></pre>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Worker Service Agent (.NET BackgroundService)</div>
+        <div class="code-block">
+          <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+          <pre><code><span class="kw">public class</span> <span class="type">JobAgent</span> : <span class="type">BackgroundService</span>
+{
+    <span class="kw">protected override async</span> Task <span class="fn">ExecuteAsync</span>(CancellationToken ct)
+    {
+        <span class="kw">while</span> (!ct.IsCancellationRequested)
+        {
+            Console.<span class="fn">WriteLine</span>(<span class="str">"Agent running: "</span> + DateTime.Now);
+            <span class="kw">await</span> Task.<span class="fn">Delay</span>(<span class="num">5000</span>, ct); <span class="cmt">// tick every 5 s</span>
+        }
+    }
+}
+
+<span class="cmt">// Register in Program.cs</span>
+builder.Services.<span class="fn">AddHostedService</span>&lt;<span class="type">JobAgent</span>&gt;();</code></pre>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Job vs Agent</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Aspect</th><th>Job</th><th>Agent</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Definition</strong></td><td>A task or unit of work</td><td>A service that executes jobs</td></tr>
+            <tr><td><strong>Example</strong></td><td>Send email, backup DB, clean logs</td><td>SQL Server Agent, Windows Service, BackgroundService</td></tr>
+            <tr><td><strong>Lifecycle</strong></td><td>Runs once or on schedule</td><td>Runs continuously, manages jobs</td></tr>
+            <tr><td><strong>Role</strong></td><td>Defines <em>what</em> to do</td><td>Defines <em>who executes</em> the job</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════ REF & OUT ══════════════════════ -->
+    <section class="section" id="ref-out">
+      <div class="section-header">
+        <div class="s-icon si-purple">🔄</div>
+        <div>
+          <div class="section-title">ref &amp; out Keywords</div>
+          <div class="section-desc">Both pass arguments by reference rather than by value, but they have different initialization requirements and directional semantics.</div>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="sub">
+          <div class="sub-title">out Keyword</div>
+          <p>Used when a method needs to return multiple values. The parameter does <strong>not</strong> need to be initialized before calling — but must be assigned inside the method.</p>
+          <div class="code-block">
+            <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+            <pre><code><span class="kw">static void</span> <span class="fn">Main</span>() {
+    <span class="type">int</span> G;           <span class="cmt">// not initialized</span>
+    <span class="fn">Sum</span>(<span class="kw">out</span> G);
+    Console.<span class="fn">WriteLine</span>(G); <span class="cmt">// 160</span>
+}
+
+<span class="kw">public static void</span> <span class="fn">Sum</span>(<span class="kw">out int</span> G) {
+    G = <span class="num">80</span>;
+    G += G;         <span class="cmt">// must assign before return</span>
+}</code></pre>
+          </div>
+          <div class="callout c-blue"><span class="ci">💡</span>Classic use: <code style="font-family:'IBM Plex Mono',monospace;font-size:12px">int.TryParse("42", out int result)</code></div>
+        </div>
+        <div class="sub">
+          <div class="sub-title">ref Keyword</div>
+          <p>The variable <strong>must be initialized</strong> before passing. Changes made inside the method are reflected in the caller — bidirectional flow.</p>
+          <div class="code-block">
+            <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C#</div></div>
+            <pre><code><span class="kw">static void</span> <span class="fn">Main</span>() {
+    <span class="type">string</span> str = <span class="str">"Geek"</span>; <span class="cmt">// must be initialized</span>
+    <span class="fn">SetValue</span>(<span class="kw">ref</span> str);
+    Console.<span class="fn">WriteLine</span>(str); <span class="cmt">// GeeksforGeeks</span>
+}
+
+<span class="kw">static void</span> <span class="fn">SetValue</span>(<span class="kw">ref string</span> str1) {
+    <span class="kw">if</span> (str1 == <span class="str">"Geek"</span>)
+        Console.<span class="fn">WriteLine</span>(<span class="str">"Hello!!Geek"</span>);
+    str1 = <span class="str">"GeeksforGeeks"</span>; <span class="cmt">// caller sees this</span>
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Key Differences</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Aspect</th><th>ref</th><th>out</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Must initialize before call</strong></td><td>✅ Yes</td><td>❌ No</td></tr>
+            <tr><td><strong>Must assign inside method</strong></td><td>❌ No</td><td>✅ Yes</td></tr>
+            <tr><td><strong>Data flow direction</strong></td><td>Bidirectional (in + out)</td><td>Unidirectional (out only)</td></tr>
+            <tr><td><strong>Primary use case</strong></td><td>Modify caller's variable</td><td>Return multiple values</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════ TASK & THREAD ══════════════════════ -->
+    <section class="section" id="task-thread">
+      <div class="section-header">
+        <div class="s-icon si-red">🧵</div>
+        <div>
+          <div class="section-title">Task vs Thread</div>
+          <div class="section-desc">Thread is a low-level OS construct. Task is a high-level abstraction over the thread pool — with built-in support for async/await, cancellation, and error handling.</div>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="sub">
+          <div class="sub-title">Task</div>
+          <p>From <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent3);font-size:13px">System.Threading.Tasks</code>. Uses the thread pool. Supports <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent3);font-size:13px">async/await</code>, cancellation tokens, and <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent3);font-size:13px">Task&lt;T&gt;</code> for return values.</p>
+          <div class="code-block">
+            <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C# — Task</div></div>
+            <pre><code><span class="kw">static async</span> Task <span class="fn">Main</span>()
+{
+    Task&lt;<span class="type">string</span>&gt; task = Task.<span class="fn">Run</span>(() =>
+        <span class="str">"Hello from Task!"</span>);
+
+    <span class="type">string</span> result = <span class="kw">await</span> task;
+    Console.<span class="fn">WriteLine</span>(result);
+}</code></pre>
+          </div>
+        </div>
+        <div class="sub">
+          <div class="sub-title">Thread</div>
+          <p>From <code style="font-family:'IBM Plex Mono',monospace;color:var(--accent3);font-size:13px">System.Threading</code>. Low-level, creates a dedicated OS thread. Full manual control over start, stop, priority, and lifecycle.</p>
+          <div class="code-block">
+            <div class="code-hdr"><div class="dots"><div class="d dr"></div><div class="d dy"></div><div class="d dg"></div></div><div class="code-lang">C# — Thread</div></div>
+            <pre><code><span class="kw">static void</span> <span class="fn">PrintNumbers</span>() {
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">1</span>; i &lt;= <span class="num">5</span>; i++) {
+        Console.<span class="fn">WriteLine</span>(<span class="str">"Worker: "</span> + i);
+        Thread.<span class="fn">Sleep</span>(<span class="num">500</span>);
+    }
+}
+
+Thread t1 = <span class="kw">new</span> <span class="type">Thread</span>(<span class="fn">PrintNumbers</span>);
+t1.<span class="fn">Start</span>();</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-title">Full Comparison</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Feature</th><th>Task 🟦</th><th>Thread 🟥</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Abstraction</strong></td><td>High-level</td><td>Low-level</td></tr>
+            <tr><td><strong>Namespace</strong></td><td><code>System.Threading.Tasks</code></td><td><code>System.Threading</code></td></tr>
+            <tr><td><strong>Return values</strong></td><td>✅ <code>Task&lt;T&gt;</code></td><td>❌ Not directly</td></tr>
+            <tr><td><strong>Cancellation</strong></td><td>✅ <code>CancellationToken</code></td><td>❌ Manual only</td></tr>
+            <tr><td><strong>async/await</strong></td><td>✅ Native support</td><td>❌ Not supported</td></tr>
+            <tr><td><strong>Thread pool</strong></td><td>✅ Reuses pool threads</td><td>❌ Creates dedicated thread</td></tr>
+            <tr><td><strong>Error handling</strong></td><td>✅ <code>AggregateException</code></td><td>❌ Manual try/catch</td></tr>
+            <tr><td><strong>Best for</strong></td><td>Async ops, parallel workloads</td><td>Fine-grained control, long-running tasks</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="g2">
+        <div class="callout c-blue"><span class="ci">🟦</span>Use <strong>Task</strong> for almost everything modern — simplicity, scalability, and async/await support make it the right default choice.</div>
+        <div class="callout c-red"><span class="ci">🟥</span>Use <strong>Thread</strong> when you need explicit control: setting thread priority, foreground vs background, or long-running dedicated work loops.</div>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+</main>
+
+<script>
+/* ═══════ THEME ═══════ */
+const html  = document.documentElement;
+const check = document.getElementById('themeCheck');
+const thumb = document.getElementById('tThumb');
+const lbl   = document.getElementById('themeLabel');
+const hBtn  = document.getElementById('heroThemeBtn');
+const hIcon = document.getElementById('heroIcon');
+const hLbl  = document.getElementById('heroLabel');
+const mBtn  = document.getElementById('mobileThemeBtn');
+
+function applyTheme(t) {
+  html.setAttribute('data-theme', t);
+  localStorage.setItem('csref-theme', t);
+  const dark = t === 'dark';
+  check.checked    = !dark;
+  thumb.textContent = dark ? '🌙' : '☀️';
+  lbl.textContent   = dark ? 'Dark mode' : 'Light mode';
+  hIcon.textContent = dark ? '🌙' : '☀️';
+  hLbl.textContent  = dark ? 'Dark' : 'Light';
+  mBtn.textContent  = dark ? '☀️' : '🌙';
+}
+const toggleTheme = () =>
+  applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+
+applyTheme(localStorage.getItem('csref-theme') || 'dark');
+check.addEventListener('change', toggleTheme);
+hBtn.addEventListener('click', toggleTheme);
+mBtn.addEventListener('click', toggleTheme);
+
+/* ═══════ MOBILE SIDEBAR ═══════ */
+const sidebar   = document.getElementById('sidebar');
+const overlay   = document.getElementById('overlay');
+const hamburger = document.getElementById('hamburger');
+
+function openSidebar()  {
+  sidebar.classList.add('open');
+  overlay.classList.add('show');
+  hamburger.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSidebar() {
+  sidebar.classList.remove('open');
+  overlay.classList.remove('show');
+  hamburger.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+hamburger.addEventListener('click', () =>
+  sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
+overlay.addEventListener('click', closeSidebar);
+
+/* ═══════ ACTIVE NAV ═══════ */
+const sections = document.querySelectorAll('section[id]');
+const navItems = document.querySelectorAll('.nav-item');
+
+sections.forEach(sec => {
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navItems.forEach(n => n.classList.remove('active'));
+        const a = document.querySelector(`.nav-item[href="#${sec.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' }).observe(sec);
+});
+</script>
+</body>
+</html>
