@@ -1,0 +1,2361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Free Tier: 30-Day Mastery Plan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0078D4;
+            --primary-dark: #005a9e;
+            --accent: #00BCF2;
+            --success: #107C10;
+            --warning: #FFB900;
+            --danger: #E81123;
+            --bg-main: #0a0e1a;
+            --bg-card: #151a2e;
+            --bg-card-hover: #1a2038;
+            --text-primary: #e8edf5;
+            --text-secondary: #a0aec0;
+            --text-muted: #718096;
+            --border: #2d3748;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-azure: linear-gradient(135deg, #0078D4 0%, #00BCF2 100%);
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(0, 120, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 188, 242, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            animation: breathe 15s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 80px 20px;
+            background: var(--gradient-azure);
+            margin: 0 -20px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" fill="white" opacity="0.1"/></svg>');
+            background-size: 20px 20px;
+            animation: grid-scroll 20s linear infinite;
+        }
+
+        @keyframes grid-scroll {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 20px); }
+        }
+
+        h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: -2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            background: rgba(10, 14, 26, 0.95);
+            padding: 20px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-tab {
+            padding: 12px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .nav-tab:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--primary);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: var(--gradient-azure);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 60px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: var(--accent);
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60%;
+            height: 3px;
+            background: var(--gradient-azure);
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8rem;
+            margin: 40px 0 20px;
+            color: var(--primary);
+        }
+
+        h4 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.3rem;
+            margin: 25px 0 15px;
+            color: var(--text-primary);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-azure);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(0, 120, 212, 0.2);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .day-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .day-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 30px rgba(0, 120, 212, 0.15);
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .day-number {
+            background: var(--gradient-azure);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .day-title {
+            flex: 1;
+        }
+
+        .day-title h4 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .day-goal {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-style: italic;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        li strong {
+            color: var(--text-primary);
+        }
+
+        /* Code blocks */
+        pre {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        code {
+            background: rgba(0, 120, 212, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: var(--gradient-azure);
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--bg-card-hover);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .badge-success {
+            background: rgba(16, 124, 16, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .badge-warning {
+            background: rgba(255, 185, 0, 0.2);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        .badge-primary {
+            background: rgba(0, 120, 212, 0.2);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .badge-accent {
+            background: rgba(0, 188, 242, 0.2);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        /* Alert boxes */
+        .alert {
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background: rgba(0, 120, 212, 0.1);
+            border-color: var(--primary);
+        }
+
+        .alert-success {
+            background: rgba(16, 124, 16, 0.1);
+            border-color: var(--success);
+        }
+
+        .alert-warning {
+            background: rgba(255, 185, 0, 0.1);
+            border-color: var(--warning);
+        }
+
+        .alert-danger {
+            background: rgba(232, 17, 35, 0.1);
+            border-color: var(--danger);
+        }
+
+        /* Grid layouts */
+        .grid {
+            display: grid;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        /* Highlight box */
+        .highlight {
+            background: var(--gradient-azure);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(0, 120, 212, 0.3);
+        }
+
+        .highlight h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            margin-top: 80px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-azure);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 120, 212, 0.4);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 120, 212, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            h3 {
+                font-size: 1.5rem;
+            }
+
+            .nav-tabs {
+                position: relative;
+            }
+
+            .day-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .nav-tabs,
+            .scroll-top {
+                display: none;
+            }
+
+            .card,
+            .day-card {
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Key concepts highlight */
+        .key-concepts {
+            background: rgba(0, 188, 242, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .key-concepts strong {
+            color: var(--accent);
+        }
+
+        /* Week separator */
+        .week-separator {
+            text-align: center;
+            margin: 60px 0 40px;
+            position: relative;
+        }
+
+        .week-separator::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+
+        .week-separator span {
+            background: var(--bg-main);
+            padding: 10px 30px;
+            position: relative;
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Azure Free Tier</h1>
+        <div class="subtitle">30-Day Practical Mastery Plan • 1-2 Hours Daily</div>
+    </header>
+
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="nav-tabs" id="mainNav">
+            <a href="#overview" class="nav-tab">Overview</a>
+            <a href="#week1" class="nav-tab">Week 1</a>
+            <a href="#week2" class="nav-tab">Week 2</a>
+            <a href="#week3" class="nav-tab">Week 3</a>
+            <a href="#week4" class="nav-tab">Week 4</a>
+            <a href="#devops" class="nav-tab">Azure DevOps Deep Dive</a>
+            <a href="#resources" class="nav-tab">Resources</a>
+        </nav>
+
+        <!-- Overview Section -->
+        <section id="overview" class="section">
+            <h2>📋 Plan Overview</h2>
+            
+            <div class="card">
+                <p>This comprehensive plan focuses exclusively on <strong>Azure free tier services</strong>, progressively building your skills from foundational concepts to advanced operational expertise. Each day includes hands-on tasks designed to prepare you for Azure certification exams while staying within free tier limits.</p>
+            </div>
+
+            <div class="alert alert-info">
+                <h4>🎯 What You'll Achieve</h4>
+                <ul>
+                    <li>Master 25+ Azure services through hands-on practice</li>
+                    <li>Build real-world projects and architectures</li>
+                    <li>Prepare for AZ-900, AZ-104, or AZ-204 certifications</li>
+                    <li>Develop DevOps and automation skills</li>
+                    <li>Learn cost optimization and governance</li>
+                </ul>
+            </div>
+
+            <h3>Free Tier Benefits</h3>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h4>⏰ 12 Months Free</h4>
+                    <ul>
+                        <li>750 hours B1s Windows/Linux VM</li>
+                        <li>5GB blob storage</li>
+                        <li>5GB file storage</li>
+                        <li>250GB SQL Database</li>
+                        <li>15GB bandwidth (outbound)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>♾️ Always Free</h4>
+                    <ul>
+                        <li>Azure Functions (1M requests)</li>
+                        <li>Cosmos DB (1000 RU/s, 25GB)</li>
+                        <li>App Service (10 apps)</li>
+                        <li>Azure DevOps (5 users, unlimited private repos)</li>
+                        <li>Container Instances (20 vCPU-seconds)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <h3>💰 $200 Free Credit</h3>
+                <p>First 30 days: Use wisely for services like Azure Kubernetes Service (AKS), additional VMs, or premium tiers. Monitor usage daily!</p>
+            </div>
+        </section>
+
+        <!-- Week 1 -->
+        <div class="week-separator" id="week1">
+            <span>WEEK 1: Foundations & Core Infrastructure</span>
+        </div>
+
+        <section class="section">
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">01</div>
+                    <div class="day-title">
+                        <h4>Azure Portal & Resource Groups</h4>
+                        <div class="day-goal">Understand Azure hierarchy and navigation</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Azure free account at <code>azure.microsoft.com/free</code></li>
+                        <li>Navigate Azure Portal - understand dashboard, search, notifications</li>
+                        <li>Create 3 Resource Groups:
+                            <ul>
+                                <li><code>rg-dev-eastus</code></li>
+                                <li><code>rg-staging-westus</code></li>
+                                <li><code>rg-production-centralus</code></li>
+                            </ul>
+                        </li>
+                        <li>Apply tags to each RG: Environment, CostCenter, Owner</li>
+                        <li>Explore Azure Resource Manager (ARM) structure</li>
+                        <li>Pin Resource Groups to dashboard</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Resource hierarchy, naming conventions, tagging strategy
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">02</div>
+                    <div class="day-title">
+                        <h4>Azure Storage Accounts - Basics</h4>
+                        <div class="day-goal">Create and configure blob storage</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Storage Account in <code>rg-dev-eastus</code>
+                            <ul>
+                                <li>Name: <code>stdevlearn[yourname]</code> (globally unique)</li>
+                                <li>Performance: Standard</li>
+                                <li>Replication: LRS (cheapest)</li>
+                                <li>Access tier: Hot</li>
+                            </ul>
+                        </li>
+                        <li>Create 3 containers: <code>images</code> (Private), <code>documents</code> (Blob), <code>backups</code> (Container)</li>
+                        <li>Upload 5 different file types to each container</li>
+                        <li>Generate SAS token for private container (1-hour expiry)</li>
+                        <li>Access blob via SAS URL in browser</li>
+                        <li>Enable soft delete (7-day retention)</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Storage redundancy, access tiers, blob types, SAS tokens
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">03</div>
+                    <div class="day-title">
+                        <h4>Azure Storage - File Shares & Tables</h4>
+                        <div class="day-goal">Work with Azure Files and Table Storage</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Azure File Share (5GB free): <code>shared-files</code>, Quota: 5GB</li>
+                        <li>Mount file share locally:
+                            <ul>
+                                <li>Windows: Use <code>net use</code> command</li>
+                                <li>Linux/Mac: Use <code>mount</code> command with CIFS</li>
+                            </ul>
+                        </li>
+                        <li>Upload files, create folders, test access</li>
+                        <li>Create Table Storage table: <code>employeerecords</code></li>
+                        <li>Add 10 entities with PartitionKey and RowKey</li>
+                        <li>Query table using Storage Explorer</li>
+                        <li>Compare blob vs file vs table use cases</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> SMB protocol, file share snapshots, NoSQL tables
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">04</div>
+                    <div class="day-title">
+                        <h4>Virtual Machines - Creation & Configuration</h4>
+                        <div class="day-goal">Deploy and configure a Linux VM</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Ubuntu 20.04 LTS VM in <code>rg-dev-eastus</code>:
+                            <ul>
+                                <li>Size: B1s (free tier - 750 hours/month)</li>
+                                <li>Authentication: SSH key</li>
+                                <li>Public IP: Yes</li>
+                                <li>NSG: Allow SSH (22) only</li>
+                            </ul>
+                        </li>
+                        <li>Connect via SSH</li>
+                        <li>Update system: <code>sudo apt update && sudo apt upgrade -y</code></li>
+                        <li>Install nginx: <code>sudo apt install nginx -y</code></li>
+                        <li>Modify default webpage at <code>/var/www/html/index.html</code></li>
+                        <li>Add NSG rule to allow HTTP (80)</li>
+                        <li>Access webpage via public IP</li>
+                        <li>⚠️ <strong>Stop VM when not in use (critical for free tier)</strong></li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> VM sizing, NSG rules, SSH authentication, public IPs
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">05</div>
+                    <div class="day-title">
+                        <h4>Virtual Networks & Subnets</h4>
+                        <div class="day-goal">Design and implement network architecture</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Virtual Network in <code>rg-dev-eastus</code>:
+                            <ul>
+                                <li>Name: <code>vnet-dev-eastus</code></li>
+                                <li>Address space: <code>10.0.0.0/16</code></li>
+                            </ul>
+                        </li>
+                        <li>Create 3 subnets:
+                            <ul>
+                                <li><code>subnet-web</code>: <code>10.0.1.0/24</code></li>
+                                <li><code>subnet-app</code>: <code>10.0.2.0/24</code></li>
+                                <li><code>subnet-data</code>: <code>10.0.3.0/24</code></li>
+                            </ul>
+                        </li>
+                        <li>Create second VNet in <code>rg-staging-westus</code>: <code>10.1.0.0/16</code></li>
+                        <li>Set up VNet Peering between both VNets</li>
+                        <li>Deploy a VM in each VNet's first subnet</li>
+                        <li>Test connectivity between VMs via private IPs</li>
+                        <li>Document network diagram</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> CIDR notation, VNet peering, subnet design, private IPs
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">06</div>
+                    <div class="day-title">
+                        <h4>Network Security Groups (NSG)</h4>
+                        <div class="day-goal">Implement network security controls</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create custom NSG: <code>nsg-web-tier</code></li>
+                        <li>Configure inbound rules:
+                            <ul>
+                                <li>Priority 100: Allow HTTP (80) from Internet</li>
+                                <li>Priority 110: Allow HTTPS (443) from Internet</li>
+                                <li>Priority 120: Allow SSH (22) from your IP only</li>
+                                <li>Priority 4096: Deny all other inbound</li>
+                            </ul>
+                        </li>
+                        <li>Configure outbound rules: Allow HTTPS to Azure Storage, Deny internet except specific URLs</li>
+                        <li>Associate NSG with subnet</li>
+                        <li>Test rules using VM and browser</li>
+                        <li>Enable NSG flow logs (if credit allows)</li>
+                        <li>View effective security rules</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> NSG rule priority, default rules, application security groups
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">07</div>
+                    <div class="day-title">
+                        <h4>Azure App Service - Web Apps</h4>
+                        <div class="day-goal">Deploy a web application</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create App Service Plan: <code>plan-free-dev</code>, OS: Linux, Tier: Free (F1)</li>
+                        <li>Create Web App: Runtime: Node.js 18 LTS or Python 3.11, Deployment: Local Git</li>
+                        <li>Deploy sample application from Azure quickstart templates via Git</li>
+                        <li>Configure application settings (environment variables)</li>
+                        <li>Enable Application Insights (basic tier - free)</li>
+                        <li>Set up deployment slots (swap staging to production)</li>
+                        <li>Configure custom domain (if you have one)</li>
+                        <li>Test application in browser</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> PaaS vs IaaS, deployment methods, app settings, slots
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Week 2 -->
+        <div class="week-separator" id="week2">
+            <span>WEEK 2: Platform Services & Serverless</span>
+        </div>
+
+        <section class="section">
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">08</div>
+                    <div class="day-title">
+                        <h4>Azure Functions - HTTP Triggers</h4>
+                        <div class="day-goal">Create serverless functions</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Function App: Consumption plan (1M free requests/month), Runtime: Python or Node.js</li>
+                        <li>Create HTTP-triggered function: <code>HelloWorldFunction</code>, Authorization: Anonymous</li>
+                        <li>Write function to accept name as query parameter and return JSON with greeting and timestamp</li>
+                        <li>Test in portal and via Postman/curl</li>
+                        <li>Create second function with function-level auth</li>
+                        <li>Generate function key and test secure endpoint</li>
+                        <li>Monitor function executions in Application Insights</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Serverless computing, triggers, bindings, consumption plan
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">09</div>
+                    <div class="day-title">
+                        <h4>Azure Functions - Advanced Triggers</h4>
+                        <div class="day-goal">Work with timer and blob triggers</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create timer-triggered function: Every 5 minutes (CRON), writes timestamp to blob</li>
+                        <li>Create blob-triggered function: Trigger on new file in <code>uploads</code>, copy to <code>processed</code></li>
+                        <li>Upload files to test blob trigger</li>
+                        <li>Create queue-triggered function: Process messages, write to table storage</li>
+                        <li>Test complete workflow</li>
+                        <li>Review execution logs and metrics</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> CRON expressions, event-driven architecture, bindings
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">10</div>
+                    <div class="day-title">
+                        <h4>Azure SQL Database</h4>
+                        <div class="day-goal">Deploy and manage SQL database</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Azure SQL Database: Server <code>sql-dev-learn[yourname]</code>, Database <code>employeedb</code>, Tier: Basic (5 DTUs - free for 12 months)</li>
+                        <li>Configure firewall to allow your IP</li>
+                        <li>Connect via Azure Data Studio or SSMS</li>
+                        <li>Create tables with sample schema</li>
+                        <li>Insert 20 sample records</li>
+                        <li>Run queries: SELECT, JOIN, GROUP BY, aggregates</li>
+                        <li>Create index on frequently queried column</li>
+                        <li>Monitor DTU usage in portal</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> DTU vs vCore, firewall rules, SQL authentication
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">11</div>
+                    <div class="day-title">
+                        <h4>Azure Cosmos DB</h4>
+                        <div class="day-goal">Work with NoSQL database</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Cosmos DB account: API: Core (SQL), Free tier: 1000 RU/s, 25GB (always free)</li>
+                        <li>Create database: <code>storedb</code>, container: <code>products</code>, Partition key: <code>/category</code></li>
+                        <li>Insert 50 product documents (JSON format)</li>
+                        <li>Run queries using SQL API</li>
+                        <li>Test partition key distribution</li>
+                        <li>Monitor RU consumption</li>
+                        <li>Create stored procedure for bulk insert</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Partition keys, RU/s, consistency levels, global distribution
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">12</div>
+                    <div class="day-title">
+                        <h4>Azure Container Instances</h4>
+                        <div class="day-goal">Deploy containerized applications</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Container Instance: Image <code>mcr.microsoft.com/azuredocs/aci-helloworld</code>, 1 CPU, 1.5GB memory</li>
+                        <li>Access application via public IP</li>
+                        <li>View container logs and events</li>
+                        <li>Deploy custom container from Docker Hub (nginx, redis)</li>
+                        <li>Configure environment variables</li>
+                        <li>Create multi-container group (sidecar pattern): main app + logging container</li>
+                        <li>Test inter-container communication</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Containers vs VMs, container groups, sidecar pattern
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">13</div>
+                    <div class="day-title">
+                        <h4>Azure Key Vault</h4>
+                        <div class="day-goal">Manage secrets and keys securely</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Key Vault: <code>kv-dev-learn-[yourname]</code>, Pricing: Standard</li>
+                        <li>Enable RBAC access policy model</li>
+                        <li>Add secrets: database connection string, API keys, certificate password</li>
+                        <li>Create access policy for your account</li>
+                        <li>Retrieve secret via Azure CLI</li>
+                        <li>Integrate Key Vault with App Service: reference secrets in app settings</li>
+                        <li>Enable soft delete and purge protection</li>
+                        <li>Audit access logs</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Secret management, access policies, managed identities
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">14</div>
+                    <div class="day-title">
+                        <h4>Azure Monitor & Alerts</h4>
+                        <div class="day-goal">Set up monitoring and alerting</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Enable diagnostics on all resources (Storage, App Service, SQL, VM)</li>
+                        <li>Configure Log Analytics Workspace: connect all resources, 30-day retention</li>
+                        <li>Create custom KQL queries: failed requests, high CPU, storage transactions</li>
+                        <li>Create metric alerts: VM CPU > 80%, Storage > 80%, App Service response > 3s</li>
+                        <li>Set up action group (email notification)</li>
+                        <li>Test alerts by generating load</li>
+                        <li>Create dashboard with key metrics</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> KQL queries, metrics vs logs, action groups, alerts
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Week 3 -->
+        <div class="week-separator" id="week3">
+            <span>WEEK 3: DevOps & Automation</span>
+        </div>
+
+        <section class="section">
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">15</div>
+                    <div class="day-title">
+                        <h4>Azure CLI & PowerShell</h4>
+                        <div class="day-goal">Automate resource management</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Install Azure CLI and PowerShell Az module</li>
+                        <li>Authenticate: <code>az login</code></li>
+                        <li>Create resources via CLI: Resource Group, Storage Account, App Service</li>
+                        <li>List all resources: <code>az resource list --output table</code></li>
+                        <li>Write PowerShell script to create VM, configure NSG, start/stop on schedule</li>
+                        <li>Export resource configuration to JSON</li>
+                        <li>Delete resource group: <code>az group delete</code></li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Infrastructure as Code, CLI vs Portal, scripting
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">16</div>
+                    <div class="day-title">
+                        <h4>ARM Templates</h4>
+                        <div class="day-goal">Deploy infrastructure as code</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create ARM template for: Resource Group, Storage Account, App Service Plan, Web App</li>
+                        <li>Add parameters: location, SKU, app name</li>
+                        <li>Add variables for naming conventions</li>
+                        <li>Add outputs (URL, storage key)</li>
+                        <li>Validate template: <code>az deployment group validate</code></li>
+                        <li>Deploy template: <code>az deployment group create</code></li>
+                        <li>Export existing resource to template</li>
+                        <li>Version control template in Git</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Declarative syntax, parameters, idempotency
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">17</div>
+                    <div class="day-title">
+                        <h4>Azure DevOps - Repos & Basic Pipelines</h4>
+                        <div class="day-goal">Set up version control and basic CI/CD</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Azure DevOps organization (free: 5 users, unlimited private repos)</li>
+                        <li>Create project: <code>AzureLearning</code></li>
+                        <li>Initialize Git repository in Azure Repos</li>
+                        <li>Clone sample web application locally</li>
+                        <li>Commit and push to Azure Repos</li>
+                        <li>Create build pipeline (YAML): trigger on main branch, install dependencies, run tests, build artifact</li>
+                        <li>Create release pipeline: deploy artifact to Azure App Service</li>
+                        <li>Make code change, commit, watch pipeline execute</li>
+                        <li>Verify deployment on App Service</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> CI/CD, YAML pipelines, build agents, artifacts
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">18</div>
+                    <div class="day-title">
+                        <h4>Azure Automation</h4>
+                        <div class="day-goal">Automate operational tasks</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Automation Account</li>
+                        <li>Import modules (Az.Accounts, Az.Compute)</li>
+                        <li>Create runbook: PowerShell to stop all VMs at night</li>
+                        <li>Test runbook manually</li>
+                        <li>Create schedule: Daily at 10 PM</li>
+                        <li>Link runbook to schedule</li>
+                        <li>Create second runbook: Start VMs at 6 AM</li>
+                        <li>Monitor job history and logs</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Runbooks, schedules, Azure Automation DSC
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">19</div>
+                    <div class="day-title">
+                        <h4>Azure Backup & Site Recovery</h4>
+                        <div class="day-goal">Implement backup and disaster recovery</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Recovery Services Vault</li>
+                        <li>Configure VM backup: Daily backup policy, 7-day retention, run initial backup</li>
+                        <li>Restore files from backup point</li>
+                        <li>Configure SQL Database backup: point-in-time restore, long-term retention</li>
+                        <li>Test restore to new database</li>
+                        <li>Document backup strategy for all services</li>
+                        <li>Calculate RTO and RPO for each service</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Backup policies, retention, PITR, geo-redundant backup
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">20</div>
+                    <div class="day-title">
+                        <h4>Cost Management & Billing</h4>
+                        <div class="day-goal">Monitor and optimize costs</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Access Cost Management + Billing</li>
+                        <li>Review charges by: service, resource group, location, tag</li>
+                        <li>Create budget: $50/month with alerts at 80%, 100%, 120%</li>
+                        <li>Set up cost alerts for resource groups</li>
+                        <li>Download invoice and usage CSV</li>
+                        <li>Analyze in Excel: top 10 expensive resources, cost by day, forecast</li>
+                        <li>Use Azure Pricing Calculator for planning</li>
+                        <li>Identify optimizations: unused resources, over-provisioned VMs, wrong storage tiers</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Cost analysis, budgets, pricing tiers, TCO calculator
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">21</div>
+                    <div class="day-title">
+                        <h4>Azure Policy & Governance</h4>
+                        <div class="day-goal">Implement governance controls</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create custom Azure Policy: enforce "Environment" tag, allowed locations (East US, West US), allowed VM sizes (B-series)</li>
+                        <li>Assign policy to subscription scope</li>
+                        <li>Test by creating non-compliant resource</li>
+                        <li>Review compliance dashboard</li>
+                        <li>Create initiative (policy set) combining 3-4 related policies</li>
+                        <li>Apply initiative to resource group</li>
+                        <li>Remediate non-compliant resources</li>
+                        <li>Export compliance report</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Policy definition, assignment, compliance, initiatives
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Week 4 -->
+        <div class="week-separator" id="week4">
+            <span>WEEK 4: Advanced Services & Integration</span>
+        </div>
+
+        <section class="section">
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">22</div>
+                    <div class="day-title">
+                        <h4>Azure Active Directory (Entra ID)</h4>
+                        <div class="day-goal">Manage identity and access</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Navigate Azure AD in portal</li>
+                        <li>Create users: 3 regular users, 1 guest user (external)</li>
+                        <li>Create groups: <code>Developers</code> (assigned), <code>Admins</code> (assigned)</li>
+                        <li>Assign users to groups</li>
+                        <li>Configure RBAC: Developers as Reader on dev RG, Admins as Contributor on all RGs</li>
+                        <li>Test access with different user accounts</li>
+                        <li>Enable MFA for admins</li>
+                        <li>Review sign-in logs</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> RBAC, users, groups, MFA, conditional access
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">23</div>
+                    <div class="day-title">
+                        <h4>Azure Load Balancer</h4>
+                        <div class="day-goal">Distribute traffic across VMs</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create 2 identical web server VMs with nginx/Apache showing VM name</li>
+                        <li>Create availability set and add VMs</li>
+                        <li>Create Azure Load Balancer: SKU Basic (free), Type: Public</li>
+                        <li>Configure backend pool with both VMs</li>
+                        <li>Create health probe: HTTP on port 80</li>
+                        <li>Create load balancing rule: Port 80</li>
+                        <li>Test: refresh browser, observe traffic distribution</li>
+                        <li>Stop one VM, verify failover</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Load balancing, availability sets, health probes, fault domains
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">24</div>
+                    <div class="day-title">
+                        <h4>Azure Traffic Manager</h4>
+                        <div class="day-goal">Implement global load balancing</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create App Services in 2 regions: East US and West Europe</li>
+                        <li>Deploy identical app to both</li>
+                        <li>Create Traffic Manager profile: Routing method: Performance, DNS TTL: 30s</li>
+                        <li>Add endpoints for both App Services</li>
+                        <li>Configure health checks</li>
+                        <li>Test DNS resolution: <code>nslookup yourprofile.trafficmanager.net</code></li>
+                        <li>Simulate endpoint failure</li>
+                        <li>Monitor traffic distribution in dashboard</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> DNS-based routing, routing methods, endpoint monitoring
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">25</div>
+                    <div class="day-title">
+                        <h4>Azure CDN</h4>
+                        <div class="day-goal">Optimize content delivery</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create CDN profile: SKU: Microsoft Standard</li>
+                        <li>Add CDN endpoint for blob storage</li>
+                        <li>Upload static content: images, CSS, JavaScript</li>
+                        <li>Configure caching rules: Images 7 days, CSS/JS 1 day</li>
+                        <li>Access content via CDN URL</li>
+                        <li>Purge cache and verify refresh</li>
+                        <li>Configure custom domain (optional)</li>
+                        <li>Review analytics: bandwidth, requests, cache hit ratio</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Edge caching, POP locations, cache rules, purge
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">26</div>
+                    <div class="day-title">
+                        <h4>Azure Event Grid</h4>
+                        <div class="day-goal">Implement event-driven architecture</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Event Grid topic</li>
+                        <li>Create Azure Function as subscriber</li>
+                        <li>Configure function to trigger on custom event</li>
+                        <li>Publish test event to topic via CLI</li>
+                        <li>Verify function execution</li>
+                        <li>Create subscription with filters: subject and event type</li>
+                        <li>Test different event scenarios</li>
+                        <li>Monitor Event Grid metrics</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Pub/sub pattern, event schema, filtering, dead-lettering
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">27</div>
+                    <div class="day-title">
+                        <h4>Azure API Management</h4>
+                        <div class="day-goal">Manage and secure APIs</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create API Management instance: Tier Developer (free 12 months) - takes 30-45 min</li>
+                        <li>Import existing API: Azure Functions or public API</li>
+                        <li>Configure policies: rate limiting (10 calls/min), response caching (1 hour), header transformation</li>
+                        <li>Create product and add APIs</li>
+                        <li>Subscribe to product and get API key</li>
+                        <li>Test API via developer portal</li>
+                        <li>Monitor requests and latency</li>
+                        <li>Publish API to developer portal</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> API gateway, policies, products, subscriptions, throttling
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">28</div>
+                    <div class="day-title">
+                        <h4>Azure Service Bus</h4>
+                        <div class="day-goal">Implement enterprise messaging</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Service Bus namespace: Tier Basic (free tier available)</li>
+                        <li>Create queue: <code>orders-queue</code>, Max size 1GB, Message TTL 1 day</li>
+                        <li>Write sender application: send 100 messages to queue</li>
+                        <li>Write receiver application: peek, complete messages, handle dead letters</li>
+                        <li>Create topic: <code>notifications</code></li>
+                        <li>Create 3 subscriptions with filters: email (Priority=High), sms (Priority=Critical), all (no filter)</li>
+                        <li>Publish messages and verify distribution</li>
+                        <li>Monitor queue depth and throughput</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Queues vs topics, subscriptions, filters, dead-letter queue
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">29</div>
+                    <div class="day-title">
+                        <h4>Comprehensive Project - E-commerce Backend</h4>
+                        <div class="day-goal">Build complete solution using multiple services</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Architecture Components:</h4>
+                    <ul>
+                        <li><strong>Data Layer:</strong> Cosmos DB (product catalog), Azure SQL (orders), Storage (images)</li>
+                        <li><strong>Application Layer:</strong> App Service (REST API), Azure Functions (order processing), API Management (gateway)</li>
+                        <li><strong>Integration:</strong> Service Bus (order queue), Event Grid (inventory updates)</li>
+                        <li><strong>Security:</strong> Key Vault (connection strings), Azure AD (API auth)</li>
+                        <li><strong>Monitoring:</strong> Application Insights (end-to-end), Log Analytics (centralized)</li>
+                        <li><strong>DevOps:</strong> Azure DevOps (CI/CD), ARM template (infrastructure)</li>
+                    </ul>
+                    <h4>Workflow to Implement:</h4>
+                    <ol>
+                        <li>Create product → Store in Cosmos DB</li>
+                        <li>Upload image → Blob storage</li>
+                        <li>Place order → Queue in Service Bus</li>
+                        <li>Process order → Azure Function</li>
+                        <li>Update inventory → Event Grid event</li>
+                        <li>Query history → SQL Database</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Microservices, event-driven design, API gateway pattern, security best practices
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">30</div>
+                    <div class="day-title">
+                        <h4>Exam Preparation & Review</h4>
+                        <div class="day-goal">Consolidate knowledge and prepare for certification</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Review all services used in last 29 days</li>
+                        <li>Create mind map of Azure services and relationships</li>
+                        <li>Take practice tests: Microsoft Learn assessment, free online exams</li>
+                        <li>Review weak areas identified in practice tests</li>
+                        <li>Document architecture patterns learned: 3-tier web app, serverless processing, microservices, hybrid cloud</li>
+                        <li>Create cheat sheet: common CLI commands, service limits, when to use which service, pricing comparison</li>
+                        <li>Clean up all resources to avoid charges</li>
+                        <li>Schedule certification exam (AZ-900, AZ-104, or AZ-204)</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Exam objectives, practice scenarios, time management, knowledge consolidation
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Azure DevOps Deep Dive -->
+        <div class="week-separator" id="devops">
+            <span>AZURE DEVOPS DEEP DIVE</span>
+        </div>
+
+        <section class="section">
+            <h2>🚀 Azure DevOps Comprehensive Guide</h2>
+            
+            <div class="alert alert-success">
+                <h4>Why Azure DevOps?</h4>
+                <p>Azure DevOps is a complete DevOps toolchain that's <strong>free for small teams</strong> (up to 5 users with unlimited private Git repositories). It integrates seamlessly with Azure services and provides enterprise-grade features at no cost.</p>
+            </div>
+
+            <h3>Core Components</h3>
+            <div class="grid grid-2">
+                <div class="card">
+                    <h4>📦 Azure Repos</h4>
+                    <ul>
+                        <li>Unlimited private Git repositories</li>
+                        <li>Pull request workflows</li>
+                        <li>Branch policies and protection</li>
+                        <li>Code reviews and comments</li>
+                        <li>Git LFS support</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>🔨 Azure Pipelines</h4>
+                    <ul>
+                        <li>CI/CD automation</li>
+                        <li>YAML and Classic pipelines</li>
+                        <li>Multi-stage deployments</li>
+                        <li>Parallel jobs</li>
+                        <li>1,800 free minutes/month</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>📋 Azure Boards</h4>
+                    <ul>
+                        <li>Work item tracking</li>
+                        <li>Kanban boards</li>
+                        <li>Sprint planning</li>
+                        <li>Backlogs and queries</li>
+                        <li>Dashboards and charts</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>🧪 Azure Test Plans</h4>
+                    <ul>
+                        <li>Manual and exploratory testing</li>
+                        <li>Test case management</li>
+                        <li>Planned testing</li>
+                        <li>Test execution and tracking</li>
+                        <li>Integration with pipelines</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>📦 Azure Artifacts</h4>
+                    <ul>
+                        <li>Package management</li>
+                        <li>NuGet, npm, Maven, Python feeds</li>
+                        <li>Universal packages</li>
+                        <li>2GB free storage</li>
+                        <li>Upstream sources</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Extended Azure DevOps Learning Path</h3>
+            
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">A1</div>
+                    <div class="day-title">
+                        <h4>Azure DevOps - Setup & Repos</h4>
+                        <div class="day-goal">Master version control with Azure Repos</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Azure DevOps organization: <code>https://dev.azure.com/[yourorg]</code></li>
+                        <li>Create project with Git version control</li>
+                        <li>Clone repository locally: <code>git clone https://dev.azure.com/org/project/_git/repo</code></li>
+                        <li>Configure branch policies on main branch:
+                            <ul>
+                                <li>Require minimum 1 reviewer</li>
+                                <li>Check for linked work items</li>
+                                <li>Check for comment resolution</li>
+                                <li>Require build validation</li>
+                            </ul>
+                        </li>
+                        <li>Create feature branch: <code>git checkout -b feature/add-login</code></li>
+                        <li>Make changes, commit, and push</li>
+                        <li>Create pull request with description and reviewers</li>
+                        <li>Add comments, request changes, approve PR</li>
+                        <li>Complete PR with squash merge</li>
+                        <li>Set up branch security: configure who can create, delete, and force push</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Git workflows, branch policies, pull requests, code reviews
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">A2</div>
+                    <div class="day-title">
+                        <h4>Azure Boards - Agile Planning</h4>
+                        <div class="day-goal">Implement Agile work tracking</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Choose process template: Agile, Scrum, or Basic</li>
+                        <li>Create Epic: "E-commerce Platform"</li>
+                        <li>Create Features under Epic:
+                            <ul>
+                                <li>"User Authentication"</li>
+                                <li>"Product Catalog"</li>
+                                <li>"Shopping Cart"</li>
+                            </ul>
+                        </li>
+                        <li>Create User Stories under each Feature with acceptance criteria</li>
+                        <li>Break down stories into Tasks</li>
+                        <li>Set story points and priority</li>
+                        <li>Create Sprint (iteration) for 2 weeks</li>
+                        <li>Add stories to Sprint backlog</li>
+                        <li>Use Kanban board to move items: New → Active → Resolved → Closed</li>
+                        <li>Create custom queries: "My active tasks", "High priority bugs"</li>
+                        <li>Build dashboard with: burndown chart, velocity, cumulative flow</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Agile methodology, work item hierarchy, sprints, Kanban, burndown
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">A3</div>
+                    <div class="day-title">
+                        <h4>CI Pipeline - Build Automation</h4>
+                        <div class="day-goal">Create automated build pipeline</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Sample YAML Pipeline:</h4>
+                    <pre><code>trigger:
+  branches:
+    include:
+      - main
+      - develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '18.x'
+      displayName: 'Install Node.js'
+    
+    - script: |
+        npm install
+        npm run build
+      displayName: 'Install and Build'
+    
+    - task: CopyFiles@2
+      inputs:
+        Contents: 'dist/**'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'</code></pre>
+                    
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create new pipeline from YAML file in repo</li>
+                        <li>Configure triggers: CI on main/develop branches</li>
+                        <li>Add build steps: restore dependencies, compile, run tests</li>
+                        <li>Configure build agent pool (Microsoft-hosted Ubuntu)</li>
+                        <li>Add test task: run unit tests, publish results</li>
+                        <li>Add code coverage task</li>
+                        <li>Publish build artifacts for deployment</li>
+                        <li>Set build retention policy</li>
+                        <li>Enable continuous integration</li>
+                        <li>View build logs and test results</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> YAML syntax, pipeline stages, tasks, artifacts, triggers
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">A4</div>
+                    <div class="day-title">
+                        <h4>CD Pipeline - Release Management</h4>
+                        <div class="day-goal">Implement multi-stage deployments</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Multi-Stage YAML Deployment:</h4>
+                    <pre><code>stages:
+- stage: Deploy_Dev
+  jobs:
+  - deployment: DeployWeb
+    environment: 'development'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'Azure-Connection'
+              appName: 'myapp-dev'
+              package: '$(Pipeline.Workspace)/drop/*.zip'
+
+- stage: Deploy_Staging
+  dependsOn: Deploy_Dev
+  jobs:
+  - deployment: DeployStaging
+    environment: 'staging'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'Azure-Connection'
+              appName: 'myapp-staging'
+              package: '$(Pipeline.Workspace)/drop/*.zip'
+
+- stage: Deploy_Production
+  dependsOn: Deploy_Staging
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  jobs:
+  - deployment: DeployProd
+    environment: 'production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'Azure-Connection'
+              appName: 'myapp-prod'
+              package: '$(Pipeline.Workspace)/drop/*.zip'</code></pre>
+
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create environments: Development, Staging, Production</li>
+                        <li>Configure approval gates on Production environment</li>
+                        <li>Add deployment stages in YAML pipeline</li>
+                        <li>Configure Azure service connection (authorize to subscription)</li>
+                        <li>Deploy to App Service in each environment</li>
+                        <li>Add pre-deployment and post-deployment conditions</li>
+                        <li>Configure deployment strategy: rolling, blue-green, canary</li>
+                        <li>Set up manual intervention for production</li>
+                        <li>Monitor deployment progress</li>
+                        <li>Rollback failed deployment</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Environments, approvals, deployment strategies, service connections
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">A5</div>
+                    <div class="day-title">
+                        <h4>Azure Artifacts - Package Management</h4>
+                        <div class="day-goal">Create and consume private packages</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Azure Artifacts feed: <code>my-npm-feed</code></li>
+                        <li>Configure feed permissions: readers, contributors, owners</li>
+                        <li>Set up upstream sources (npmjs.org, nuget.org)</li>
+                        <li>Create npm package:
+                            <pre><code>// package.json
+{
+  "name": "@myorg/utils",
+  "version": "1.0.0",
+  "description": "Shared utilities"
+}</code></pre>
+                        </li>
+                        <li>Authenticate to feed: <code>npm install -g vsts-npm-auth</code></li>
+                        <li>Publish package: <code>npm publish</code></li>
+                        <li>Consume package in another project</li>
+                        <li>Create views: @Local, @Prerelease, @Release</li>
+                        <li>Configure retention policies</li>
+                        <li>Use artifacts in pipeline to cache dependencies</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Package feeds, upstream sources, versioning, retention
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">A6</div>
+                    <div class="day-title">
+                        <h4>Pipeline Variables & Secrets</h4>
+                        <div class="day-goal">Manage configuration and secrets securely</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create variable groups in Library:
+                            <ul>
+                                <li><code>dev-variables</code></li>
+                                <li><code>staging-variables</code></li>
+                                <li><code>prod-variables</code></li>
+                            </ul>
+                        </li>
+                        <li>Add variables: API_URL, DATABASE_NAME, REGION</li>
+                        <li>Mark sensitive variables as secret (e.g., API_KEY)</li>
+                        <li>Link variable group to pipeline</li>
+                        <li>Use variables in pipeline: <code>$(API_URL)</code></li>
+                        <li>Integrate with Azure Key Vault:
+                            <ul>
+                                <li>Create service connection to Key Vault</li>
+                                <li>Link Key Vault secrets to variable group</li>
+                                <li>Access in pipeline automatically</li>
+                            </ul>
+                        </li>
+                        <li>Use runtime parameters for user input</li>
+                        <li>Set pipeline variables at queue time</li>
+                        <li>Use output variables between jobs</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Variable groups, secrets management, Key Vault integration
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">A7</div>
+                    <div class="day-title">
+                        <h4>Testing & Quality Gates</h4>
+                        <div class="day-goal">Implement automated testing and quality checks</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Add unit test task to pipeline:
+                            <pre><code>- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Tests.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'</code></pre>
+                        </li>
+                        <li>Publish test results: <code>PublishTestResults@2</code></li>
+                        <li>Publish code coverage: <code>PublishCodeCoverageResults@1</code></li>
+                        <li>Set minimum code coverage threshold: 80%</li>
+                        <li>Add SonarQube/SonarCloud task for code quality analysis</li>
+                        <li>Configure quality gate: fail build if quality gate fails</li>
+                        <li>Add security scanning task (WhiteSource, Checkmarx)</li>
+                        <li>Create manual testing in Azure Test Plans:
+                            <ul>
+                                <li>Define test cases</li>
+                                <li>Link to user stories</li>
+                                <li>Execute tests manually</li>
+                                <li>Log bugs from test failures</li>
+                            </ul>
+                        </li>
+                        <li>View test analytics and trends</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Unit testing, code coverage, quality gates, test plans
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">A8</div>
+                    <div class="day-title">
+                        <h4>Infrastructure as Code (IaC) Pipelines</h4>
+                        <div class="day-goal">Deploy Azure infrastructure via pipelines</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create ARM template or Bicep file for infrastructure</li>
+                        <li>Add ARM deployment task:
+                            <pre><code>- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    azureResourceManagerConnection: 'Azure-Connection'
+    subscriptionId: '$(subscriptionId)'
+    resourceGroupName: 'rg-iac-demo'
+    location: 'East US'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(Build.SourcesDirectory)/azuredeploy.json'
+    csmParametersFile: '$(Build.SourcesDirectory)/azuredeploy.parameters.json'
+    deploymentMode: 'Incremental'</code></pre>
+                        </li>
+                        <li>Validate template before deployment: <code>deploymentMode: 'Validation'</code></li>
+                        <li>Use Terraform with Azure DevOps:
+                            <ul>
+                                <li>Install Terraform task extension</li>
+                                <li>Initialize: <code>terraform init</code></li>
+                                <li>Plan: <code>terraform plan</code></li>
+                                <li>Apply: <code>terraform apply</code></li>
+                            </ul>
+                        </li>
+                        <li>Store Terraform state in Azure Storage</li>
+                        <li>Create separate pipelines for infrastructure and application</li>
+                        <li>Use pipeline templates for reusable IaC patterns</li>
+                        <li>Implement drift detection: compare actual vs desired state</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> ARM templates, Bicep, Terraform, state management, validation
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">A9</div>
+                    <div class="day-title">
+                        <h4>Container & Kubernetes Deployments</h4>
+                        <div class="day-goal">Deploy containerized apps to AKS</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Create Dockerfile for application</li>
+                        <li>Build Docker image in pipeline:
+                            <pre><code>- task: Docker@2
+  inputs:
+    containerRegistry: 'ACR-Connection'
+    repository: 'myapp'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: '$(Build.BuildId)'</code></pre>
+                        </li>
+                        <li>Push to Azure Container Registry (ACR)</li>
+                        <li>Create AKS cluster (use $200 credit)</li>
+                        <li>Create Kubernetes manifest files (deployment.yaml, service.yaml)</li>
+                        <li>Deploy to AKS:
+                            <pre><code>- task: KubernetesManifest@0
+  inputs:
+    action: 'deploy'
+    kubernetesServiceConnection: 'AKS-Connection'
+    manifests: |
+      $(Build.SourcesDirectory)/k8s/deployment.yaml
+      $(Build.SourcesDirectory)/k8s/service.yaml</code></pre>
+                        </li>
+                        <li>Use Helm charts for complex deployments</li>
+                        <li>Implement rolling updates and rollback strategies</li>
+                        <li>Set up horizontal pod autoscaling</li>
+                        <li>Monitor deployment with kubectl and Azure Monitor</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Docker, ACR, AKS, Kubernetes manifests, Helm, rolling updates
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">A10</div>
+                    <div class="day-title">
+                        <h4>Monitoring & Feedback Loops</h4>
+                        <div class="day-goal">Implement DevOps observability</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h4>Tasks:</h4>
+                    <ol>
+                        <li>Integrate Application Insights with pipeline:
+                            <ul>
+                                <li>Track deployment annotations</li>
+                                <li>Monitor release health</li>
+                                <li>Create release gates based on metrics</li>
+                            </ul>
+                        </li>
+                        <li>Configure pipeline analytics:
+                            <ul>
+                                <li>Track build duration trends</li>
+                                <li>Monitor failure rates</li>
+                                <li>Analyze test pass rates</li>
+                            </ul>
+                        </li>
+                        <li>Create Azure DevOps dashboards:
+                            <ul>
+                                <li>Sprint burndown</li>
+                                <li>Build/release success rate</li>
+                                <li>Lead time and cycle time</li>
+                                <li>Deployment frequency</li>
+                            </ul>
+                        </li>
+                        <li>Set up automated rollback:
+                            <pre><code>- task: InvokeRESTAPI@1
+  condition: failed()
+  inputs:
+    serviceConnection: 'AppInsights'
+    method: 'GET'
+    urlSuffix: 'query?query=exceptions | count'</code></pre>
+                        </li>
+                        <li>Create work items automatically from Application Insights alerts</li>
+                        <li>Configure Slack/Teams notifications for build/release events</li>
+                        <li>Implement feature flags using Azure App Configuration</li>
+                        <li>Track DORA metrics: deployment frequency, lead time, MTTR, change failure rate</li>
+                    </ol>
+                    <div class="key-concepts">
+                        <strong>Key Concepts:</strong> Observability, DORA metrics, feedback loops, automated rollback
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <h3>🎯 Azure DevOps Free Tier Limits</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Resource</th>
+                            <th>Free Tier Limit</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Users</td>
+                            <td>5 users</td>
+                            <td>Unlimited stakeholders</td>
+                        </tr>
+                        <tr>
+                            <td>Git Repositories</td>
+                            <td>Unlimited</td>
+                            <td>Private repos included</td>
+                        </tr>
+                        <tr>
+                            <td>Pipeline Minutes</td>
+                            <td>1,800 min/month</td>
+                            <td>Microsoft-hosted agents</td>
+                        </tr>
+                        <tr>
+                            <td>Artifacts Storage</td>
+                            <td>2GB</td>
+                            <td>Additional storage available</td>
+                        </tr>
+                        <tr>
+                            <td>Test Plans</td>
+                            <td>Pay per user</td>
+                            <td>Manual testing features</td>
+                        </tr>
+                        <tr>
+                            <td>Parallel Jobs</td>
+                            <td>1 parallel job</td>
+                            <td>Can run 1 build at a time</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert alert-warning">
+                <h4>⚠️ Best Practices for Free Tier</h4>
+                <ul>
+                    <li>Optimize pipeline efficiency to stay within 1,800 minutes/month</li>
+                    <li>Use pipeline caching to reduce build time</li>
+                    <li>Clean up old artifacts to stay within 2GB storage</li>
+                    <li>Use self-hosted agents for unlimited build minutes (requires your own VM)</li>
+                    <li>Leverage parallel stages within single job (doesn't count as parallel jobs)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <div class="week-separator" id="resources">
+            <span>RESOURCES & EXAM PREP</span>
+        </div>
+
+        <section class="section">
+            <h2>📚 Additional Resources</h2>
+
+            <div class="grid grid-2">
+                <div class="card">
+                    <h4>📖 Learning Materials</h4>
+                    <ul>
+                        <li><strong>Microsoft Learn:</strong> Free learning paths for all certifications</li>
+                        <li><strong>Azure Documentation:</strong> docs.microsoft.com/azure</li>
+                        <li><strong>Azure Updates:</strong> azure.microsoft.com/updates</li>
+                        <li><strong>Azure Friday:</strong> Video series on YouTube</li>
+                        <li><strong>Azure Architecture Center:</strong> Best practices and patterns</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>🎓 Practice & Community</h4>
+                    <ul>
+                        <li><strong>Practice Tests:</strong> MeasureUp, Whizlabs, ExamTopics</li>
+                        <li><strong>Azure Pricing Calculator:</strong> Plan costs effectively</li>
+                        <li><strong>Reddit:</strong> r/Azure community</li>
+                        <li><strong>Stack Overflow:</strong> Technical Q&A</li>
+                        <li><strong>Azure DevOps Labs:</strong> azuredevopslabs.com</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Certification Paths</h3>
+            <div class="card">
+                <h4><span class="badge badge-success">AZ-900</span> Azure Fundamentals</h4>
+                <p><strong>Services Covered in This Plan:</strong></p>
+                <div class="grid grid-3">
+                    <div class="badge badge-primary">Resource Groups</div>
+                    <div class="badge badge-primary">VMs</div>
+                    <div class="badge badge-primary">App Service</div>
+                    <div class="badge badge-primary">Azure Functions</div>
+                    <div class="badge badge-primary">Storage Accounts</div>
+                    <div class="badge badge-primary">VNet</div>
+                    <div class="badge badge-primary">NSG</div>
+                    <div class="badge badge-primary">Load Balancer</div>
+                    <div class="badge badge-primary">Azure AD</div>
+                    <div class="badge badge-primary">RBAC</div>
+                    <div class="badge badge-primary">Azure Monitor</div>
+                    <div class="badge badge-primary">Cost Management</div>
+                    <div class="badge badge-primary">Azure Policy</div>
+                    <div class="badge badge-primary">Tags</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h4><span class="badge badge-accent">AZ-104</span> Azure Administrator</h4>
+                <p><strong>All AZ-900 Services Plus:</strong></p>
+                <div class="grid grid-3">
+                    <div class="badge badge-accent">VM Scale Sets</div>
+                    <div class="badge badge-accent">Availability Sets</div>
+                    <div class="badge badge-accent">VNet Peering</div>
+                    <div class="badge badge-accent">Azure Backup</div>
+                    <div class="badge badge-accent">Site Recovery</div>
+                    <div class="badge badge-accent">Azure Automation</div>
+                    <div class="badge badge-accent">Azure DNS</div>
+                    <div class="badge badge-accent">Traffic Manager</div>
+                    <div class="badge badge-accent">Log Analytics</div>
+                    <div class="badge badge-accent">Alerts</div>
+                    <div class="badge badge-accent">ARM Templates</div>
+                    <div class="badge badge-accent">PowerShell/CLI</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h4><span class="badge badge-warning">AZ-204</span> Azure Developer</h4>
+                <p><strong>All AZ-900 Services Plus:</strong></p>
+                <div class="grid grid-3">
+                    <div class="badge badge-warning">Azure Functions (all triggers)</div>
+                    <div class="badge badge-warning">App Service deployment</div>
+                    <div class="badge badge-warning">Cosmos DB</div>
+                    <div class="badge badge-warning">Azure SQL</div>
+                    <div class="badge badge-warning">Service Bus</div>
+                    <div class="badge badge-warning">Event Grid</div>
+                    <div class="badge badge-warning">API Management</div>
+                    <div class="badge badge-warning">Container Instances</div>
+                    <div class="badge badge-warning">Key Vault integration</div>
+                    <div class="badge badge-warning">Azure DevOps</div>
+                    <div class="badge badge-warning">Application Insights</div>
+                    <div class="badge badge-warning">CDN</div>
+                </div>
+            </div>
+
+            <h3>Free Tier Limits Reference</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Free Tier Limit</th>
+                        <th>Monitor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Virtual Machines</td>
+                        <td>750 hours B1s/month</td>
+                        <td>Stop when not in use</td>
+                    </tr>
+                    <tr>
+                        <td>Storage</td>
+                        <td>5GB LRS blob + 5GB file</td>
+                        <td>Delete old files</td>
+                    </tr>
+                    <tr>
+                        <td>SQL Database</td>
+                        <td>250GB, 12 months</td>
+                        <td>Use Basic tier</td>
+                    </tr>
+                    <tr>
+                        <td>Azure Functions</td>
+                        <td>1M executions/month</td>
+                        <td>Monitor invocations</td>
+                    </tr>
+                    <tr>
+                        <td>App Service</td>
+                        <td>10 apps</td>
+                        <td>Delete test apps</td>
+                    </tr>
+                    <tr>
+                        <td>Cosmos DB</td>
+                        <td>1000 RU/s, 25GB always free</td>
+                        <td>Monitor RU usage</td>
+                    </tr>
+                    <tr>
+                        <td>Bandwidth</td>
+                        <td>100GB outbound/month</td>
+                        <td>Minimize downloads</td>
+                    </tr>
+                    <tr>
+                        <td>Azure DevOps</td>
+                        <td>1,800 pipeline min/month</td>
+                        <td>Optimize builds</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight">
+                <h3>✅ Daily Best Practices</h3>
+                <div class="grid grid-2">
+                    <div>
+                        <h4>Start of Day:</h4>
+                        <ul>
+                            <li>Check Azure free tier usage</li>
+                            <li>Review previous day's resources</li>
+                            <li>Set reminder to stop VMs</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>During Practice:</h4>
+                        <ul>
+                            <li>Document commands used</li>
+                            <li>Take screenshots of configs</li>
+                            <li>Note errors and resolutions</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>End of Day:</h4>
+                        <ul>
+                            <li>Stop/deallocate all VMs</li>
+                            <li>Review cost dashboard</li>
+                            <li>Update learning journal</li>
+                            <li>Delete unnecessary resources</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Weekly Review:</h4>
+                        <ul>
+                            <li>Consolidate notes</li>
+                            <li>Practice troubleshooting scenarios</li>
+                            <li>Review Microsoft Learn modules</li>
+                            <li>Join community discussions</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <h3>🎯 Success Tips</h3>
+                <ol>
+                    <li><strong>Stay within free tier</strong> - Set up billing alerts at $10, $25, $50</li>
+                    <li><strong>Clean up daily</strong> - Delete resources after practice to avoid charges</li>
+                    <li><strong>Use Cloud Shell</strong> - No local setup needed, directly in Azure Portal</li>
+                    <li><strong>Take detailed notes</strong> - Document everything you learn</li>
+                    <li><strong>Practice CLI</strong> - Faster than portal for repetitive tasks</li>
+                    <li><strong>Join study groups</strong> - Learn from others' experiences</li>
+                    <li><strong>Build projects</strong> - Apply knowledge practically, not just theory</li>
+                    <li><strong>Review regularly</strong> - Spaced repetition improves retention</li>
+                </ol>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>Remember:</strong> Consistency is key. 1-2 hours daily will make you proficient in 30 days!</p>
+            <p>Good luck with your Azure learning journey! 🚀</p>
+            <p style="margin-top: 20px; color: var(--text-muted);">
+                Created for Azure Free Tier Learners • Stay within budget, maximize learning
+            </p>
+        </footer>
+    </div>
+
+    <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+    <script>
+        // Scroll to top button visibility
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.getElementById('scrollTop');
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Active nav tab highlighting
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const sections = document.querySelectorAll('.section, .week-separator');
+
+        function highlightNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navTabs.forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('href') === `#${current}`) {
+                    tab.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', highlightNav);
+        highlightNav(); // Call on load
+
+        // Print functionality
+        function printPlan() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
