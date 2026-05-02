@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-900 Microsoft Azure AI Fundamentals - Study Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --accent: #0078d4;
+            --accent-hover: #106ebe;
+            --border: #dee2e6;
+            --code-bg: #f5f5f5;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --sidebar-width: 280px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #242424;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #e4e4e4;
+            --text-secondary: #a0a0a0;
+            --accent: #4a9eff;
+            --accent-hover: #6eb3ff;
+            --border: #404040;
+            --code-bg: #2d2d2d;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 2rem 0;
+            z-index: 100;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .sidebar-header {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-header p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border);
+        }
+
+        .search-box {
+            padding: 0 1.5rem 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.625rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+            background-color: var(--bg-tertiary);
+        }
+
+        .nav-link.active {
+            color: var(--accent);
+            border-left-color: var(--accent);
+            background-color: var(--bg-tertiary);
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 3rem 4rem;
+            max-width: calc(100% - var(--sidebar-width));
+        }
+
+        .content-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+            scroll-margin-top: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--accent);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        code {
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--text-primary);
+        }
+
+        .highlight-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        .card h4 {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .formula {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            text-align: center;
+            font-family: Georgia, serif;
+            font-size: 1.1rem;
+            border: 1px solid var(--border);
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+            display: none;
+        }
+
+        /* Print Styles */
+        @media print {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                max-width: 100%;
+                padding: 1rem;
+            }
+
+            .section {
+                page-break-inside: avoid;
+            }
+
+            h2 {
+                page-break-after: avoid;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+
+            .card, .highlight-box {
+                border: 1px solid #ccc;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 2rem 1.5rem;
+                max-width: 100%;
+            }
+
+            .mobile-menu-toggle {
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                background: var(--accent);
+                color: white;
+                border: none;
+                width: 56px;
+                height: 56px;
+                border-radius: 50%;
+                box-shadow: 0 4px 12px var(--shadow);
+                cursor: pointer;
+                z-index: 101;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-toggle {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1>AI-900</h1>
+                <p>Azure AI Fundamentals</p>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <span id="theme-icon">🌙</span>
+                    <span id="theme-text">Dark Mode</span>
+                </button>
+            </div>
+
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search topics...">
+            </div>
+
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item"><a href="#overview" class="nav-link">Overview</a></li>
+                    <li class="nav-item"><a href="#generative-ai" class="nav-link">Generative AI</a></li>
+                    <li class="nav-item"><a href="#ml-basics" class="nav-link">Machine Learning Basics</a></li>
+                    <li class="nav-item"><a href="#ai-workloads" class="nav-link">AI Workloads</a></li>
+                    <li class="nav-item"><a href="#responsible-ai" class="nav-link">Responsible AI</a></li>
+                    <li class="nav-item"><a href="#ml-principles" class="nav-link">ML Principles</a></li>
+                    <li class="nav-item"><a href="#ml-vs-dl" class="nav-link">ML vs Deep Learning</a></li>
+                    <li class="nav-item"><a href="#transformer" class="nav-link">Transformer Architecture</a></li>
+                    <li class="nav-item"><a href="#evaluation" class="nav-link">Model Evaluation</a></li>
+                    <li class="nav-item"><a href="#computer-vision" class="nav-link">Computer Vision</a></li>
+                    <li class="nav-item"><a href="#nlp" class="nav-link">Natural Language Processing</a></li>
+                    <li class="nav-item"><a href="#azure-openai" class="nav-link">Azure OpenAI Services</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Overview Section -->
+                <section id="overview" class="section">
+                    <h1>AI-900 Microsoft Azure AI Fundamentals</h1>
+                    <div class="highlight-box">
+                        <h3>Exam Objectives</h3>
+                        <ul>
+                            <li>Describe AI workloads and considerations</li>
+                            <li>Describe fundamental principles of machine learning on Azure</li>
+                            <li>Describe features of computer vision workloads on Azure</li>
+                            <li>Describe features of Natural Language Processing (NLP) workloads on Azure</li>
+                            <li>Describe features of generative AI workloads on Azure</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Generative AI -->
+                <section id="generative-ai" class="section">
+                    <h2>Generative AI</h2>
+                    
+                    <div class="card">
+                        <h4>Azure OpenAI Service</h4>
+                        <p>Access large language models like GPT-4 for text generation, summarization, chatbots, and more.</p>
+                    </div>
+
+                    <h3>Core AI Services</h3>
+                    <ul>
+                        <li><strong>Azure AI Vision</strong></li>
+                        <li>Azure AI Speech</li>
+                        <li><strong>Azure AI Language</strong></li>
+                        <li>Azure AI Translator</li>
+                        <li>Azure AI Document Intelligence</li>
+                    </ul>
+
+                    <h3>Conversational AI</h3>
+                    <ul>
+                        <li><strong>Azure AI Bot Service</strong></li>
+                        <li><strong>Immersive Reader</strong></li>
+                    </ul>
+
+                    <h3>Media Services</h3>
+                    <div class="card">
+                        <h4>Azure AI Video Indexer</h4>
+                        <p><em>(part of Azure Media Services)</em></p>
+                        <p>Analyze audio and video for content tagging, transcription, and face recognition.</p>
+                    </div>
+                </section>
+
+                <!-- Machine Learning Basics -->
+                <section id="ml-basics" class="section">
+                    <h2>Machine Learning</h2>
+                    <p>The study of computer algorithms that improve automatically through experience.</p>
+                    
+                    <div class="card">
+                        <h4>Machine Learning is a Subset of AI</h4>
+                        <ul>
+                            <li><strong>Unsupervised learning</strong> - Ability to find patterns in data without human help</li>
+                            <li><strong>Supervised learning</strong> - Humans label the data and give general guidance</li>
+                        </ul>
+                    </div>
+
+                    <h3>Natural Language Processing (NLP)</h3>
+                    <p>Allows a machine to read and understand human language.</p>
+                    <h4>Applications</h4>
+                    <ul>
+                        <li>Machine translation</li>
+                        <li>Question answering</li>
+                        <li>Sentiment analysis</li>
+                    </ul>
+
+                    <h3>Perception</h3>
+                    <p>The ability to use input from sensors — images, audio, lidar, sonar, radar, touch, etc.</p>
+                    <h4>Applications</h4>
+                    <ul>
+                        <li>Facial recognition</li>
+                        <li>Speech recognition</li>
+                        <li>Object recognition</li>
+                    </ul>
+
+                    <h3>Machine Learning Model</h3>
+                    <div class="highlight-box">
+                        <p>A model is a program that can be used to recognize a pattern in data.</p>
+                        <ul>
+                            <li>Model can be used to <strong>predict future</strong> behavior</li>
+                            <li>A model can be used to <strong>Categorize</strong> something as one thing or another</li>
+                            <li>A model can be used to <strong>Recognize</strong> people, objects and landmarks using unseen images</li>
+                            <li>A model can be used to <strong>Understand</strong> the context of natural human text or speech</li>
+                        </ul>
+                    </div>
+
+                    <h4>Uses</h4>
+                    <ul>
+                        <li><strong>Predict future</strong> - traffic on specific day on specific route</li>
+                        <li><strong>Categorize</strong> - apple/banana</li>
+                        <li><strong>Recognize</strong> - people, objects and landmarks</li>
+                        <li><strong>Understand</strong> - natural human text</li>
+                    </ul>
+
+                    <div class="card">
+                        <h4>Model Training & Evaluation</h4>
+                        <p>You <strong>train</strong> a model using "training data"</p>
+                        <p>You <strong>evaluate</strong> a model using "test data" to measure how accurate it is</p>
+                    </div>
+
+                    <h4>Evaluation/Scoring for Model Training</h4>
+                    <ul>
+                        <li>yes/no, True/False</li>
+                        <li>Practically over only wrong etc.</li>
+                        <li>% basis - 60% model cycle</li>
+                    </ul>
+
+                    <h4>Deployment of Model</h4>
+                    <p>Once a model has been <strong>deployed</strong>, it can recognize patterns in data it has never seen before.</p>
+                </section>
+
+                <!-- AI Workloads -->
+                <section id="ai-workloads" class="section">
+                    <h2>Common AI Workloads (15–20%)</h2>
+
+                    <h3>1. Prediction and Demand Forecasting</h3>
+                    <div class="card">
+                        <h4>Using Machine Learning to Predict</h4>
+                        <ul>
+                            <li>Give the machine all the relevant data you know</li>
+                            <li>Tell it for which field you want to predict</li>
+                            <li>It develops a model which it uses to make a prediction</li>
+                        </ul>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Visitors</th>
+                                    <th>Sales</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>100</td><td>1125</td></tr>
+                                <tr><td>200</td><td>2871</td></tr>
+                                <tr><td>300</td><td>3600</td></tr>
+                                <tr><td>500</td><td>7150</td></tr>
+                                <tr><td>450</td><td>5529</td></tr>
+                                <tr><td>300</td><td>4393</td></tr>
+                                <tr><td>900</td><td>10837.5</td></tr>
+                                <tr><td>250</td><td>3691.5</td></tr>
+                                <tr><td>786</td><td>?</td></tr>
+                                <tr><td>362</td><td>?</td></tr>
+                                <tr><td>121</td><td>?</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>2. Anomaly Detection</h3>
+
+                    <h3>3. Computer Vision</h3>
+
+                    <h3>4. Natural Language Processing</h3>
+                    <div class="highlight-box">
+                        <p><strong>Example: Different ways users ask the same question</strong></p>
+                        <ul>
+                            <li>What time are you open until today?</li>
+                            <li>When do you close?</li>
+                            <li>What time do you close today?</li>
+                            <li>What are your hours of operation today?</li>
+                            <li>Until which time can I come there to pick up my order?</li>
+                        </ul>
+                    </div>
+
+                    <h3>5. Knowledge Mining – AI Search Cognitive Search</h3>
+                    <div class="card">
+                        <ul>
+                            <li><strong>Ingest content</strong> from <strong>Blob storage</strong>, <strong>Tables</strong>, <strong>SQL Database</strong>, and <strong>Cosmos DB</strong></li>
+                            <li><strong>Sources:</strong> PDFs, Images, Word Documents, PowerPoints, Audio</li>
+                        </ul>
+                        <h4>AI tools used:</h4>
+                        <ul>
+                            <li>Image classification</li>
+                            <li>Face recognition</li>
+                            <li>Language detection</li>
+                            <li>Key phrase extraction</li>
+                        </ul>
+                        <p>➡ Creates a <strong>searchable index</strong> for efficient information retrieval.</p>
+                    </div>
+
+                    <h3>6. Content Moderation</h3>
+                    <div class="card">
+                        <ul>
+                            <li><strong>Find profanity, adult, hateful, offensive, violent, or phishing links</strong> in <strong>text, video, and images</strong></li>
+                            <li><strong>Multi-lingual support</strong></li>
+                            <li><strong>Set severity levels</strong> to allow some free/open discussion</li>
+                            <li><strong>Application areas:</strong> places in apps where users can post, like <strong>reviews</strong> and <strong>comments</strong></li>
+                        </ul>
+                    </div>
+
+                    <h3>7. Generative AI</h3>
+                    <div class="highlight-box">
+                        <h4>Example: Retail Chatbot Conversation</h4>
+                        <ul style="list-style: none; margin-left: 0;">
+                            <li><strong>User:</strong> Do you have any of the Levi's 501 Jeans in stock?</li>
+                            <li><strong>Chatbot:</strong> In what size?</li>
+                            <li><strong>User:</strong> Size 34 please</li>
+                            <li><strong>Chatbot:</strong> Yes, we have those. Do you want me to hold one aside for you?</li>
+                            <li><strong>User:</strong> Yes.</li>
+                            <li><strong>Chatbot:</strong> What is your name?</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Responsible AI -->
+                <section id="responsible-ai" class="section">
+                    <h2>Guiding Principles for Responsible AI</h2>
+
+                    <div class="card">
+                        <h4>1. Fairness</h4>
+                        <p>AI systems should treat everyone fairly and avoid affecting similarly situated groups of people in different ways.</p>
+                        <ul>
+                            <li>Imagine a hospital emergency room AI system that prioritized patients in the order of their FICO credit score… the more money you have, the faster you see a doctor.</li>
+                            <li>Imagine a bank loan AI system that gave more money to people named Michael and less money to people named Alice.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>2. Reliability and Safety</h4>
+                        <p>It's so easy to program for the "sunny day".</p>
+                        <ul>
+                            <li>The data is never bad. No fields have blanks. No fields have accented characters. All connected systems are functional.</li>
+                            <li>There is no one trying to intentionally break the system.</li>
+                        </ul>
+                        <p><strong>Considerations:</strong></p>
+                        <ul>
+                            <li>How does the self-driving car operate at night? In a rainstorm? In a snowstorm?</li>
+                            <li>How does the military unmanned drone operate when the GPS is down?</li>
+                            <li>How does the self-driving car operate when an object is approaching from the side instead of the front or back?</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>3. Privacy and Security</h4>
+                        <ul>
+                            <li>Many <strong>countries and regions</strong> in the world are developing <strong>new standards and laws</strong> to protect the <strong>data of citizens</strong>.</li>
+                            <li><strong>Laws are always slower than technology.</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>4. Inclusiveness</h4>
+                        <p>"At Microsoft, we firmly believe <strong>everyone should benefit from intelligent technology</strong>, meaning it must incorporate and address a broad range of <strong>human needs and experiences</strong>."</p>
+                        <ul>
+                            <li><strong>How does a voice assistant work for someone who has a speech impediment?</strong></li>
+                            <li><strong>How does a fitness tracker work for someone with a mobility disability?</strong></li>
+                            <li><strong>How does "video-only" product instructions help someone who is blind?</strong></li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>5. Transparency</h4>
+                        <p>"When <strong>AI systems</strong> are used to help inform decisions that have tremendous impacts on <strong>people's lives</strong>, it is critical that people <strong>understand how those decisions were made</strong>."</p>
+                        <ul>
+                            <li>"When someone is <strong>rejected by an AI system</strong> for a <strong>job</strong>, <strong>life insurance</strong>, or a <strong>bank loan</strong>, why were they rejected?</li>
+                            <li>If you are unable to tell them why, the system <strong>lacks transparency</strong> and you can't tell if it's operating properly.</li>
+                            <li>It could be <strong>unfair</strong>, and you won't know it."</li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>6. Accountability</h4>
+                        <p>"The people who <strong>design and deploy AI systems</strong> must be <strong>accountable</strong> for how their systems operate."</p>
+                        <ul>
+                            <li><strong>AI systems should not be the "final authority"</strong> in decisions that significantly affect <strong>employment</strong>, <strong>finances</strong>, <strong>health care</strong>, and <strong>human safety</strong>.</li>
+                            <li>There should be <strong>regular review</strong> of how the AI is operating.</li>
+                            <li>Continuous <strong>improvement of the model</strong> is essential.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ML Principles -->
+                <section id="ml-principles" class="section">
+                    <h2>Fundamental Principles of Machine Learning on Azure (15–20%)</h2>
+
+                    <h3>Common Machine Learning Types</h3>
+                    <div class="card">
+                        <ul>
+                            <li><strong>Regression</strong> (supervised learning)</li>
+                            <li><strong>Classification</strong> (supervised learning)
+                                <ul>
+                                    <li>Binary classification → only two answers (0 and 1)</li>
+                                    <li>Multi-class classification → allows for multiple options</li>
+                                </ul>
+                            </li>
+                            <li><strong>Clustering</strong> (unsupervised learning)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- ML vs Deep Learning -->
+                <section id="ml-vs-dl" class="section">
+                    <h2>Machine Learning vs Deep Learning</h2>
+
+                    <div class="card">
+                        <h4>Machine Learning</h4>
+                        <p><strong>Process:</strong> Input → Feature Extraction → Classification → Output</p>
+                    </div>
+
+                    <div class="card">
+                        <h4>Deep Learning</h4>
+                        <p><strong>Process:</strong> Input → [Multiple interconnected layers] → Output</p>
+                        <p>Combines <strong>Feature Extraction</strong> and <strong>Classification</strong> within the same model</p>
+                    </div>
+                </section>
+
+                <!-- Transformer Architecture -->
+                <section id="transformer" class="section">
+                    <h2>Transformer Architecture</h2>
+
+                    <h3>Foundation Models</h3>
+                    <div class="highlight-box">
+                        <span class="tag">GPT</span>
+                        <span class="tag">BERT</span>
+                        <span class="tag">T5</span>
+                    </div>
+
+                    <h3>Key Components</h3>
+                    <div class="card">
+                        <ul>
+                            <li><strong>Encoder</strong> → Takes input and converts into tokens</li>
+                            <li><strong>Decoder</strong> → Generates output (used in text generation)</li>
+                            <li><strong>Attention Mechanism</strong> → Decides which tokens get higher or lower weightage</li>
+                        </ul>
+                    </div>
+
+                    <h3>Benefits</h3>
+                    <ul>
+                        <li>Can handle long input text</li>
+                        <li>Understands context and relationships between words</li>
+                        <li>Enables faster training using parallel processing</li>
+                        <li>Powers most state-of-the-art transformer models (e.g., GPT, BERT)</li>
+                    </ul>
+
+                    <h3>Core Machine Learning Concepts</h3>
+                    <div class="card">
+                        <h4>Features & Labels</h4>
+                        <ul>
+                            <li><strong>Features</strong> → Input variables
+                                <ul>
+                                    <li>Example: Date of Birth, Gender, Smoker</li>
+                                </ul>
+                            </li>
+                            <li><strong>Label</strong> → The thing we're predicting
+                                <ul>
+                                    <li>Example: Life expectancy</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card">
+                        <h4>Training Model</h4>
+                        <ul>
+                            <li>Training data</li>
+                            <li>Validation data</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Model Evaluation -->
+                <section id="evaluation" class="section">
+                    <h2>Confusion Matrix</h2>
+                    <p><strong>Definition:</strong> Comparison of what the model predicted vs. what actually happened.</p>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Predicted</th>
+                                <th>Actually</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>True Positive</strong></td>
+                                <td>Yes</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>True Negative</strong></td>
+                                <td>No</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td><strong>False Positive</strong></td>
+                                <td>Yes</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td><strong>False Negative</strong></td>
+                                <td>No</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Evaluation Metrics</h3>
+
+                    <div class="formula">
+                        <strong>Accuracy</strong><br>
+                        Accuracy = Correct Predictions / Total Predictions
+                    </div>
+
+                    <div class="formula">
+                        <strong>Precision</strong><br>
+                        Precision = Correct Positives / All Predicted Positives
+                    </div>
+
+                    <div class="card">
+                        <h4>F1 Score</h4>
+                        <p><strong>Definition:</strong> Combines Precision and Recall into a single metric.</p>
+                    </div>
+
+                    <h3>Classification Models are Tested Using:</h3>
+                    <ul>
+                        <li>Test Data</li>
+                        <li>Confusion Matrix</li>
+                        <li>Evaluation Metrics</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <h4>Key Considerations</h4>
+                        <ul>
+                            <li>Accuracy alone is not enough</li>
+                            <li>Good evaluation = Technical metrics + Business context</li>
+                        </ul>
+                    </div>
+
+                    <h3>No Code Machine Learning</h3>
+                    <div class="card">
+                        <p><strong>AutoML</strong> → Automated Machine Learning</p>
+                    </div>
+                </section>
+
+                <!-- Computer Vision -->
+                <section id="computer-vision" class="section">
+                    <h2>Computer Vision Workloads on Azure (15–20%)</h2>
+
+                    <h3>Features</h3>
+                    <ul>
+                        <li>Image Classification</li>
+                        <li>Object Detection</li>
+                        <li>Semantic Segmentation</li>
+                        <li>Optical Character Recognition (OCR)</li>
+                        <li>Facial Detection and Analysis</li>
+                    </ul>
+
+                    <h3>Computer Vision Tools / Services</h3>
+                    <div class="card">
+                        <ul>
+                            <li><strong>Azure AI Vision</strong></li>
+                            <li><strong>Azure AI Services (Cognitive Services)</strong>
+                                <ul>
+                                    <li>Multi-service account</li>
+                                    <li>Other services under one umbrella</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p><strong>Note:</strong> All services require a Key & Endpoint</p>
+                    </div>
+
+                    <h3>Azure AI Vision Services</h3>
+                    <div class="card">
+                        <ul>
+                            <li>Free tier available</li>
+                            <li>You cannot switch from one service to another</li>
+                            <li>Pre-trained ML model</li>
+                            <li>Can generate automatic captions for images and tags</li>
+                            <li>Content moderation for adult, racy, or gory content</li>
+                            <li>Detect faces</li>
+                            <li>Text recognition</li>
+                        </ul>
+                    </div>
+
+                    <h3>Azure AI Custom Vision Service</h3>
+                    <div class="card">
+                        <ul>
+                            <li>A model we can train</li>
+                            <li>Supports classification or object detection</li>
+                            <li>Requires training resources</li>
+                            <li>Requires prediction resources</li>
+                        </ul>
+                    </div>
+
+                    <h3>Face Service</h3>
+                    <div class="card">
+                        <ul>
+                            <li>Can recognize a human face in an image</li>
+                            <li>Needs to be trained on your own data</li>
+                            <li>Can recognize celebrities</li>
+                            <li>Returns the rectangle coordinates of one or more faces</li>
+                        </ul>
+                    </div>
+
+                    <h3>Azure AI Video Indexer</h3>
+                    <div class="card">
+                        <p>Combines multiple AI services:</p>
+                        <ul>
+                            <li>Uses <strong>Face Service</strong></li>
+                            <li>Integrates <strong>Translator</strong></li>
+                            <li>Leverages <strong>Azure AI Vision</strong></li>
+                            <li>Utilizes <strong>Speech Services</strong></li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- NLP -->
+                <section id="nlp" class="section">
+                    <h2>Natural Language Processing Workloads on Azure (15–20%)</h2>
+
+                    <h3>Common NLP Workloads</h3>
+                    <ul>
+                        <li>Key Phrase Extraction</li>
+                        <li>Entity Recognition</li>
+                        <li>Sentiment Analysis
+                            <ul>
+                                <li>Prebuilt ML model</li>
+                                <li>Sentiment score (0 to 1)</li>
+                            </ul>
+                        </li>
+                        <li>Language Modeling</li>
+                        <li>Speech Recognition & Synthesis</li>
+                        <li>Translation</li>
+                    </ul>
+
+                    <h3>NLP Workload Tools</h3>
+                    <div class="card">
+                        <ol>
+                            <li><strong>Language Services</strong> (Cognitive Text Analytics)</li>
+                            <li><strong>Conversational Language Understanding (CLU)</strong>
+                                <ul>
+                                    <li>Formerly Language Understanding Service (LUIS)</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <h3>Core Concepts in Language Understanding</h3>
+                    <div class="highlight-box">
+                        <h4>Three Core Concepts</h4>
+                        <ol>
+                            <li><strong>Utterances</strong></li>
+                            <li><strong>Entities</strong></li>
+                            <li><strong>Intents</strong></li>
+                        </ol>
+                    </div>
+
+                    <h3>Azure AI Speech Services</h3>
+                    <div class="card">
+                        <ul>
+                            <li>Text to Speech</li>
+                            <li>Speech to Text</li>
+                            <li>Audio Translation</li>
+                            <li>Custom Voice Models</li>
+                        </ul>
+                    </div>
+
+                    <h3>Azure AI Translator Service</h3>
+                    <div class="card">
+                        <ul>
+                            <li>Text to Text</li>
+                            <li>Supports 70+ languages</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Azure OpenAI -->
+                <section id="azure-openai" class="section">
+                    <h2>Generative AI (15–20%)</h2>
+
+                    <h3>Common Scenarios</h3>
+                    <ul>
+                        <li>Image Generation</li>
+                        <li>Text Generation</li>
+                        <li>Music/Audio Generation</li>
+                        <li>Video Generation</li>
+                    </ul>
+
+                    <h3>Azure OpenAI Services</h3>
+
+                    <div class="card">
+                        <h4>Natural Language Generation (NLG)</h4>
+                        <p><strong>Temperature</strong> → Controls creativity in generation</p>
+                    </div>
+
+                    <h3>Models</h3>
+                    <div class="card">
+                        <ul>
+                            <li><strong>GPT</strong> → Text generation</li>
+                            <li><strong>Codex</strong> → Code generation</li>
+                            <li><strong>DALL-E</strong> → Image generation</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+
+            <div class="no-results" id="noResults">
+                <p>No results found. Try a different search term.</p>
+            </div>
+        </main>
+    </div>
+
+    <button class="mobile-menu-toggle" onclick="toggleMobile()">☰</button>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            
+            if (newTheme === 'dark') {
+                icon.textContent = '☀️';
+                text.textContent = 'Light Mode';
+            } else {
+                icon.textContent = '🌙';
+                text.textContent = 'Dark Mode';
+            }
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        if (savedTheme === 'dark') {
+            document.getElementById('theme-icon').textContent = '☀️';
+            document.getElementById('theme-text').textContent = 'Light Mode';
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobile() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        // Active Navigation
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        function updateActiveNav() {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav();
+
+        // Smooth Scrolling
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                // Close mobile menu after click
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.remove('active');
+                }
+            });
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById('searchInput');
+        const contentSections = document.querySelectorAll('.section');
+        const noResults = document.getElementById('noResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            let hasResults = false;
+
+            contentSections.forEach(section => {
+                const text = section.textContent.toLowerCase();
+                
+                if (text.includes(searchTerm) || searchTerm === '') {
+                    section.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+
+            noResults.style.display = hasResults || searchTerm === '' ? 'none' : 'block';
+        });
+    </script>
+</body>
+</html>
